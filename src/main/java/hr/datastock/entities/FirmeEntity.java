@@ -18,7 +18,6 @@ public class FirmeEntity {
     private String oibFirme;
     private String nazivFirme;
 
-
     @Id
     @Column(name = "IDFirme")
     public Long getIdFirme() {

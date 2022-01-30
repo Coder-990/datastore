@@ -7,16 +7,20 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.hibernate.mapping.Any;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class FirmeController {
 
+    public static final Logger logger = LoggerFactory.getLogger(FirmeController.class);
+    public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
     @FXML
     private ComboBox<Long> comboBoxID;
     @FXML
@@ -26,7 +30,7 @@ public class FirmeController {
     @FXML
     private TableView<FirmeEntity> tableView;
     @FXML
-    private ListView<FirmeEntity> listView;
+    private ListView<Any> listView;
     @FXML
     private TableColumn<FirmeEntity, Long> tableColumnId;
     @FXML
@@ -34,7 +38,11 @@ public class FirmeController {
     @FXML
     private TableColumn<FirmeEntity, String> tableColumnOIB;
     @FXML
+    private Button buttonGetOneById;
+    @FXML
     private Button buttonSearch;
+    @FXML
+    private Button buttonSelectProperty;
     @FXML
     private Button buttonInsert;
     @FXML
@@ -51,47 +59,61 @@ public class FirmeController {
 
     @FXML
     public void initialize() {
-
-        System.out.println("firstTest");
         firmeObservableList = FXCollections.observableList(firmeService.getAll());
-
-        System.out.println("$%$%$% Company records initializing! $%$%$%");
-
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
-        tableColumnId.setStyle("-fx-alignment: CENTER");
-
-        tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
-        tableColumnOIB.setStyle("-fx-alignment: CENTER");
-
-        tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
-        tableColumnNaziv.setStyle("-fx-alignment: CENTER");
-
-        List<Long> listaPoduzecaID = firmeObservableList.stream().map(FirmeEntity::getIdFirme).collect(Collectors.toList());
-        ObservableList<Long> obListPoduzeceID = FXCollections.observableList(listaPoduzecaID);
-        comboBoxID.setItems(obListPoduzeceID);
+        List<Long> listaPoduzecaIda = firmeObservableList.stream().map(FirmeEntity::getIdFirme).toList();
+        ObservableList<Long> firmeIdsObservableList = FXCollections.observableList(listaPoduzecaIda);
         comboBoxID.getSelectionModel().selectFirst();
+        logger.info("$%$%$% Company records initializing! $%$%$%");
+
+        provideAllProperties();
 
         tableView.setItems(firmeObservableList);
-        System.out.println("$%$%$% Company records initialized successfully with size of: + " + firmeObservableList.size() + "!$%$%$%");
-//        logger.info("$%$%$% Poduzece records initialized successfully with size of: " + poduzeceObservableList.size() + "!$%$%$%");
+        comboBoxID.setItems(firmeIdsObservableList);
+        logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
     }
 
-    @FXML
-    public void setButtonSearch() {
+    private void provideAllProperties() {
+        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
+        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
+        tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
+        tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
+    }
 
+    public void selectProperty() {
+        Long selectedId = getOneById();
+        if (tableColumnId.getTableView().getSelectionModel().getSelectedItem().getIdFirme().equals(selectedId)) {
+            String oib = tableView.getSelectionModel().getSelectedItem().getOibFirme();
+            textFieldOIB.setText(oib);
+            String naziv = tableView.getSelectionModel().getSelectedItem().getNazivFirme();
+            textFieldNaziv.setText(naziv);
+        }
+    }
+
+    public Long getOneById() {
+        Long selectedId = (long) getComboBoxSelectedId();
+        if (tableColumnId.getTableView().getSelectionModel().getSelectedItem().getIdFirme().equals(selectedId)){
+            return firmeService.getOneByID(selectedId);
+        }
+        return null;
+    }
+
+    private int getComboBoxSelectedId() {
+        return Math.toIntExact(comboBoxID.getSelectionModel().getSelectedItem());
+    }
+
+    public void setButtonSearch() {
         String naziv = textFieldNaziv.getText();
         String oib = textFieldOIB.getText();
         List<FirmeEntity> filteredListOfCompanies = new ArrayList<>(firmeObservableList
                 .filtered(company -> company.getNazivFirme().toLowerCase().contains(naziv))
                 .filtered(company -> company.getOibFirme().toLowerCase().contains(oib)));
         tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
-        System.out.println("Search result of: " + filteredListOfCompanies.size() + " records.");
-//        logger.info("Article record searched successfully!");
+        logger.info("Article record searched successfully!");
     }
 
-    @FXML
-    public void setButtonSave() {
-
+    public FirmeEntity setButtonSave() {
         String oib = textFieldOIB.getText();
         String naziv = textFieldNaziv.getText();
 
@@ -99,7 +121,7 @@ public class FirmeController {
         if (!alert.isEmpty()) {
             Alert alertWindow = new Alert(Alert.AlertType.WARNING);
             alertWindow.setTitle("Error");
-            alertWindow.setHeaderText("Molim popunite sljedeca polja: ");
+            alertWindow.setHeaderText("Please input missing records: ");
             alertWindow.setContentText(alert);
             alertWindow.showAndWait();
         } else {
@@ -107,15 +129,30 @@ public class FirmeController {
             try {
                 firmeService.createCompany(newCompany);
             } catch (Exception ex) {
-                System.err.println("Error in method 'unesi poduzece'" + ex);
+                logger.error("Error in method 'unesi poduzece'", ex);
                 ex.printStackTrace();
             }
             firmeObservableList.add(newCompany);
             tableView.setItems(firmeObservableList);
             clearRecords();
-            System.out.println("Poduzece records saved successfully!");
+            logger.info("Poduzece records saved successfully!");
         }
+        return firmeService.createCompany(new FirmeEntity(nextId(), oib, naziv));
+    }
 
+    public FirmeEntity setButtonUpdate() {
+        Long selectedId = getOneById();
+        String oib = tableView.getSelectionModel().getSelectedItem().getOibFirme();
+        textFieldOIB.setText(oib);
+        String naziv = tableView.getSelectionModel().getSelectedItem().getNazivFirme();
+        textFieldNaziv.setText(naziv);
+        FirmeEntity firmeEntity = new FirmeEntity(selectedId, oib, naziv);
+        FirmeEntity updateCompany = (FirmeEntity) firmeObservableList.stream().map(existingCompany -> {
+            existingCompany.setOibFirme(firmeEntity.getOibFirme());
+            existingCompany.setNazivFirme(firmeEntity.getNazivFirme());
+            return firmeService.updateCompany(existingCompany, selectedId);
+        });
+        return firmeService.updateCompany(updateCompany, selectedId);
     }
 
     private Long nextId() {
@@ -124,28 +161,18 @@ public class FirmeController {
 
     private String unosProvjera(String naziv, String oib) {
 
-        System.out.println("Checking data...");
+        logger.info("Checking data...");
         List<String> listaProvjere = new ArrayList<>();
         if (oib.trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (naziv.trim().isEmpty()) listaProvjere.add("Company name!");
         return String.join("\n", listaProvjere);
     }
 
-    @FXML
-    public void setButtonUpdate(FirmeEntity updateCompay) {
-        tableView.getSelectionModel().getSelectedCells();
-        Long selectedId = comboBoxID.getSelectionModel().getSelectedItem();
-        firmeService.updateCompany(updateCompay, selectedId);
-    }
-
-    @FXML
     public void setButtonDelete() {
-        Long selectedId = comboBoxID.getSelectionModel().getSelectedItem();
+        Long selectedId = getOneById();
         firmeService.deleteCompany(selectedId);
-
     }
 
-    @FXML
     public void setButtonClearFields() {
         clearRecords();
     }
@@ -155,6 +182,4 @@ public class FirmeController {
         textFieldNaziv.clear();
         textFieldOIB.clear();
     }
-
-
 }

@@ -1,7 +1,6 @@
 package hr.datastock.services.impl;
 
 import hr.datastock.entities.FirmeEntity;
-import hr.datastock.exceptions.FirmeNotFoundException;
 import hr.datastock.repositories.FirmeRepository;
 import hr.datastock.services.FirmeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,8 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public FirmeEntity getOneByID(Long id){
-        return firmeRepository.findById(id).orElseThrow(
-                () -> new FirmeNotFoundException(id));
+    public Long getOneByID(Long id){
+        return firmeRepository.findById(id).get().getIdFirme();
     }
 
     @Override
