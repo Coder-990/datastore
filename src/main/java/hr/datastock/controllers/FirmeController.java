@@ -60,16 +60,18 @@ public class FirmeController {
     @FXML
     public void initialize() {
         firmeObservableList = FXCollections.observableList(firmeService.getAll());
+        refreshComboBox();
+        logger.info("$%$%$% Company records initializing! $%$%$%");
+        provideAllProperties();
+        tableView.setItems(firmeObservableList);
+        logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
+    }
+
+    private void refreshComboBox() {
         List<Long> listaPoduzecaIda = firmeObservableList.stream().map(FirmeEntity::getIdFirme).toList();
         ObservableList<Long> firmeIdsObservableList = FXCollections.observableList(listaPoduzecaIda);
         comboBoxID.getSelectionModel().selectFirst();
-        logger.info("$%$%$% Company records initializing! $%$%$%");
-
-        provideAllProperties();
-
-        tableView.setItems(firmeObservableList);
         comboBoxID.setItems(firmeIdsObservableList);
-        logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
     }
 
     private void provideAllProperties() {
@@ -110,6 +112,7 @@ public class FirmeController {
                 .filtered(company -> company.getNazivFirme().toLowerCase().contains(naziv))
                 .filtered(company -> company.getOibFirme().toLowerCase().contains(oib)));
         tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
+        refreshComboBox();
         logger.info("Article record searched successfully!");
     }
 
@@ -134,6 +137,7 @@ public class FirmeController {
             }
             firmeObservableList.add(newCompany);
             tableView.setItems(firmeObservableList);
+            refreshComboBox();
             clearRecords();
             logger.info("Poduzece records saved successfully!");
         }
@@ -171,6 +175,7 @@ public class FirmeController {
     public void setButtonDelete() {
         Long selectedId = getOneById();
         firmeService.deleteCompany(selectedId);
+        refreshComboBox();
     }
 
     public void setButtonClearFields() {
