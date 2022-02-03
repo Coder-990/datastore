@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,75 +12,61 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="421.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="hr.datastock.controllers.FirmeController">
+<AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.datastock.controllers.FirmeController">
     <children>
-        <VBox layoutX="51.0" layoutY="41.0" prefHeight="125.0" prefWidth="97.0">
+        <VBox layoutX="338.0" layoutY="259.0" prefHeight="50.0" prefWidth="97.0" />
+        <VBox layoutX="380.0" layoutY="299.0" prefHeight="36.0" prefWidth="366.0">
             <children>
-                <GridPane>
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="27.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES"/>
-                    </rowConstraints>
-                    <children>
-                        <Label text="ID"/>
-                        <Label text="Naziv" GridPane.rowIndex="1"/>
-                        <Label text="OIB" GridPane.rowIndex="2"/>
-                    </children>
-                </GridPane>
+                <TextField fx:id="textFieldNaziv" prefHeight="25.0" prefWidth="361.0" />
+                <TextField fx:id="textFieldOIB" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="321.0" />
             </children>
         </VBox>
-        <VBox layoutX="148.0" layoutY="41.0" prefHeight="125.0" prefWidth="304.0">
-            <children>
-                <ComboBox fx:id="comboBoxID" prefHeight="25.0" prefWidth="326.0"/>
-                <TextField fx:id="textFieldNaziv"/>
-                <TextField fx:id="textFieldOIB" layoutX="10.0" layoutY="10.0"/>
-            </children>
-        </VBox>
-        <TableView fx:id="tableView" layoutX="51.0" layoutY="140.0" prefHeight="194.0" prefWidth="405.0">
+        <TableView fx:id="tableView" layoutX="338.0" layoutY="87.0" prefHeight="194.0" prefWidth="405.0">
             <columns>
-                <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID"/>
-                <TableColumn fx:id="tableColumnNaziv" prefWidth="190.0" text="Company name"/>
-                <TableColumn fx:id="tableColumnOIB" prefWidth="178.0" text="Company identity number"/>
+                <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID" />
+                <TableColumn fx:id="tableColumnNaziv" prefWidth="190.0" text="Company name" />
+                <TableColumn fx:id="tableColumnOIB" prefWidth="178.0" text="Company identity number" />
             </columns>
         </TableView>
-        <VBox layoutX="487.0" layoutY="41.0" prefHeight="125.0" prefWidth="100.0">
-            <children>
-                <GridPane prefHeight="212.0" prefWidth="100.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
-                    </rowConstraints>
-                    <children>
-                        <Button fx:id="buttonUpdate" mnemonicParsing="false" onAction="#setButtonUpdate"
-                                prefHeight="50.0" prefWidth="100.0" text="Update" GridPane.rowIndex="1"/>
-                        <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#setButtonSearch"
-                                prefHeight="50.0" prefWidth="100.0" text="Search" GridPane.rowIndex="2"/>
-                        <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClearFields"
-                                prefHeight="50.0" prefWidth="100.0" text="Clear" GridPane.rowIndex="3"/>
-                        <Button fx:id="buttonGetOneById" mnemonicParsing="false" onAction="#getOneById"
-                                prefHeight="50.0" prefWidth="100.0" text="Get one by Id" GridPane.rowIndex="4"/>
-                        <Button fx:id="buttonInsert" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="25.0"
-                                prefWidth="126.0" text="Save"/>
-                    </children>
-                </GridPane>
-            </children>
-        </VBox>
-        <ListView fx:id="listView" layoutX="484.0" layoutY="222.0" prefHeight="101.0" prefWidth="107.0"/>
-        <Button fx:id="buttonDelete" layoutX="488.0" layoutY="334.0" mnemonicParsing="false" onAction="#setButtonDelete"
-                prefHeight="25.0" prefWidth="100.0" text="Delete"/>
-        <Button fx:id="buttonSelectProperty" layoutX="51.0" layoutY="14.0" mnemonicParsing="false"
-                onAction="#selectProperty" text="Property seceltion confirm"/>
+        <Button fx:id="buttonMatchId" layoutX="218.0" layoutY="87.0" mnemonicParsing="false" onAction="#matchingSelectedIdToIdFromList" prefHeight="25.0" prefWidth="97.0" text="Match data" />
+          <ComboBox fx:id="comboBoxID" layoutX="129.0" layoutY="87.0" prefHeight="25.0" prefWidth="59.0" />
+            <Label layoutX="70.0" layoutY="91.0" text="ID Select" />
+          <GridPane layoutX="345.0" layoutY="297.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="27.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+              <children>
+                  <Label text="Name" />
+                  <Label text="CIN" GridPane.rowIndex="1" />
+              </children>
+          </GridPane>
+          <GridPane layoutX="129.0" layoutY="161.0" prefHeight="188.0" prefWidth="186.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="89.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="97.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+         <children>
+                  <Button fx:id="buttonUpdate" mnemonicParsing="false" onAction="#setButtonUpdate" prefHeight="50.0" prefWidth="100.0" text="Update" GridPane.columnIndex="1" />
+                  <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClearFields" prefHeight="33.0" prefWidth="104.0" text="Clear" GridPane.rowIndex="3" />
+                  <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#setButtonSearch" prefHeight="32.0" prefWidth="100.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+              <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#setButtonDelete" prefHeight="50.0" prefWidth="100.0" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Button fx:id="buttoonSave" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="34.0" prefWidth="96.0" text="Save" />
+         </children>
+          </GridPane>
+      <Label layoutX="50.0" layoutY="176.0" text="Create or edit" />
+      <Label layoutX="38.0" layoutY="259.0" text="Clear or remove" />
+      <Label layoutX="94.0" layoutY="324.0" text="Find" />
     </children>
 </AnchorPane>

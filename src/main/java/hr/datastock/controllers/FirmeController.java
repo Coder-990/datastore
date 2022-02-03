@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.hibernate.mapping.Any;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +29,17 @@ public class FirmeController {
     @FXML
     private TableView<FirmeEntity> tableView;
     @FXML
-    private ListView<Any> listView;
-    @FXML
     private TableColumn<FirmeEntity, Long> tableColumnId;
     @FXML
     private TableColumn<FirmeEntity, String> tableColumnNaziv;
     @FXML
     private TableColumn<FirmeEntity, String> tableColumnOIB;
     @FXML
-    private Button buttonGetOneById;
-    @FXML
     private Button buttonSearch;
     @FXML
-    private Button buttonSelectProperty;
+    private Button buttonMatchId;
     @FXML
-    private Button buttonInsert;
+    private Button buttonSave;
     @FXML
     private Button buttonClearFields;
     @FXML
@@ -60,14 +55,14 @@ public class FirmeController {
     @FXML
     public void initialize() {
         firmeObservableList = FXCollections.observableList(firmeService.getAll());
-        refreshComboBox();
-        logger.info("$%$%$% Company records initializing! $%$%$%");
+        setComboBoxId();
         provideAllProperties();
+        clearRecords();
         tableView.setItems(firmeObservableList);
         logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
     }
 
-    private void refreshComboBox() {
+    private void setComboBoxId() {
         List<Long> listaPoduzecaIda = firmeObservableList.stream().map(FirmeEntity::getIdFirme).toList();
         ObservableList<Long> firmeIdsObservableList = FXCollections.observableList(listaPoduzecaIda);
         comboBoxID.getSelectionModel().selectFirst();
@@ -83,8 +78,8 @@ public class FirmeController {
         tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    public void selectProperty() {
-        Long selectedId = getOneById();
+    public void matchingSelectedIdToIdFromList() {
+        Long selectedId = getIdFromComboBox();
         if (tableColumnId.getTableView().getSelectionModel().getSelectedItem().getIdFirme().equals(selectedId)) {
             String oib = tableView.getSelectionModel().getSelectedItem().getOibFirme();
             textFieldOIB.setText(oib);
@@ -93,16 +88,9 @@ public class FirmeController {
         }
     }
 
-    public Long getOneById() {
-        Long selectedId = (long) getComboBoxSelectedId();
-        if (tableColumnId.getTableView().getSelectionModel().getSelectedItem().getIdFirme().equals(selectedId)){
-            return firmeService.getOneByID(selectedId);
-        }
-        return null;
-    }
-
-    private int getComboBoxSelectedId() {
-        return Math.toIntExact(comboBoxID.getSelectionModel().getSelectedItem());
+    public Long getIdFromComboBox() {
+        Long selectedId = comboBoxID.getSelectionModel().getSelectedItem();
+        return firmeService.getById(selectedId);
     }
 
     public void setButtonSearch() {
@@ -112,14 +100,13 @@ public class FirmeController {
                 .filtered(company -> company.getNazivFirme().toLowerCase().contains(naziv))
                 .filtered(company -> company.getOibFirme().toLowerCase().contains(oib)));
         tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
-        refreshComboBox();
+        setComboBoxId();
         logger.info("Article record searched successfully!");
     }
 
     public FirmeEntity setButtonSave() {
         String oib = textFieldOIB.getText();
         String naziv = textFieldNaziv.getText();
-
         String alert = unosProvjera(naziv, oib);
         if (!alert.isEmpty()) {
             Alert alertWindow = new Alert(Alert.AlertType.WARNING);
@@ -137,26 +124,27 @@ public class FirmeController {
             }
             firmeObservableList.add(newCompany);
             tableView.setItems(firmeObservableList);
-            refreshComboBox();
-            clearRecords();
+            initialize();
             logger.info("Poduzece records saved successfully!");
         }
         return firmeService.createCompany(new FirmeEntity(nextId(), oib, naziv));
     }
 
     public FirmeEntity setButtonUpdate() {
-        Long selectedId = getOneById();
-        String oib = tableView.getSelectionModel().getSelectedItem().getOibFirme();
-        textFieldOIB.setText(oib);
-        String naziv = tableView.getSelectionModel().getSelectedItem().getNazivFirme();
-        textFieldNaziv.setText(naziv);
-        FirmeEntity firmeEntity = new FirmeEntity(selectedId, oib, naziv);
-        FirmeEntity updateCompany = (FirmeEntity) firmeObservableList.stream().map(existingCompany -> {
-            existingCompany.setOibFirme(firmeEntity.getOibFirme());
-            existingCompany.setNazivFirme(firmeEntity.getNazivFirme());
-            return firmeService.updateCompany(existingCompany, selectedId);
-        });
-        return firmeService.updateCompany(updateCompany, selectedId);
+        Long existingId = getIdFromComboBox();
+        String existingOib = tableView.getSelectionModel().getSelectedItem().getOibFirme();
+        String existingNaziv = tableView.getSelectionModel().getSelectedItem().getNazivFirme();
+        String newOib = textFieldOIB.getText();
+        String newNaziv = textFieldNaziv.getText();
+        new FirmeEntity(existingId, existingOib, existingNaziv);
+        FirmeEntity updateFirme = new FirmeEntity();
+        try {
+            updateFirme = new FirmeEntity(existingId, newOib, newNaziv);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        initialize();
+        return firmeService.updateCompany(updateFirme,existingId);
     }
 
     private Long nextId() {
@@ -173,9 +161,9 @@ public class FirmeController {
     }
 
     public void setButtonDelete() {
-        Long selectedId = getOneById();
+        Long selectedId = getIdFromComboBox();
         firmeService.deleteCompany(selectedId);
-        refreshComboBox();
+        initialize();
     }
 
     public void setButtonClearFields() {

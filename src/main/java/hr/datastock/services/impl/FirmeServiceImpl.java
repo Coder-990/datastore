@@ -21,7 +21,7 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public Long getOneByID(Long id){
+    public Long getById(Long id){
         return firmeRepository.findById(id).get().getIdFirme();
     }
 
@@ -36,7 +36,7 @@ public class FirmeServiceImpl implements FirmeService {
                 .map(existingCompany -> {
                     existingCompany.setOibFirme(updateCompany.getOibFirme());
                     existingCompany.setNazivFirme(updateCompany.getNazivFirme());
-                    return firmeRepository.save(existingCompany);
+                    return firmeRepository.saveAndFlush(existingCompany);
                 }).orElseThrow(EntityExistsException::new);
     }
 

@@ -8,7 +8,7 @@ public interface FirmeService {
 
     List<FirmeEntity> getAll();
 
-    Long getOneByID(Long id);
+    Long getById(Long id);
 
     FirmeEntity createCompany(FirmeEntity company);
 

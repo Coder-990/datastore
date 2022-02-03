@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 public class FirmeEntity {
 
