@@ -17,7 +17,7 @@ import static hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 @Component
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
-    @Value("classpath:/view/FirmeView.fxml")
+    @Value("classpath:/view/IzdatnicaView.fxml")
     private Resource resource;
     private final String applicationTitle;
     private final ApplicationContext applicationContext;

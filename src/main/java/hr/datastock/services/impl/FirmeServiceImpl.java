@@ -1,12 +1,12 @@
 package hr.datastock.services.impl;
 
 import hr.datastock.entities.FirmeEntity;
+import hr.datastock.exceptions.FirmeEntityExistsRuntimeException;
 import hr.datastock.repositories.FirmeRepository;
 import hr.datastock.services.FirmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityExistsException;
 import java.util.List;
 
 @Component
@@ -32,22 +32,22 @@ public class FirmeServiceImpl implements FirmeService {
 //    }
 
     @Override
-    public FirmeEntity createCompany(FirmeEntity company) {
-        return firmeRepository.save(company);
+    public FirmeEntity createFirma(FirmeEntity firma) {
+        return firmeRepository.save(firma);
     }
 
     @Override
-    public FirmeEntity updateCompany(FirmeEntity updateCompany, Long id) {
+    public FirmeEntity updateFirma(FirmeEntity updateFirma, Long id) {
         return firmeRepository.findById(id)
-                .map(existingCompany -> {
-                    existingCompany.setOibFirme(updateCompany.getOibFirme());
-                    existingCompany.setNazivFirme(updateCompany.getNazivFirme());
-                    return firmeRepository.saveAndFlush(existingCompany);
-                }).orElseThrow(EntityExistsException::new);
+                .map(existingFirma -> {
+                    existingFirma.setOibFirme(updateFirma.getOibFirme());
+                    existingFirma.setNazivFirme(updateFirma.getNazivFirme());
+                    return firmeRepository.saveAndFlush(existingFirma);
+                }).orElseThrow(() -> new FirmeEntityExistsRuntimeException(id));
     }
 
     @Override
-    public void deleteCompany(Long id) {
+    public void deleteFirma(Long id) {
         firmeRepository.deleteById(id);
     }
 }

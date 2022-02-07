@@ -78,7 +78,7 @@ public class FirmeController {
         tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    public void matchingSelectedIdToIdFromList() {
+    public void getAllDataFromTableView() {
         FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         if (firma != null) {
             String oib = firma.getOibFirme();
@@ -116,7 +116,7 @@ public class FirmeController {
         } else {
             FirmeEntity newCompany = new FirmeEntity(nextId(), oib, naziv);
             try {
-                firmeService.createCompany(newCompany);
+                firmeService.createFirma(newCompany);
             } catch (Exception ex) {
                 logger.error("Error in method 'unesi poduzece'", ex);
                 ex.printStackTrace();
@@ -125,7 +125,7 @@ public class FirmeController {
             tableView.setItems(firmeObservableList);
             initialize();
         }
-        return firmeService.createCompany(new FirmeEntity(nextId(), oib, naziv));
+        return firmeService.createFirma(new FirmeEntity(nextId(), oib, naziv));
     }
 
     public FirmeEntity setButtonUpdate() {
@@ -136,7 +136,7 @@ public class FirmeController {
         if (firma != null && !newOib.equals("") && !newNaziv.equals("")) {
             updatedFirma = new FirmeEntity(firma.getIdFirme(), newOib, newNaziv);
             try {
-                updatedFirma = firmeService.updateCompany(updatedFirma, firma.getIdFirme());
+                updatedFirma = firmeService.updateFirma(updatedFirma, firma.getIdFirme());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -159,7 +159,7 @@ public class FirmeController {
     public void setButtonDelete() {
         FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         if (firma != null) {
-            firmeService.deleteCompany(firma.getIdFirme());
+            firmeService.deleteFirma(firma.getIdFirme());
             initialize();
         }
     }

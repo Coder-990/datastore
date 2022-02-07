@@ -8,9 +8,9 @@ public interface FirmeService {
 
     List<FirmeEntity> getAll();
 
-    FirmeEntity createCompany(FirmeEntity company);
+    FirmeEntity createFirma(FirmeEntity company);
 
-    FirmeEntity updateCompany(FirmeEntity company, Long id);
+    FirmeEntity updateFirma(FirmeEntity company, Long id);
 
-    void deleteCompany(Long id);
+    void deleteFirma(Long id);
 }
