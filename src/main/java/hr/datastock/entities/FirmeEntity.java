@@ -48,4 +48,9 @@ public class FirmeEntity {
     public void setNazivFirme(String nazivFirme) {
         this.nazivFirme = nazivFirme;
     }
+
+    @Override
+    public String toString() {
+        return oibFirme + " ["+ nazivFirme+"]";
+    }
 }

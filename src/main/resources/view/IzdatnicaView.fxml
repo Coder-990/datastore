@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,32 +14,18 @@
 
 <AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.datastock.controllers.IzdatnicaController">
     <children>
-        <VBox layoutX="281.0" layoutY="286.0" prefHeight="59.0" prefWidth="362.0">
+        <VBox layoutX="282.0" layoutY="324.0" prefHeight="25.0" prefWidth="362.0">
          <children>
-                <GridPane prefHeight="69.0" prefWidth="385.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                  <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="27.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="35.0" minHeight="1.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-               <children>
-                  <DatePicker fx:id="datePickerDatumIzdatnice" prefHeight="25.0" prefWidth="398.0" />
-                      <TextField fx:id="textFieldOIB" prefHeight="25.0" prefWidth="321.0" GridPane.rowIndex="2" />
-               </children>
-                </GridPane>
+            <ComboBox fx:id="comboBoxIzdatnicaEntity" prefHeight="25.0" prefWidth="364.0" />
          </children>
         </VBox>
-        <TableView fx:id="tableView" layoutX="239.0" layoutY="74.0" prefHeight="194.0" prefWidth="405.0">
+        <TableView fx:id="tableView" layoutX="239.0" layoutY="116.0" prefHeight="194.0" prefWidth="405.0">
             <columns>
                 <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID" />
                 <TableColumn fx:id="tableColumnDatumIzdatnice" prefWidth="190.0" text="Date" />
-                <TableColumn fx:id="tableColumnOIB" prefWidth="178.0" text="Company identity number" />
+                <TableColumn fx:id="tableColumnFirmeEntity" prefWidth="178.0" text="Company" />
             </columns>
         </TableView>
-        <Button fx:id="buttonGetDataFromTable" layoutX="42.0" layoutY="74.0" mnemonicParsing="false" onAction="#getAllDataFromTableView" prefHeight="25.0" prefWidth="174.0" text="Grab from table" />
           <GridPane layoutX="30.0" layoutY="148.0" prefHeight="188.0" prefWidth="186.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="89.0" />
@@ -56,15 +41,15 @@
             <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
               </rowConstraints>
          <children>
-                  <Button fx:id="buttonUpdate" mnemonicParsing="false" onAction="#setButtonUpdate" prefHeight="50.0" prefWidth="100.0" text="Update" GridPane.columnIndex="1" />
                   <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClearFields" prefHeight="33.0" prefWidth="104.0" text="Clear" GridPane.rowIndex="2" />
                   <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#setButtonSearch" prefHeight="23.0" prefWidth="97.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="6" />
               <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#setButtonDelete" prefHeight="50.0" prefWidth="100.0" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="34.0" prefWidth="96.0" text="Save" />
          </children>
           </GridPane>
-      <ComboBox fx:id="comboBoxFirmaEntityOib" layoutX="42.0" layoutY="111.0" prefHeight="25.0" prefWidth="174.0" />
-            <Label layoutX="242.0" layoutY="298.0" text="Date" />
-            <Label layoutX="245.0" layoutY="328.0" text="CIN" />
+      <ComboBox fx:id="comboBoxFirmaEntity" layoutX="36.0" layoutY="74.0" prefHeight="25.0" prefWidth="174.0" />
+            <Label layoutX="301.0" layoutY="78.0" text="Date pick" />
+            <Label layoutX="223.0" layoutY="328.0" text="Company" />
+      <DatePicker fx:id="datePickerDatumIzdatnice" layoutX="367.0" layoutY="74.0" prefHeight="25.0" prefWidth="274.0" />
     </children>
 </AnchorPane>

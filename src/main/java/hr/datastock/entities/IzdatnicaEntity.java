@@ -3,7 +3,7 @@ package hr.datastock.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "izdatnica", schema = "datastock")
@@ -17,7 +17,7 @@ public class IzdatnicaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idIzdatnice;
-    private LocalDateTime datum;
+    private LocalDate datum;
     private FirmeEntity izdatnicaFirme;
 
     @Id
@@ -25,18 +25,16 @@ public class IzdatnicaEntity {
     public Long getIdIzdatnice() {
         return idIzdatnice;
     }
-
     public void setIdIzdatnice(Long idIzdatnice) {
         this.idIzdatnice = idIzdatnice;
     }
 
     @Basic
     @Column(name = "Datum")
-    public LocalDateTime getDatum() {
+    public LocalDate getDatum() {
         return datum;
     }
-
-    public void setDatum(LocalDateTime datum) {
+    public void setDatum(LocalDate datum) {
         this.datum = datum;
     }
 
@@ -45,7 +43,6 @@ public class IzdatnicaEntity {
     public FirmeEntity getIzdatnicaFirme() {
         return izdatnicaFirme;
     }
-
     public void setIzdatnicaFirme(FirmeEntity izdatnicaFirme) {
         this.izdatnicaFirme = izdatnicaFirme;
     }

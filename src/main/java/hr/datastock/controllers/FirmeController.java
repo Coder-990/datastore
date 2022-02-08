@@ -100,7 +100,6 @@ public class FirmeController {
                 .filtered(company -> company.getNazivFirme().toLowerCase().contains(naziv))
                 .filtered(company -> company.getOibFirme().toLowerCase().contains(oib)));
         tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
-//        setComboBoxId();
     }
 
     public FirmeEntity setButtonSave() {
