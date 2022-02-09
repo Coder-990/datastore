@@ -1,25 +1,24 @@
 package hr.datastock.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "firme", schema = "datastock")
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class FirmeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idFirme;
     private String oibFirme;
     private String nazivFirme;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDFirme")
     public Long getIdFirme() {
         return idFirme;

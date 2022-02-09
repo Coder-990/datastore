@@ -6,27 +6,27 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "izdatnica", schema = "datastock")
+@Table(name = "primka", schema = "datastock")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class IzdatnicaEntity {
+public class PrimkaEntity {
 
-    private Long idIzdatnice;
+    private Long idPrimke;
     private LocalDate datum;
-    private FirmeEntity izdatnicaFirme;
+    private FirmeEntity primkaFirme;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "IDIzdatnice")
-    public Long getIdIzdatnice() {
-        return idIzdatnice;
+    @Column(name = "IDPrimke")
+    public Long getIdPrimke() {
+        return idPrimke;
     }
-    public void setIdIzdatnice(Long idIzdatnice) {
-        this.idIzdatnice = idIzdatnice;
+    public void setIdPrimke(Long idPrimke) {
+        this.idPrimke = idPrimke;
     }
 
     @Basic
@@ -40,10 +40,10 @@ public class IzdatnicaEntity {
 
     @ManyToOne
     @JoinColumn(name = "IDFirme", referencedColumnName = "IDFirme")
-    public FirmeEntity getIzdatnicaFirme() {
-        return izdatnicaFirme;
+    public FirmeEntity getPrimkaFirme() {
+        return primkaFirme;
     }
-    public void setIzdatnicaFirme(FirmeEntity izdatnicaFirme) {
-        this.izdatnicaFirme = izdatnicaFirme;
+    public void setPrimkaFirme(FirmeEntity primkaFirme) {
+        this.primkaFirme = primkaFirme;
     }
 }
