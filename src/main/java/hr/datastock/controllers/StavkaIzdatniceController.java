@@ -32,6 +32,10 @@ public class StavkaIzdatniceController {
     @FXML
     private TextField textFieldKolicina;
     @FXML
+    private TextField textFieldCompany;
+    @FXML
+    private TextField textFieldArticle;
+    @FXML
     private TableView<StavkaIzdatniceEntity> tableView;
     @FXML
     private TableColumn<StavkaIzdatniceEntity, Long> tableColumnId;
@@ -119,48 +123,42 @@ public class StavkaIzdatniceController {
     }
 
     public void setButtonSearch() {
-        //TODO: Popraviti search po textFieldu a ne po comboBoxu, combo podatak nije jos  dodan u bazu nego je od prije
-        final String nazivFirme = comboBoxIzdatnica.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxIzdatnica.getSelectionModel().getSelectedItem().getIzdatnicaFirme().getNazivFirme();
-        final String nazivArtikla = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxRoba.getSelectionModel().getSelectedItem().getNazivArtikla();
-        final String kolicina = textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
+        final String company = textFieldCompany.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
                 textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
-        buttonSearch(nazivFirme, nazivArtikla, Integer.valueOf(kolicina));
+        final String articleName = textFieldArticle.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
+                textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
+        final Integer amount = textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
+                Integer.valueOf(textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT));
+        buttonSearch(company, articleName, amount);
     }
 
-    private void buttonSearch(String nazivFirme, String nazivArtikla, Integer kolicina) {
+    private void buttonSearch(String company, String articleName, Integer amount) {
         FilteredList<StavkaIzdatniceEntity> searchList = stavkaIzdatniceObservableList
-                .filtered(stavkaIzdatnice -> nazivFirme == null || stavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().getNazivFirme().equals(nazivFirme))
-                .filtered(stavkaIzdatnice -> nazivArtikla == null || stavkaIzdatnice.getStavkaIzdatniceRobe().getNazivArtikla().equals(nazivArtikla))
-                .filtered(stavkaIzdatnice -> kolicina == null || Objects.equals(stavkaIzdatnice.getKolicina(), kolicina));
+                .filtered(stavkaIzdatnice -> stavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().getNazivFirme().toLowerCase().contains(company))
+                .filtered(stavkaIzdatnice -> stavkaIzdatnice.getStavkaIzdatniceRobe().getNazivArtikla().toLowerCase().contains(articleName))
+                .filtered(stavkaIzdatnice -> amount == null || Objects.equals(stavkaIzdatnice.getKolicina(), amount));
         tableView.setItems(FXCollections.observableList(searchList));
     }
 
     public StavkaIzdatniceEntity setButtonSave() {
-        final IzdatnicaEntity firmaNazivDatum = comboBoxIzdatnica.getSelectionModel().getSelectedItem() == null ? null :
+        final IzdatnicaEntity companyNameDate = comboBoxIzdatnica.getSelectionModel().getSelectedItem() == null ? null :
                 comboBoxIzdatnica.getSelectionModel().getSelectedItem();
 
-        final RobaEntity robaNaziv = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
+        final RobaEntity article = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
                 comboBoxRoba.getSelectionModel().getSelectedItem();
 
-        final String kolicina = textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim().equals("") ? null :
-                textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim();
-        final Integer stringKolicina = Integer.parseInt(kolicina);
-        final String alertData = checkInputValues(firmaNazivDatum, robaNaziv, kolicina);
+        final Integer amount = textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim().equals("") ? null :
+                Integer.valueOf(textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim());
+
+        final String alertData = checkInputValues(companyNameDate, article, String.valueOf(amount));
         StavkaIzdatniceEntity newStavkaIzdatnica = null;
-        if (Optional.ofNullable(firmaNazivDatum).isPresent() && Optional.ofNullable(robaNaziv).isPresent() &&
-                Optional.ofNullable(kolicina).isPresent()) {
+        if (Optional.ofNullable(companyNameDate).isPresent() && Optional.ofNullable(article).isPresent() &&
+                Optional.ofNullable(amount).isPresent()) {
             if (!alertData.isEmpty()) {
                 utilService.getWarningAlert(alertData);
             } else {
-                try {
-                    newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(
-                            new StavkaIzdatniceEntity(nextId(), firmaNazivDatum, robaNaziv, stringKolicina));
-                } catch (Exception ex) {
-                    logger.error("Error in method 'unesi poduzece'", ex);
-                    ex.printStackTrace();
-                }
+                newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(
+                        new StavkaIzdatniceEntity(nextId(), companyNameDate, article, amount));
                 stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
                 tableView.setItems(stavkaIzdatniceObservableList);
                 initialize();
@@ -174,12 +172,12 @@ public class StavkaIzdatniceController {
                 stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String checkInputValues(IzdatnicaEntity firme, RobaEntity artikl, String kolicina) {
+    private String checkInputValues(IzdatnicaEntity company, RobaEntity article, String amount) {
         List<String> listaProvjere = new ArrayList<>();
-        if (firme == null || firme.getIzdatnicaFirme().getNazivFirme().trim().isEmpty())
+        if (company == null || company.getIzdatnicaFirme().getNazivFirme().trim().isEmpty())
             listaProvjere.add("Company name!");
-        if (artikl == null || artikl.toString().trim().isEmpty()) listaProvjere.add("Article name!");
-        if (kolicina == null || kolicina.trim().isEmpty()) listaProvjere.add("Amount!");
+        if (article == null || article.toString().trim().isEmpty()) listaProvjere.add("Article name!");
+        if (amount == null || amount.trim().isEmpty()) listaProvjere.add("Amount!");
         return String.join("\n", listaProvjere);
     }
 
@@ -189,6 +187,8 @@ public class StavkaIzdatniceController {
 
     private void clearRecords() {
         textFieldKolicina.clear();
+        textFieldCompany.clear();
+        textFieldArticle.clear();
         comboBoxIzdatnica.getSelectionModel().clearSelection();
         comboBoxRoba.getSelectionModel().clearSelection();
         tableView.getSelectionModel().clearSelection();
