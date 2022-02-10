@@ -42,4 +42,6 @@ public class StornoStavkaIzdatniceEntity {
     public void setStornoIzdatniceStavkaIzdatnice(StavkaIzdatniceEntity stornoStavkaIzdatnice) {
         this.stornoStavkaIzdatnice = stornoStavkaIzdatnice;
     }
+
+
 }

@@ -1,6 +1,5 @@
 package hr.datastock;
 
-import hr.datastock.exceptions.StageInitializerRuntimeException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,11 +16,11 @@ import static hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 
 @Component
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
-
-//    @Value("classpath:/view/PrimkaView.fxml")
+    //    @Value("classpath:/view/PrimkaView.fxml")
 //    @Value("classpath:/view/IzdatnicaView.fxml")
 //    @Value("classpath:/view/FirmeView.fxml")
-    @Value("classpath:/view/RobaView.fxml")
+//    @Value("classpath:/view/RobaView.fxml")
+    @Value("classpath:/view/StavkaIzdatnicaView.fxml")
     private Resource resource;
     private final String applicationTitle;
     private final ApplicationContext applicationContext;
@@ -33,6 +32,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(resource.getURL());
             fxmlLoader.setControllerFactory(applicationContext::getBean);
@@ -42,7 +42,8 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             stage.setScene(new Scene(root, 760, 460));
             stage.show();
         } catch (IOException e) {
-            throw new StageInitializerRuntimeException(new Stage());
+            e.getCause();
+//            throw new StageInitializerRuntimeException( e);
         }
 
     }

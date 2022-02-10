@@ -1,4 +1,4 @@
-package hr.datastock.controllers;
+package hr.datastock.controllers.controllerutil;
 
 public interface UtilService {
 

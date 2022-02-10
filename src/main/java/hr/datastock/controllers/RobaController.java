@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.entities.FirmeEntity;
+import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.services.RobaService;
 import javafx.collections.FXCollections;

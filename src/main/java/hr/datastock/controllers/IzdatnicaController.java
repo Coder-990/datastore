@@ -1,5 +1,6 @@
 package hr.datastock.controllers;
 
+import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.services.FirmeService;
@@ -68,17 +69,18 @@ public class IzdatnicaController {
 
     @FXML
     public void initialize() {
+        logger.info("$%$%$% StavkaIzdatnice records initializing!$%$%$%");
         izdatnicaObservableList = FXCollections.observableList(izdatnicaService.getAll());
         firmeEntityObservableList = FXCollections.observableList(firmeService.getAll());
-        setComboBoyFirmeEntity();
+        setComboBoxFirmeEntity();
         setComboBoxIzdatnicaEntity();
         provideAllProperties();
         clearRecords();
         tableView.setItems(izdatnicaObservableList);
-        logger.info("$%$%$% Izdatnica records initialized successfully!$%$%$%");
+        logger.info("$%$%$% StavkaIzdatnice records initialized successfully!$%$%$%");
     }
 
-    private void setComboBoyFirmeEntity() {
+    private void setComboBoxFirmeEntity() {
         comboBoxFirmaEntity.setItems(firmeEntityObservableList);
         comboBoxFirmaEntity.getSelectionModel().selectFirst();
     }

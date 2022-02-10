@@ -1,6 +1,6 @@
-package hr.datastock.controllers.utilimpl;
+package hr.datastock.controllers.controllerutil.impl;
 
-import hr.datastock.controllers.UtilService;
+import hr.datastock.controllers.controllerutil.UtilService;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.springframework.stereotype.Component;

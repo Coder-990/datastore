@@ -28,6 +28,7 @@ public class RobaEntity {
     public Long getIdRobe() {
         return idRobe;
     }
+
     public void setIdRobe(Long idRobe) {
         this.idRobe = idRobe;
     }
@@ -37,6 +38,7 @@ public class RobaEntity {
     public String getNazivArtikla() {
         return nazivArtikla;
     }
+
     public void setNazivArtikla(String nazivArtikla) {
         this.nazivArtikla = nazivArtikla;
     }
@@ -46,6 +48,7 @@ public class RobaEntity {
     public Integer getKolicina() {
         return kolicina;
     }
+
     public void setKolicina(Integer kolicina) {
         this.kolicina = kolicina;
     }
@@ -55,6 +58,7 @@ public class RobaEntity {
     public BigDecimal getCijena() {
         return cijena;
     }
+
     public void setCijena(BigDecimal cijena) {
         this.cijena = cijena;
     }
@@ -64,6 +68,7 @@ public class RobaEntity {
     public String getOpis() {
         return opis;
     }
+
     public void setOpis(String opis) {
         this.opis = opis;
     }
@@ -73,7 +78,13 @@ public class RobaEntity {
     public String getJmj() {
         return jmj;
     }
+
     public void setJmj(String jmj) {
         this.jmj = jmj;
+    }
+
+    @Override
+    public String toString() {
+        return nazivArtikla + "-[" + cijena + "]-[" + kolicina + "]";
     }
 }

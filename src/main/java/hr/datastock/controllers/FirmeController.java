@@ -1,7 +1,7 @@
 package hr.datastock.controllers;
 
+import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.FirmeEntity;
-import hr.datastock.entities.PrimkaEntity;
 import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,8 +21,7 @@ public class FirmeController {
 
     public static final Logger logger = LoggerFactory.getLogger(FirmeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
-//    @FXML
-//    private ComboBox<Long> comboBoxID;
+
     @FXML
     private TextField textFieldNaziv;
     @FXML
@@ -59,19 +58,11 @@ public class FirmeController {
     @FXML
     public void initialize() {
         firmeObservableList = FXCollections.observableList(firmeService.getAll());
-//        setComboBoxId();
         setValuesToTableColumns();
         clearRecords();
         tableView.setItems(firmeObservableList);
         logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
     }
-
-//    private void setComboBoxId() {
-//        List<Long> listaPoduzecaIda = firmeObservableList.stream().map(FirmeEntity::getIdFirme).toList();
-//        ObservableList<Long> firmeIdsObservableList = FXCollections.observableList(listaPoduzecaIda);
-//        comboBoxID.getSelectionModel().selectFirst();
-//        comboBoxID.setItems(firmeIdsObservableList);
-//    }
 
     private void setValuesToTableColumns() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));

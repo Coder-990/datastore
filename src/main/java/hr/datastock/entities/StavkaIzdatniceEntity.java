@@ -7,17 +7,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "stavkaizdatnice", schema = "datastock")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class StavkaIzdatniceEntity {
 
     private Long idStavkaIzdatnice;
-    private Integer kolicina;
     private IzdatnicaEntity stavkaIzdatniceIzdatnica;
     private RobaEntity stavkaIzdatniceRobe;
+    private Integer kolicina;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,17 +24,9 @@ public class StavkaIzdatniceEntity {
     public Long getIdStavkaIzdatnice() {
         return idStavkaIzdatnice;
     }
+
     public void setIdStavkaIzdatnice(Long idStavkaIzdatnice) {
         this.idStavkaIzdatnice = idStavkaIzdatnice;
-    }
-
-    @Basic
-    @Column(name = "Kolicina")
-    public Integer getKolicina() {
-        return kolicina;
-    }
-    public void setKolicina(Integer kolicina) {
-        this.kolicina = kolicina;
     }
 
     @ManyToOne
@@ -43,6 +34,7 @@ public class StavkaIzdatniceEntity {
     public IzdatnicaEntity getStavkaIzdatniceIzdatnica() {
         return stavkaIzdatniceIzdatnica;
     }
+
     public void setStavkaIzdatniceIzdatnica(IzdatnicaEntity stavkaIzdatniceIzdatnica) {
         this.stavkaIzdatniceIzdatnica = stavkaIzdatniceIzdatnica;
     }
@@ -52,7 +44,19 @@ public class StavkaIzdatniceEntity {
     public RobaEntity getStavkaIzdatniceRobe() {
         return stavkaIzdatniceRobe;
     }
+
     public void setStavkaIzdatniceRobe(RobaEntity stavkaIzdatniceRobe) {
         this.stavkaIzdatniceRobe = stavkaIzdatniceRobe;
     }
+
+    @Basic
+    @Column(name = "Kolicina")
+    public Integer getKolicina() {
+        return kolicina;
+    }
+
+    public void setKolicina(Integer kolicina) {
+        this.kolicina = kolicina;
+    }
+
 }

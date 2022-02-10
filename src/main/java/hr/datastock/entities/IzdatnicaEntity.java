@@ -25,6 +25,7 @@ public class IzdatnicaEntity {
     public Long getIdIzdatnice() {
         return idIzdatnice;
     }
+
     public void setIdIzdatnice(Long idIzdatnice) {
         this.idIzdatnice = idIzdatnice;
     }
@@ -34,6 +35,7 @@ public class IzdatnicaEntity {
     public LocalDate getDatum() {
         return datum;
     }
+
     public void setDatum(LocalDate datum) {
         this.datum = datum;
     }
@@ -43,7 +45,13 @@ public class IzdatnicaEntity {
     public FirmeEntity getIzdatnicaFirme() {
         return izdatnicaFirme;
     }
+
     public void setIzdatnicaFirme(FirmeEntity izdatnicaFirme) {
         this.izdatnicaFirme = izdatnicaFirme;
+    }
+
+    @Override
+    public String toString() {
+        return izdatnicaFirme.getNazivFirme() + "-[" + datum + "]";
     }
 }

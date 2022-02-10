@@ -1,12 +1,14 @@
 package hr.datastock.exceptions;
 
-import javafx.stage.Stage;
+import java.io.IOException;
 
 public class StageInitializerRuntimeException extends RuntimeException {
 
     public static final String ERROR_MSG =  "Error in stage initializer";
-    public StageInitializerRuntimeException(Stage stage) {
-        super(String.format("%s: %d", ERROR_MSG, stage));
+    public StageInitializerRuntimeException(IOException stage) {
+
+        super(ERROR_MSG, stage.getCause());
     }
+
 
 }
