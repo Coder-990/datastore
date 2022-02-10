@@ -1,6 +1,7 @@
 package hr.datastock.controllers;
 
 import hr.datastock.entities.FirmeEntity;
+import hr.datastock.entities.PrimkaEntity;
 import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -145,7 +146,8 @@ public class FirmeController {
     }
 
     private Long nextId() {
-        return firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1;
+        return firmeObservableList.size() > 0 ?
+                firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
     }
 
     private String unosProvjera(String naziv, String oib) {
@@ -168,7 +170,6 @@ public class FirmeController {
     }
 
     private void clearRecords() {
-//        comboBoxID.getSelectionModel().clearSelection();
         textFieldNaziv.clear();
         textFieldOIB.clear();
         tableView.getSelectionModel().clearSelection();
