@@ -102,7 +102,7 @@ public class RobaController {
             String jedinicnaMjera = roba.getJmj();
             textFieldJedinicaMjere.setText(jedinicnaMjera);
             String opis = roba.getOpis();
-            textAreaTableColumnOpis.setText(opis) ;
+            textAreaTableColumnOpis.setText(opis);
         }
     }
 
@@ -130,12 +130,12 @@ public class RobaController {
     public RobaEntity setButtonSave() {
         GetDataFromTextFields getDataFromTextFields = new GetDataFromTextFields();
 
-        BigDecimal cijenaAsString = new BigDecimal(getDataFromTextFields.cijena);
-        Integer kolicinaAsString = Integer.parseInt(getDataFromTextFields.kolicina);
+        BigDecimal cijenaAsString = getDataFromTextFields.cijena.equals("") ? null : new BigDecimal(getDataFromTextFields.cijena);
+        Integer kolicinaAsString = getDataFromTextFields.kolicina.equals("") ? null : Integer.parseInt(getDataFromTextFields.kolicina);
 
-        RobaEntity newRoba = null;
         String alertData = setInputCheck(getDataFromTextFields.nazivArtikla, getDataFromTextFields.cijena,
                 getDataFromTextFields.kolicina, getDataFromTextFields.jedinicnaMjera);
+        RobaEntity newRoba = null;
         if (!alertData.isEmpty()) {
             utilService.getWarningAlert(alertData);
         } else {
@@ -151,25 +151,25 @@ public class RobaController {
             initialize();
             logger.info("Article records saved successfully!");
         }
+        utilService.getnformationMessageAlert();
         return newRoba;
     }
 
     public RobaEntity setButtonUpdate() {
         GetDataFromTextFields getDataFromTextFields = new GetDataFromTextFields();
 
-        String jedinicnaMjera = textFieldJedinicaMjere.getText();
-        BigDecimal cijenaAsString = new BigDecimal(getDataFromTextFields.cijena);
-        Integer kolicinaAsString = Integer.parseInt(getDataFromTextFields.kolicina);
+        BigDecimal cijenaAsString = getDataFromTextFields.cijena.equals("") ? null : new BigDecimal(getDataFromTextFields.cijena);
+        Integer kolicinaAsString = getDataFromTextFields.kolicina.equals("") ? null : Integer.parseInt(getDataFromTextFields.kolicina);
         RobaEntity updateRoba = null;
 
         RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         String alertData = setInputCheck(getDataFromTextFields.nazivArtikla, getDataFromTextFields.cijena,
-                getDataFromTextFields.kolicina, jedinicnaMjera);
+                getDataFromTextFields.kolicina, getDataFromTextFields.jedinicnaMjera);
         if (!alertData.isEmpty()) {
             utilService.getWarningAlert(alertData);
-        }else{
+        } else {
             updateRoba = new RobaEntity(nextId(), getDataFromTextFields.nazivArtikla, kolicinaAsString,
-                    cijenaAsString, getDataFromTextFields.opis, jedinicnaMjera);
+                    cijenaAsString, getDataFromTextFields.opis, getDataFromTextFields.jedinicnaMjera);
             try {
                 updateRoba = robaService.updateRoba(updateRoba, roba.getIdRobe());
             } catch (Exception ex) {
@@ -200,7 +200,7 @@ public class RobaController {
 
     public void setButtonDelete() {
         RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (roba != null) {
+        if (roba != null && utilService.getConfirmForDeleteAlert()) {
             robaService.deleteRoba(roba.getIdRobe());
             initialize();
         }

@@ -2,8 +2,10 @@ package hr.datastock.controllers.utilimpl;
 
 import hr.datastock.controllers.UtilService;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class UtilDialogsImpl implements UtilService {
@@ -27,13 +29,18 @@ public class UtilDialogsImpl implements UtilService {
     }
 
     @Override
-    public void getConfirmForDeleteAlert(Button buttonConfirm) {
+    public boolean getConfirmForDeleteAlert() {
         Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
         alertWindow.setTitle("Delete item");
         alertWindow.setHeaderText("Are you sure to delete?");
         alertWindow.setContentText("You are about to remove this item from database, Continue?");
-        alertWindow.showAndWait();
+        AtomicBoolean isDeleted = new AtomicBoolean(false);
+        alertWindow.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK)
+               isDeleted.set(true);
+        });
         alertWindow.getAlertType();
+        return isDeleted.get();
     }
 
     @Override
