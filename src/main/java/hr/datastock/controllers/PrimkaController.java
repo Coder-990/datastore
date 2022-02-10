@@ -61,6 +61,9 @@ public class PrimkaController {
     @Autowired
     private FirmeService firmeService;
 
+    @Autowired
+    private UtilService utilService;
+
     private ObservableList<PrimkaEntity> primkaObservableList;
     private ObservableList<FirmeEntity> firmeEntityObservableList;
 
@@ -139,18 +142,13 @@ public class PrimkaController {
     public PrimkaEntity setButtonSave() {
         final FirmeEntity firma = comboBoxFirmaEntity.getSelectionModel().getSelectedItem() == null ? null :
                 comboBoxFirmaEntity.getSelectionModel().getSelectedItem();
-
         final LocalDate datum = datePickerDatum.getValue();
 
-        final String alert = unosProvjera(datum, firma);
+        final String alertData = setInputCheck(datum, firma);
         PrimkaEntity newPrimka = null;
         if (Optional.ofNullable(firma).isPresent() && Optional.ofNullable(datum).isPresent()) {
-            if (!alert.isEmpty()) {
-                Alert alertWindow = new Alert(Alert.AlertType.WARNING);
-                alertWindow.setTitle("Error");
-                alertWindow.setHeaderText("Please input missing records: ");
-                alertWindow.setContentText(alert);
-                alertWindow.showAndWait();
+            if (!alertData.isEmpty()) {
+                utilService.getWarningAlert(alertData);
             } else {
                 LocalDate dateTime = datePickerDatum.getValue();
                 try {
@@ -172,7 +170,7 @@ public class PrimkaController {
                 primkaObservableList.stream().mapToLong(PrimkaEntity::getIdPrimke).max().getAsLong() + 1 : 1;
     }
 
-    private String unosProvjera(LocalDate datum, FirmeEntity firme) {
+    private String setInputCheck(LocalDate datum, FirmeEntity firme) {
         List<String> listaProvjere = new ArrayList<>();
         if (firme == null || firme.getOibFirme().trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Date!");

@@ -60,6 +60,9 @@ public class IzdatnicaController {
     @Autowired
     private FirmeService firmeService;
 
+    @Autowired
+    private UtilService utilService;
+
     private ObservableList<IzdatnicaEntity> izdatnicaObservableList;
     private ObservableList<FirmeEntity> firmeEntityObservableList;
 
@@ -141,15 +144,11 @@ public class IzdatnicaController {
 
         final LocalDate datum = datePickerDatum.getValue();
 
-        final String alert = unosProvjera(datum, firma);
+        final String alertData = unosProvjera(datum, firma);
         IzdatnicaEntity newIzdatnica = null;
         if (Optional.ofNullable(firma).isPresent() && Optional.ofNullable(datum).isPresent()) {
-            if (!alert.isEmpty()) {
-                Alert alertWindow = new Alert(Alert.AlertType.WARNING);
-                alertWindow.setTitle("Error");
-                alertWindow.setHeaderText("Please input missing records: ");
-                alertWindow.setContentText(alert);
-                alertWindow.showAndWait();
+            if (!alertData.isEmpty()) {
+                utilService.getWarningAlert(alertData);
             } else {
                 LocalDate dateTime = datePickerDatum.getValue();
                 try {

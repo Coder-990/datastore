@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Component
 public class RobaServiceImpl implements RobaService {
@@ -20,17 +18,6 @@ public class RobaServiceImpl implements RobaService {
     @Override
     public List<RobaEntity> getAll() {
         return robaRepository.findAll();
-    }
-
-    @Override
-    public Long getById(Long id){
-        if (Objects.nonNull(id)){
-            Optional<RobaEntity> firma = robaRepository.findById(id);
-            if (firma.isPresent()){
-                return firma.get().getIdRobe();
-            }
-        }
-        return null;
     }
 
     @Override
