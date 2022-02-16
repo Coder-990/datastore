@@ -24,7 +24,6 @@ public class StavkaIzdatniceEntity {
     public Long getIdStavkaIzdatnice() {
         return idStavkaIzdatnice;
     }
-
     public void setIdStavkaIzdatnice(Long idStavkaIzdatnice) {
         this.idStavkaIzdatnice = idStavkaIzdatnice;
     }
@@ -34,7 +33,6 @@ public class StavkaIzdatniceEntity {
     public IzdatnicaEntity getStavkaIzdatniceIzdatnica() {
         return stavkaIzdatniceIzdatnica;
     }
-
     public void setStavkaIzdatniceIzdatnica(IzdatnicaEntity stavkaIzdatniceIzdatnica) {
         this.stavkaIzdatniceIzdatnica = stavkaIzdatniceIzdatnica;
     }
@@ -44,7 +42,6 @@ public class StavkaIzdatniceEntity {
     public RobaEntity getStavkaIzdatniceRobe() {
         return stavkaIzdatniceRobe;
     }
-
     public void setStavkaIzdatniceRobe(RobaEntity stavkaIzdatniceRobe) {
         this.stavkaIzdatniceRobe = stavkaIzdatniceRobe;
     }
@@ -54,7 +51,6 @@ public class StavkaIzdatniceEntity {
     public Integer getKolicina() {
         return kolicina;
     }
-
     public void setKolicina(Integer kolicina) {
         this.kolicina = kolicina;
     }

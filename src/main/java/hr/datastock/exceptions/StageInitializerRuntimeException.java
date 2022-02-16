@@ -5,9 +5,9 @@ import java.io.IOException;
 public class StageInitializerRuntimeException extends RuntimeException {
 
     public static final String ERROR_MSG =  "Error in stage initializer";
-    public StageInitializerRuntimeException(IOException stage) {
+    public StageInitializerRuntimeException(IOException exception) {
 
-        super(ERROR_MSG, stage.getCause());
+        super(ERROR_MSG, exception.getCause());
     }
 
 

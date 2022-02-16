@@ -46,4 +46,9 @@ public class PrimkaEntity {
     public void setPrimkaFirme(FirmeEntity primkaFirme) {
         this.primkaFirme = primkaFirme;
     }
+
+    @Override
+    public String toString() {
+        return primkaFirme.getNazivFirme() + "-[" + datum + "]";
+    }
 }

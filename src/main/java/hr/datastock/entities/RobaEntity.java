@@ -85,6 +85,6 @@ public class RobaEntity {
 
     @Override
     public String toString() {
-        return nazivArtikla + "-[" + cijena + "]-[" + kolicina + "]";
+        return " NazivArtikla= " + nazivArtikla + ", kolicina= " + kolicina + ", cijena= " + cijena;
     }
 }
