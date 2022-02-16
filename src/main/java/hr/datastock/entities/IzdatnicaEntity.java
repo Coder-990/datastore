@@ -8,8 +8,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "izdatnica", schema = "datastock")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -52,6 +51,6 @@ public class IzdatnicaEntity {
 
     @Override
     public String toString() {
-        return izdatnicaFirme.getNazivFirme() + "-[" + datum + "]";
+        return izdatnicaFirme.getNazivFirme() + "- [created: " + datum + "]";
     }
 }

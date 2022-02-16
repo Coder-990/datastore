@@ -146,7 +146,7 @@ public class IzdatnicaController {
 
         final LocalDate datum = datePickerDatum.getValue();
 
-        final String alertData = unosProvjera(datum, firma);
+        final String alertData = setInputCheck(datum, firma);
         IzdatnicaEntity newIzdatnica = null;
         if (Optional.ofNullable(firma).isPresent() && Optional.ofNullable(datum).isPresent()) {
             if (!alertData.isEmpty()) {
@@ -172,10 +172,10 @@ public class IzdatnicaController {
                 izdatnicaObservableList.stream().mapToLong(IzdatnicaEntity::getIdIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String unosProvjera(LocalDate datum, FirmeEntity firme) {
+    private String setInputCheck(LocalDate datum, FirmeEntity firme) {
         List<String> listaProvjere = new ArrayList<>();
         if (firme == null || firme.getOibFirme().trim().isEmpty()) listaProvjere.add("Company identity number!");
-        if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Company name!");
+        if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Date!");
         return String.join("\n", listaProvjere);
     }
 

@@ -48,5 +48,6 @@
       <Label layoutX="158.0" layoutY="316.0" text="Company" />
       <TextField fx:id="textFieldArticle" layoutX="471.0" layoutY="337.0" prefHeight="25.0" prefWidth="279.0" />
       <Label layoutX="471.0" layoutY="316.0" text="Article" />
+      <Button fx:id="buttonStorno" layoutX="81.0" layoutY="40.0" mnemonicParsing="false" onAction="#setButtonStorno" text="Storno" />
     </children>
 </AnchorPane>

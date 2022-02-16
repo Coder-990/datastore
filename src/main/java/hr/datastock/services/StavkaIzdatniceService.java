@@ -9,4 +9,6 @@ public interface StavkaIzdatniceService {
     List<StavkaIzdatniceEntity> getAll();
 
     StavkaIzdatniceEntity createStavkaIzdatnice(StavkaIzdatniceEntity izdatnica);
+
+    StavkaIzdatniceEntity stornoStavkeIzdatnice(StavkaIzdatniceEntity updateStavke);
 }

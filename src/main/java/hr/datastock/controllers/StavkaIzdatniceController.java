@@ -1,9 +1,12 @@
 package hr.datastock.controllers;
 
 import hr.datastock.controllers.controllerutil.UtilService;
+import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.entities.StavkaIzdatniceEntity;
+import hr.datastock.services.IzdatnicaService;
+import hr.datastock.services.RobaService;
 import hr.datastock.services.StavkaIzdatniceService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,19 +53,32 @@ public class StavkaIzdatniceController {
     @FXML
     private Button buttonSave;
     @FXML
+    private Button buttonStorno;
+    @FXML
     private Button buttonClearFields;
 
     @Autowired
     private StavkaIzdatniceService stavkaIzdatniceService;
 
     @Autowired
+    private IzdatnicaService izdatnicaService;
+
+    @Autowired
+    private RobaService robaService;
+
+    @Autowired
     private UtilService utilService;
 
     private ObservableList<StavkaIzdatniceEntity> stavkaIzdatniceObservableList;
+    private ObservableList<IzdatnicaEntity> izdatniceObservableList;
+    private ObservableList<RobaEntity> robaObservableList;
 
     @FXML
     public void initialize() {
-        stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll());
+
+        stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll().stream().filter(isStorno -> !isStorno.getStorno()).toList());
+        izdatniceObservableList = FXCollections.observableList(izdatnicaService.getAll());
+        robaObservableList = FXCollections.observableList(robaService.getAll());
         setComboBoxIzdatnicaEntity();
         setComboBoxRobaEntity();
         provideAllProperties();
@@ -72,17 +88,13 @@ public class StavkaIzdatniceController {
     }
 
     private void setComboBoxIzdatnicaEntity() {
-        Set<IzdatnicaEntity> listOfCompanyDate = stavkaIzdatniceObservableList.stream().map(StavkaIzdatniceEntity::getStavkaIzdatniceIzdatnica).collect(Collectors.toSet());
-        ObservableList<IzdatnicaEntity> firmeEntityComboSearchObservableList = FXCollections.observableList(new ArrayList<>(listOfCompanyDate));
-        comboBoxIzdatnica.setItems(firmeEntityComboSearchObservableList);
-        comboBoxIzdatnica.getSelectionModel().selectFirst();
+        comboBoxIzdatnica.setItems(izdatniceObservableList);
+        comboBoxIzdatnica.getSelectionModel().getSelectedItem();
     }
 
     private void setComboBoxRobaEntity() {
-        Set<RobaEntity> listOfArticles = stavkaIzdatniceObservableList.stream().map(StavkaIzdatniceEntity::getStavkaIzdatniceRobe).collect(Collectors.toSet());
-        ObservableList<RobaEntity> robaEntityObservableList = FXCollections.observableList(new ArrayList<>(listOfArticles));
-        comboBoxRoba.setItems(robaEntityObservableList);
-        comboBoxRoba.getSelectionModel().selectFirst();
+        comboBoxRoba.setItems(robaObservableList);
+        comboBoxRoba.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -158,7 +170,7 @@ public class StavkaIzdatniceController {
                 utilService.getWarningAlert(alertData);
             } else {
                 newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(
-                        new StavkaIzdatniceEntity(nextId(), companyNameDate, article, amount));
+                        new StavkaIzdatniceEntity(nextId(), companyNameDate, article, amount, false, null));
                 stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
                 tableView.setItems(stavkaIzdatniceObservableList);
                 initialize();
@@ -183,6 +195,14 @@ public class StavkaIzdatniceController {
 
     public void setButtonClearFields() {
         clearRecords();
+    }
+
+    public void setButtonStorno() {
+        StavkaIzdatniceEntity stavkaIzdatnice = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (stavkaIzdatnice != null) {
+            stavkaIzdatniceService.stornoStavkeIzdatnice(stavkaIzdatnice);
+            initialize();
+        }
     }
 
     private void clearRecords() {
