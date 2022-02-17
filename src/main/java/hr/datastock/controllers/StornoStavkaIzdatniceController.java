@@ -1,7 +1,10 @@
 package hr.datastock.controllers;
 
 import hr.datastock.controllers.controllerutil.UtilService;
-import hr.datastock.entities.*;
+import hr.datastock.entities.FirmeEntity;
+import hr.datastock.entities.IzdatnicaEntity;
+import hr.datastock.entities.RobaEntity;
+import hr.datastock.entities.StavkaIzdatniceEntity;
 import hr.datastock.services.IzdatnicaService;
 import hr.datastock.services.RobaService;
 import hr.datastock.services.StavkaIzdatniceService;
@@ -16,9 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -48,7 +53,7 @@ public class StornoStavkaIzdatniceController {
     @FXML
     private TableColumn<StavkaIzdatniceEntity, Integer> tableColumnKolicina;
     @FXML
-    private TableColumn<StavkaIzdatniceEntity, LocalDate> tableColumnDatum;
+    private TableColumn<StavkaIzdatniceEntity, LocalDateTime> tableColumnDatum;
     @FXML
     private DatePicker datePickerDatumStorno;
     @FXML
@@ -138,7 +143,7 @@ public class StornoStavkaIzdatniceController {
         tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnDatum.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(LocalDate item, boolean empty) {
+            protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -152,12 +157,12 @@ public class StornoStavkaIzdatniceController {
     public void setButtonSearch() {
         final String article = textFieldArticle.getText().trim().toLowerCase(Locale.ROOT);
         final String company = textFieldCompany.getText().trim().toLowerCase(Locale.ROOT);
-        final LocalDate datePickerDatumStornoValue = datePickerDatumStorno.getValue() == null ? null :
-                datePickerDatumStorno.getValue();
+        final LocalDateTime datePickerDatumStornoValue = datePickerDatumStorno.getValue() == null ? null :
+                datePickerDatumStorno.getValue().atStartOfDay();
         buttonSearch(company, article, datePickerDatumStornoValue);
     }
 
-    private void buttonSearch(String company, String articleName, LocalDate datePickerStorno) {
+    private void buttonSearch(String company, String articleName, LocalDateTime datePickerStorno) {
         FilteredList<StavkaIzdatniceEntity> searchList = stavkaIzdatniceObservableList
                 .filtered(stavkaIzdatnice -> company.equals("") || stavkaIzdatnice.getStavkaIzdatniceIzdatnica()
                         .getIzdatnicaFirme().getNazivFirme().toLowerCase().trim().contains(company.toLowerCase()))

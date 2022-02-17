@@ -148,13 +148,12 @@ public class IzdatnicaController {
 
         final String alertData = setInputCheck(datum, firma);
         IzdatnicaEntity newIzdatnica = null;
-        if (Optional.ofNullable(firma).isPresent() && Optional.ofNullable(datum).isPresent()) {
+        if (Optional.ofNullable(firma).isPresent()) {
             if (!alertData.isEmpty()) {
                 utilService.getWarningAlert(alertData);
             } else {
-                LocalDate dateTime = datePickerDatum.getValue();
                 try {
-                    newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), dateTime, firma));
+                    newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), datum, firma));
                 } catch (Exception ex) {
                     logger.error("Error in method 'unesi poduzece'", ex);
                     ex.printStackTrace();

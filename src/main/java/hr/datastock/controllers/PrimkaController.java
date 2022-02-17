@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,13 +147,12 @@ public class PrimkaController {
 
         final String alertData = setInputCheck(datum, firma);
         PrimkaEntity newPrimka = null;
-        if (Optional.ofNullable(firma).isPresent() && Optional.ofNullable(datum).isPresent()) {
+        if (Optional.ofNullable(firma).isPresent()) {
             if (!alertData.isEmpty()) {
                 utilService.getWarningAlert(alertData);
             } else {
-                LocalDate dateTime = datePickerDatum.getValue();
                 try {
-                    newPrimka = primkaService.createPrimka(new PrimkaEntity(nextId(), dateTime, firma));
+                    newPrimka = primkaService.createPrimka(new PrimkaEntity(nextId(), datum, firma));
                 } catch (Exception ex) {
                     logger.error("Error in method 'createPrimka'", ex);
                     ex.printStackTrace();

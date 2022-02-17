@@ -8,80 +8,36 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "roba", schema = "datastock")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class RobaEntity {
 
-    private Long idRobe;
-    private String nazivArtikla;
-    private Integer kolicina;
-    private BigDecimal cijena;
-    private String opis;
-    private String jmj;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDRobe")
-    public Long getIdRobe() {
-        return idRobe;
-    }
-
-    public void setIdRobe(Long idRobe) {
-        this.idRobe = idRobe;
-    }
+    private Long idRobe;
 
     @Basic
     @Column(name = "NazivArtikla")
-    public String getNazivArtikla() {
-        return nazivArtikla;
-    }
-
-    public void setNazivArtikla(String nazivArtikla) {
-        this.nazivArtikla = nazivArtikla;
-    }
+    private String nazivArtikla;
 
     @Basic
     @Column(name = "Kolicina")
-    public Integer getKolicina() {
-        return kolicina;
-    }
-
-    public void setKolicina(Integer kolicina) {
-        this.kolicina = kolicina;
-    }
+    private Integer kolicina;
 
     @Basic
     @Column(name = "Cijena")
-    public BigDecimal getCijena() {
-        return cijena;
-    }
-
-    public void setCijena(BigDecimal cijena) {
-        this.cijena = cijena;
-    }
+    private BigDecimal cijena;
 
     @Basic
     @Column(name = "Opis")
-    public String getOpis() {
-        return opis;
-    }
-
-    public void setOpis(String opis) {
-        this.opis = opis;
-    }
+    private String opis;
 
     @Basic
     @Column(name = "Jmj")
-    public String getJmj() {
-        return jmj;
-    }
-
-    public void setJmj(String jmj) {
-        this.jmj = jmj;
-    }
+    private String jmj;
 
     @Override
     public String toString() {

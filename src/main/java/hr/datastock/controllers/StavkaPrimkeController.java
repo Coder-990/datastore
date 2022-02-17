@@ -156,7 +156,7 @@ public class StavkaPrimkeController {
                 utilService.getWarningAlert(alertData);
             } else {
                 newStavkaIzdatnica = stavkaPrimkeService.createStavkaIzdatnice(
-                        new StavkaPrimkeEntity(nextId(), companyNameAndDate, article, amount));
+                        new StavkaPrimkeEntity(nextId(), companyNameAndDate, article, amount, false, null));
                 stavkaPrimkeObservableList.add(newStavkaIzdatnica);
                 tableView.setItems(stavkaPrimkeObservableList);
                 initialize();

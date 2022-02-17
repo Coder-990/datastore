@@ -6,47 +6,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "firme", schema = "datastock")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class FirmeEntity {
 
-    private Long idFirme;
-    private String oibFirme;
-    private String nazivFirme;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDFirme")
-    public Long getIdFirme() {
-        return idFirme;
-    }
-
-    public void setIdFirme(Long idFirme) {
-        this.idFirme = idFirme;
-    }
+    private Long idFirme;
 
     @Basic
     @Column(name = "OIBFirme")
-    public String getOibFirme() {
-        return oibFirme;
-    }
-
-    public void setOibFirme(String oibFirme) {
-        this.oibFirme = oibFirme;
-    }
+    private String oibFirme;
 
     @Basic
     @Column(name = "NazivFirme")
-    public String getNazivFirme() {
-        return nazivFirme;
-    }
+    private String nazivFirme;
 
-    public void setNazivFirme(String nazivFirme) {
-        this.nazivFirme = nazivFirme;
-    }
 
     @Override
     public String toString() {

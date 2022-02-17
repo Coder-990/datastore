@@ -3,6 +3,7 @@ package hr.datastock.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "stavkaprimke", schema = "datastock")
@@ -13,45 +14,28 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class StavkaPrimkeEntity {
 
-    private Long idStavkaPrimke;
-    private PrimkaEntity stavkaPrimkePrimka;
-    private RobaEntity stavkaPrimkeRobe;
-    private Integer kolicina;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDStavkaPrimke")
-    public Long getIdStavkaPrimke() {
-        return idStavkaPrimke;
-    }
-    public void setIdStavkaPrimke(Long idStavkaPrimke) {
-        this.idStavkaPrimke = idStavkaPrimke;
-    }
+    private Long idStavkaPrimke;
 
     @ManyToOne
     @JoinColumn(name = "IDPrimke", referencedColumnName = "IDPrimke")
-    public PrimkaEntity getStavkaPrimkePrimka() {
-        return stavkaPrimkePrimka;
-    }
-    public void setStavkaPrimkePrimka(PrimkaEntity stavkaPrimkePrimka) {
-        this.stavkaPrimkePrimka = stavkaPrimkePrimka;
-    }
+    private PrimkaEntity stavkaPrimkePrimka;
 
     @ManyToOne
     @JoinColumn(name = "IDRobe", referencedColumnName = "IDRobe")
-    public RobaEntity getStavkaPrimkeRobe() {
-        return stavkaPrimkeRobe;
-    }
-    public void setStavkaPrimkeRobe(RobaEntity stavkaPrimkeRobe) {
-        this.stavkaPrimkeRobe = stavkaPrimkeRobe;
-    }
+    private RobaEntity stavkaPrimkeRobe;
 
     @Basic
     @Column(name = "Kolicina")
-    public Integer getKolicina() {
-        return kolicina;
-    }
-    public void setKolicina(Integer kolicina) {
-        this.kolicina = kolicina;
-    }
+    private Integer kolicina;
+
+    @Basic
+    @Column(name = "Storno")
+    private Boolean storno;
+
+    @Basic
+    @Column(name = "DatumStorno")
+    private LocalDate datumStorno;
 }

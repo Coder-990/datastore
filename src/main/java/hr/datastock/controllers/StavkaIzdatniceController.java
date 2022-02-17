@@ -1,7 +1,6 @@
 package hr.datastock.controllers;
 
 import hr.datastock.controllers.controllerutil.UtilService;
-import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.entities.StavkaIzdatniceEntity;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class StavkaIzdatniceController {
@@ -171,6 +169,7 @@ public class StavkaIzdatniceController {
             } else {
                 newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(
                         new StavkaIzdatniceEntity(nextId(), companyNameDate, article, amount, false, null));
+               //TODO: tu iz nekog razloga puca, iskreira objekt ali ga pokaze nakon ponovnog pokretanja aplikacije
                 stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
                 tableView.setItems(stavkaIzdatniceObservableList);
                 initialize();
@@ -200,7 +199,7 @@ public class StavkaIzdatniceController {
     public void setButtonStorno() {
         StavkaIzdatniceEntity stavkaIzdatnice = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         if (stavkaIzdatnice != null) {
-            stavkaIzdatniceService.stornoStavkeIzdatnice(stavkaIzdatnice);
+            stavkaIzdatniceService.createStornoStavkeIzdatnice(stavkaIzdatnice);
             initialize();
         }
     }

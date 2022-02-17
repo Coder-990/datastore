@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "izdatnica", schema = "datastock")
@@ -14,40 +15,18 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class IzdatnicaEntity {
 
-    private Long idIzdatnice;
-    private LocalDate datum;
-    private FirmeEntity izdatnicaFirme;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDIzdatnice")
-    public Long getIdIzdatnice() {
-        return idIzdatnice;
-    }
-
-    public void setIdIzdatnice(Long idIzdatnice) {
-        this.idIzdatnice = idIzdatnice;
-    }
+    private Long idIzdatnice;
 
     @Basic
     @Column(name = "Datum")
-    public LocalDate getDatum() {
-        return datum;
-    }
-
-    public void setDatum(LocalDate datum) {
-        this.datum = datum;
-    }
+    private LocalDate datum;
 
     @ManyToOne
     @JoinColumn(name = "IDFirme", referencedColumnName = "IDFirme")
-    public FirmeEntity getIzdatnicaFirme() {
-        return izdatnicaFirme;
-    }
-
-    public void setIzdatnicaFirme(FirmeEntity izdatnicaFirme) {
-        this.izdatnicaFirme = izdatnicaFirme;
-    }
+    private FirmeEntity izdatnicaFirme;
 
     @Override
     public String toString() {

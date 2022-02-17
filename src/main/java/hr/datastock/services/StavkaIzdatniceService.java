@@ -10,5 +10,5 @@ public interface StavkaIzdatniceService {
 
     StavkaIzdatniceEntity createStavkaIzdatnice(StavkaIzdatniceEntity izdatnica);
 
-    StavkaIzdatniceEntity stornoStavkeIzdatnice(StavkaIzdatniceEntity updateStavke);
+    StavkaIzdatniceEntity createStornoStavkeIzdatnice(StavkaIzdatniceEntity updateStavke);
 }

@@ -26,13 +26,13 @@ public class StavkaIzdatniceServiceImpl implements StavkaIzdatniceService {
     }
 
     @Override
-    public StavkaIzdatniceEntity stornoStavkeIzdatnice(StavkaIzdatniceEntity updateStavke) {
-        return stavkaIzdatniceRepository.findById(updateStavke.getIdStavkaIzdatnice())
+    public StavkaIzdatniceEntity createStornoStavkeIzdatnice(StavkaIzdatniceEntity stornoStavke) {
+        return stavkaIzdatniceRepository.findById(stornoStavke.getIdStavkaIzdatnice())
                 .map(existingStavka -> {
-                    existingStavka.setIdStavkaIzdatnice(updateStavke.getIdStavkaIzdatnice());
-                    existingStavka.setStavkaIzdatniceIzdatnica(updateStavke.getStavkaIzdatniceIzdatnica());
-                    existingStavka.setStavkaIzdatniceRobe(updateStavke.getStavkaIzdatniceRobe());
-                    existingStavka.setKolicina(updateStavke.getKolicina());
+                    existingStavka.setIdStavkaIzdatnice(stornoStavke.getIdStavkaIzdatnice());
+                    existingStavka.setStavkaIzdatniceIzdatnica(stornoStavke.getStavkaIzdatniceIzdatnica());
+                    existingStavka.setStavkaIzdatniceRobe(stornoStavke.getStavkaIzdatniceRobe());
+                    existingStavka.setKolicina(stornoStavke.getKolicina());
                     existingStavka.setStorno(true);
                     existingStavka.setDatumStorno(LocalDate.now());
                     return stavkaIzdatniceRepository.saveAndFlush(existingStavka);
