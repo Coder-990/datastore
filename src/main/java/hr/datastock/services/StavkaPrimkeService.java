@@ -8,5 +8,7 @@ public interface StavkaPrimkeService {
 
     List<StavkaPrimkeEntity> getAll();
 
-    StavkaPrimkeEntity createStavkaIzdatnice(StavkaPrimkeEntity primka);
+    StavkaPrimkeEntity createStavkaPrimke(StavkaPrimkeEntity primka);
+
+    StavkaPrimkeEntity createStornoStavkePrimke(StavkaPrimkeEntity stavkaPrimke);
 }

@@ -18,13 +18,14 @@ import static hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 @Component
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
-    @Value("classpath:/view/FirmeView.fxml")
+//    @Value("classpath:/view/FirmeView.fxml")
 //    @Value("classpath:/view/PrimkaView.fxml")
 //    @Value("classpath:/view/IzdatnicaView.fxml")
-//    @Value("classpath:/view/RobaView.fxml")
+    @Value("classpath:/view/RobaView.fxml")
 //    @Value("classpath:/view/StavkaIzdatnicaView.fxml")
 //    @Value("classpath:/view/StavkaPrimkeView.fxml")
 //    @Value("classpath:/view/StornoStavkaIzdatnicaView.fxml")
+//    @Value("classpath:/view/StornoStavkaPrimkeView.fxml")
     private Resource resource;
     private final String applicationTitle;
     private final ApplicationContext applicationContext;
@@ -42,7 +43,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             Parent root = fxmlLoader.load();
             Stage stage = event.getStage();
             stage.setTitle(applicationTitle);
-            stage.setScene(new Scene(root, 760, 460));
+            stage.setScene(new Scene(root, 860, 460));
             stage.show();
         } catch (IOException exception) {
             exception.printStackTrace();

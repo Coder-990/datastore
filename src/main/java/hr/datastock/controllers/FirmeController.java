@@ -120,21 +120,20 @@ public class FirmeController {
     }
 
     private void setValuesToTableColumns() {
+        setProperty();
+        setStyle();
+    }
+
+    private void setProperty() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
         tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
         tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
-        setStyle();
     }
 
     private void setStyle() {
         tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
-    }
-
-    private class GetDataFromTextField {
-        final String oib = textFieldOIB.getText();
-        final String naziv = textFieldNaziv.getText();
     }
 
     private void filteredSearchingOf(GetDataFromTextField getData) {
@@ -163,5 +162,9 @@ public class FirmeController {
         textFieldNaziv.clear();
         textFieldOIB.clear();
         tableView.getSelectionModel().clearSelection();
+    }
+    private class GetDataFromTextField {
+        final String oib = textFieldOIB.getText();
+        final String naziv = textFieldNaziv.getText();
     }
 }

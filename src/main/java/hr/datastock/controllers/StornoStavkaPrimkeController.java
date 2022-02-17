@@ -1,10 +1,7 @@
 package hr.datastock.controllers;
 
-import hr.datastock.entities.FirmeEntity;
-import hr.datastock.entities.IzdatnicaEntity;
-import hr.datastock.entities.RobaEntity;
-import hr.datastock.entities.StavkaIzdatniceEntity;
-import hr.datastock.services.StavkaIzdatniceService;
+import hr.datastock.entities.*;
+import hr.datastock.services.StavkaPrimkeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -24,15 +21,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class StornoStavkaIzdatniceController {
+public class StornoStavkaPrimkeController {
 
-    public static final Logger logger = LoggerFactory.getLogger(StornoStavkaIzdatniceController.class);
+    public static final Logger logger = LoggerFactory.getLogger(StornoStavkaPrimkeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
     public static final String DATE_FORMAT = "dd.MM.yyyy";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     @FXML
-    private ComboBox<FirmeEntity> comboBoxIzdatnica;
+    private ComboBox<FirmeEntity> comboBoxPrimka;
     @FXML
     private ComboBox<RobaEntity> comboBoxRoba;
     @FXML
@@ -40,17 +37,17 @@ public class StornoStavkaIzdatniceController {
     @FXML
     private TextField textFieldArticle;
     @FXML
-    private TableView<StavkaIzdatniceEntity> tableView;
+    private TableView<StavkaPrimkeEntity> tableView;
     @FXML
-    private TableColumn<StavkaIzdatniceEntity, Long> tableColumnId;
+    private TableColumn<StavkaPrimkeEntity, Long> tableColumnId;
     @FXML
-    private TableColumn<StavkaIzdatniceEntity, IzdatnicaEntity> tableColumnIdIzdatnice;
+    private TableColumn<StavkaPrimkeEntity, PrimkaEntity> tableColumnIdPrimke;
     @FXML
-    private TableColumn<StavkaIzdatniceEntity, RobaEntity> tableColumnArticle;
+    private TableColumn<StavkaPrimkeEntity, RobaEntity> tableColumnArticle;
     @FXML
-    private TableColumn<StavkaIzdatniceEntity, Integer> tableColumnKolicina;
+    private TableColumn<StavkaPrimkeEntity, Integer> tableColumnKolicina;
     @FXML
-    private TableColumn<StavkaIzdatniceEntity, LocalDate> tableColumnDatum;
+    private TableColumn<StavkaPrimkeEntity, LocalDate> tableColumnDatum;
     @FXML
     private DatePicker datePickerDatumStorno;
     @FXML
@@ -59,41 +56,41 @@ public class StornoStavkaIzdatniceController {
     private Button buttonClearFields;
 
     @Autowired
-    private StavkaIzdatniceService stavkaIzdatniceService;
+    private StavkaPrimkeService stavkaPrimkeService;
 
-    private ObservableList<StavkaIzdatniceEntity> stavkaIzdatniceObservableList;
+    private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
 
     @FXML
     public void initialize() {
-        stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll()
-                .stream().filter(StavkaIzdatniceEntity::getStorno).toList());
-        setComboBoxIzdatnicaEntity();
+        stavkaPrimkeObservableList = FXCollections.observableList(stavkaPrimkeService.getAll()
+                .stream().filter(StavkaPrimkeEntity::getStorno).toList());
+        setComboBoxrimkeEntity();
         setComboBoxRobaEntity();
         setTableColumnProperties();
         clearRecords();
-        tableView.setItems(stavkaIzdatniceObservableList);
+        tableView.setItems(stavkaPrimkeObservableList);
     }
 
     public void setButtonSearch() {
         TextFieldDatePickerInsertedPropertyData searchBy = new TextFieldDatePickerInsertedPropertyData();
-        filteredSerachOf(searchBy.firma, searchBy.artikl, searchBy.datumStorno);
+        felteredSearchingOf(searchBy.firma, searchBy.artikl, searchBy.datumStorno);
     }
 
     public void setButtonClearFields() {
         clearRecords();
     }
 
-    private void setComboBoxIzdatnicaEntity() {
-        Set<FirmeEntity> listOfFirme = stavkaIzdatniceObservableList.stream()
-                .map(stornoStavkaIzdatnice -> stornoStavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme())
+    private void setComboBoxrimkeEntity() {
+        Set<FirmeEntity> listOfFirme = stavkaPrimkeObservableList.stream()
+                .map(stornoStavkaPrimke -> stornoStavkaPrimke.getStavkaPrimkePrimka().getPrimkaFirme())
                 .collect(Collectors.toSet());
-        comboBoxIzdatnica.setItems(FXCollections.observableList(new ArrayList<>(listOfFirme)));
-        comboBoxIzdatnica.getSelectionModel().getSelectedItem();
+        comboBoxPrimka.setItems(FXCollections.observableList(new ArrayList<>(listOfFirme)));
+        comboBoxPrimka.getSelectionModel().getSelectedItem();
     }
 
     private void setComboBoxRobaEntity() {
-        Set<RobaEntity> listOfArticles = stavkaIzdatniceObservableList.stream()
-                .map(StavkaIzdatniceEntity::getStavkaIzdatniceRobe)
+        Set<RobaEntity> listOfArticles = stavkaPrimkeObservableList.stream()
+                .map(StavkaPrimkeEntity::getStavkaPrimkeRobe)
                 .collect(Collectors.toSet());
         comboBoxRoba.setItems(FXCollections.observableList(new ArrayList<>(listOfArticles)));
         comboBoxRoba.getSelectionModel().getSelectedItem();
@@ -106,31 +103,31 @@ public class StornoStavkaIzdatniceController {
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
-        tableColumnIdIzdatnice.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceIzdatnica"));
-        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
+        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
+        tableColumnIdPrimke.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
+        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
         tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
         tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datumStorno"));
     }
 
     private void setStyle() {
         tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnIdIzdatnice.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnIdPrimke.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private void setCellValueFactory() {
-        tableColumnIdIzdatnice.setCellFactory(column -> new TableCell<>() {
+        tableColumnIdPrimke.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(IzdatnicaEntity item, boolean empty) {
+            protected void updateItem(PrimkaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.getIzdatnicaFirme().getOibFirme() + "-(" +
-                            item.getIzdatnicaFirme().getNazivFirme() + ")-[created: " +
+                    setText(item.getPrimkaFirme().getOibFirme() + "-(" +
+                            item.getPrimkaFirme().getNazivFirme() + ")-[created: " +
                             item.getDatum() + "]");
                 }
             }
@@ -163,19 +160,19 @@ public class StornoStavkaIzdatniceController {
         });
     }
 
-    private void filteredSerachOf(String firma, String artikl, LocalDate datePickerStorno) {
-        FilteredList<StavkaIzdatniceEntity> searchList = stavkaIzdatniceObservableList
-                .filtered(stavkaIzdatnice -> firma.equals("") || stavkaIzdatnice.getStavkaIzdatniceIzdatnica()
-                        .getIzdatnicaFirme().toString().toLowerCase().trim().contains(firma.toLowerCase()))
-                .filtered(stavkaIzdatnice -> artikl.equals("") || stavkaIzdatnice.getStavkaIzdatniceRobe()
-                        .toString().toLowerCase().trim().contains(artikl.toLowerCase()))
-                .filtered(stavkaIzdatnice -> comboBoxIzdatnica.getSelectionModel().getSelectedItem() == null ||
-                        stavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().equals(
-                                comboBoxIzdatnica.getSelectionModel().getSelectedItem()))
-                .filtered(stavkaIzdatnice -> comboBoxRoba.getSelectionModel().getSelectedItem() == null ||
-                        stavkaIzdatnice.getStavkaIzdatniceRobe().equals(comboBoxRoba.getSelectionModel().getSelectedItem()))
-                .filtered(stavkaIzdatnice -> datePickerStorno == null ||
-                        stavkaIzdatnice.getDatumStorno().equals(datePickerStorno));
+    private void felteredSearchingOf(String firma, String artikl, LocalDate datePickerStorno) {
+        FilteredList<StavkaPrimkeEntity> searchList = stavkaPrimkeObservableList
+                .filtered(stavkaPrimke -> firma.equals("") || stavkaPrimke.getStavkaPrimkePrimka()
+                        .getPrimkaFirme().getNazivFirme().toLowerCase().trim().contains(firma.toLowerCase()))
+                .filtered(stavkaPrimke -> artikl.equals("") || stavkaPrimke.getStavkaPrimkeRobe().toString()
+                        .toLowerCase().trim().contains(artikl.toLowerCase()))
+                .filtered(stavkaPrimke -> comboBoxPrimka.getSelectionModel().getSelectedItem() == null ||
+                        stavkaPrimke.getStavkaPrimkePrimka().getPrimkaFirme().equals(
+                                comboBoxPrimka.getSelectionModel().getSelectedItem()))
+                .filtered(stavkaPrimke -> comboBoxRoba.getSelectionModel().getSelectedItem() == null ||
+                        stavkaPrimke.getStavkaPrimkeRobe().equals(comboBoxRoba.getSelectionModel().getSelectedItem()))
+                .filtered(stavkaPrimke -> datePickerStorno == null ||
+                        stavkaPrimke.getDatumStorno().equals(datePickerStorno));
         tableView.setItems(FXCollections.observableList(searchList));
     }
 
@@ -184,7 +181,7 @@ public class StornoStavkaIzdatniceController {
         datePickerDatumStorno.getEditor().clear();
         textFieldCompany.clear();
         textFieldArticle.clear();
-        comboBoxIzdatnica.getSelectionModel().clearSelection();
+        comboBoxPrimka.getSelectionModel().clearSelection();
         comboBoxRoba.getSelectionModel().clearSelection();
         tableView.getSelectionModel().clearSelection();
     }
