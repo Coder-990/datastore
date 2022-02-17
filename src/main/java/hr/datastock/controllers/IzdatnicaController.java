@@ -1,5 +1,6 @@
 package hr.datastock.controllers;
 
+import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.services.FirmeService;
@@ -60,22 +61,26 @@ public class IzdatnicaController {
     @Autowired
     private FirmeService firmeService;
 
+    @Autowired
+    private UtilService utilService;
+
     private ObservableList<IzdatnicaEntity> izdatnicaObservableList;
     private ObservableList<FirmeEntity> firmeEntityObservableList;
 
     @FXML
     public void initialize() {
+        logger.info("$%$%$% StavkaIzdatnice records initializing!$%$%$%");
         izdatnicaObservableList = FXCollections.observableList(izdatnicaService.getAll());
         firmeEntityObservableList = FXCollections.observableList(firmeService.getAll());
-        setComboBoyFirmeEntity();
+        setComboBoxFirmeEntity();
         setComboBoxIzdatnicaEntity();
         provideAllProperties();
         clearRecords();
         tableView.setItems(izdatnicaObservableList);
-        logger.info("$%$%$% Izdatnica records initialized successfully!$%$%$%");
+        logger.info("$%$%$% StavkaIzdatnice records initialized successfully!$%$%$%");
     }
 
-    private void setComboBoyFirmeEntity() {
+    private void setComboBoxFirmeEntity() {
         comboBoxFirmaEntity.setItems(firmeEntityObservableList);
         comboBoxFirmaEntity.getSelectionModel().selectFirst();
     }
@@ -141,19 +146,14 @@ public class IzdatnicaController {
 
         final LocalDate datum = datePickerDatum.getValue();
 
-        final String alert = unosProvjera(datum, firma);
+        final String alertData = setInputCheck(datum, firma);
         IzdatnicaEntity newIzdatnica = null;
-        if (Optional.ofNullable(firma).isPresent() && Optional.ofNullable(datum).isPresent()) {
-            if (!alert.isEmpty()) {
-                Alert alertWindow = new Alert(Alert.AlertType.WARNING);
-                alertWindow.setTitle("Error");
-                alertWindow.setHeaderText("Please input missing records: ");
-                alertWindow.setContentText(alert);
-                alertWindow.showAndWait();
+        if (Optional.ofNullable(firma).isPresent()) {
+            if (!alertData.isEmpty()) {
+                utilService.getWarningAlert(alertData);
             } else {
-                LocalDate dateTime = datePickerDatum.getValue();
                 try {
-                    newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), dateTime, firma));
+                    newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), datum, firma));
                 } catch (Exception ex) {
                     logger.error("Error in method 'unesi poduzece'", ex);
                     ex.printStackTrace();
@@ -171,10 +171,10 @@ public class IzdatnicaController {
                 izdatnicaObservableList.stream().mapToLong(IzdatnicaEntity::getIdIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String unosProvjera(LocalDate datum, FirmeEntity firme) {
+    private String setInputCheck(LocalDate datum, FirmeEntity firme) {
         List<String> listaProvjere = new ArrayList<>();
         if (firme == null || firme.getOibFirme().trim().isEmpty()) listaProvjere.add("Company identity number!");
-        if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Company name!");
+        if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Date!");
         return String.join("\n", listaProvjere);
     }
 

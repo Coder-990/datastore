@@ -1,5 +1,6 @@
 package hr.datastock.controllers;
 
+import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
@@ -20,8 +21,7 @@ public class FirmeController {
 
     public static final Logger logger = LoggerFactory.getLogger(FirmeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
-//    @FXML
-//    private ComboBox<Long> comboBoxID;
+
     @FXML
     private TextField textFieldNaziv;
     @FXML
@@ -50,26 +50,21 @@ public class FirmeController {
     @Autowired
     private FirmeService firmeService;
 
+    @Autowired
+    private UtilService utilService;
+
     private ObservableList<FirmeEntity> firmeObservableList;
 
     @FXML
     public void initialize() {
         firmeObservableList = FXCollections.observableList(firmeService.getAll());
-//        setComboBoxId();
-        provideAllProperties();
+        setValuesToTableColumns();
         clearRecords();
         tableView.setItems(firmeObservableList);
         logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
     }
 
-//    private void setComboBoxId() {
-//        List<Long> listaPoduzecaIda = firmeObservableList.stream().map(FirmeEntity::getIdFirme).toList();
-//        ObservableList<Long> firmeIdsObservableList = FXCollections.observableList(listaPoduzecaIda);
-//        comboBoxID.getSelectionModel().selectFirst();
-//        comboBoxID.setItems(firmeIdsObservableList);
-//    }
-
-    private void provideAllProperties() {
+    private void setValuesToTableColumns() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
         tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
@@ -88,11 +83,6 @@ public class FirmeController {
         }
     }
 
-//    public Long getIdFromComboBox() {
-//        Long selectedId = comboBoxID.getSelectionModel().getSelectedItem();
-//        return firmeService.getById(selectedId);
-//    }
-
     public void setButtonSearch() {
         String naziv = textFieldNaziv.getText();
         String oib = textFieldOIB.getText();
@@ -105,19 +95,15 @@ public class FirmeController {
     public FirmeEntity setButtonSave() {
         String oib = textFieldOIB.getText();
         String naziv = textFieldNaziv.getText();
-        String alert = unosProvjera(naziv, oib);
-        if (!alert.isEmpty()) {
-            Alert alertWindow = new Alert(Alert.AlertType.WARNING);
-            alertWindow.setTitle("Error");
-            alertWindow.setHeaderText("Please input missing records: ");
-            alertWindow.setContentText(alert);
-            alertWindow.showAndWait();
+        String alertData = setInputCheck(naziv, oib);
+        if (!alertData.isEmpty()) {
+            utilService.getWarningAlert(alertData);
         } else {
             FirmeEntity newCompany = new FirmeEntity(nextId(), oib, naziv);
             try {
                 firmeService.createFirma(newCompany);
             } catch (Exception ex) {
-                logger.error("Error in method 'unesi poduzece'", ex);
+                logger.error("Error in method 'stButtonSave' company", ex);
                 ex.printStackTrace();
             }
             firmeObservableList.add(newCompany);
@@ -145,10 +131,11 @@ public class FirmeController {
     }
 
     private Long nextId() {
-        return firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1;
+        return firmeObservableList.size() > 0 ?
+                firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
     }
 
-    private String unosProvjera(String naziv, String oib) {
+    private String setInputCheck(String naziv, String oib) {
         List<String> listaProvjere = new ArrayList<>();
         if (oib.trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (naziv.trim().isEmpty()) listaProvjere.add("Company name!");
@@ -168,7 +155,6 @@ public class FirmeController {
     }
 
     private void clearRecords() {
-//        comboBoxID.getSelectionModel().clearSelection();
         textFieldNaziv.clear();
         textFieldOIB.clear();
         tableView.getSelectionModel().clearSelection();

@@ -4,46 +4,32 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "primka", schema = "datastock")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class PrimkaEntity {
 
-    private Long idPrimke;
-    private LocalDate datum;
-    private FirmeEntity primkaFirme;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDPrimke")
-    public Long getIdPrimke() {
-        return idPrimke;
-    }
-    public void setIdPrimke(Long idPrimke) {
-        this.idPrimke = idPrimke;
-    }
+    private Long idPrimke;
 
     @Basic
     @Column(name = "Datum")
-    public LocalDate getDatum() {
-        return datum;
-    }
-    public void setDatum(LocalDate datum) {
-        this.datum = datum;
-    }
+    private LocalDate datum;
 
     @ManyToOne
     @JoinColumn(name = "IDFirme", referencedColumnName = "IDFirme")
-    public FirmeEntity getPrimkaFirme() {
-        return primkaFirme;
-    }
-    public void setPrimkaFirme(FirmeEntity primkaFirme) {
-        this.primkaFirme = primkaFirme;
+    private FirmeEntity primkaFirme;
+
+    @Override
+    public String toString() {
+        return primkaFirme.getNazivFirme() + "-[" + datum + "]";
     }
 }
