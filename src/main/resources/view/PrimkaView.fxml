@@ -16,7 +16,7 @@
     <children>
         <VBox layoutX="282.0" layoutY="324.0" prefHeight="25.0" prefWidth="362.0">
          <children>
-            <ComboBox fx:id="comboBoxPrimka" prefHeight="25.0" prefWidth="364.0" />
+            <ComboBox fx:id="comboBoxCreate" prefHeight="25.0" prefWidth="364.0" />
          </children>
         </VBox>
         <TableView fx:id="tableView" layoutX="239.0" layoutY="116.0" prefHeight="194.0" prefWidth="405.0">
@@ -47,7 +47,7 @@
                   <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="34.0" prefWidth="96.0" text="Save" />
          </children>
           </GridPane>
-      <ComboBox fx:id="comboBoxFirmaEntity" layoutX="36.0" layoutY="74.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="comboBoxSearch" layoutX="36.0" layoutY="74.0" prefHeight="25.0" prefWidth="174.0" />
             <Label layoutX="301.0" layoutY="78.0" text="Date pick" />
             <Label layoutX="223.0" layoutY="328.0" text="Company" />
       <DatePicker fx:id="datePickerDatum" layoutX="367.0" layoutY="74.0" prefHeight="25.0" prefWidth="274.0" />

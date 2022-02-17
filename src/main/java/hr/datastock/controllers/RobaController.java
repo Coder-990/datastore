@@ -120,38 +120,32 @@ public class RobaController {
     }
 
     private class GetDataFromTextFields {
-        String nazivArtikla = textFieldNaziv.getText();
-        String cijena = textFieldCijena.getText();
-        String kolicina = textFieldKolicina.getText();
-        String opis = textAreaTableColumnOpis.getText();
-        String jedinicnaMjera = textFieldJedinicaMjere.getText();
+        final String nazivArtikla = textFieldNaziv.getText();
+        final String cijena = textFieldCijena.getText();
+        final String kolicina = textFieldKolicina.getText();
+        final String opis = textAreaTableColumnOpis.getText();
+        final String jedinicnaMjera = textFieldJedinicaMjere.getText();
     }
 
     public RobaEntity setButtonSave() {
-        GetDataFromTextFields getDataFromTextFields = new GetDataFromTextFields();
+        GetDataFromTextFields getData = new GetDataFromTextFields();
 
-        BigDecimal cijenaAsString = getDataFromTextFields.cijena.equals("") ? null : new BigDecimal(getDataFromTextFields.cijena);
-        Integer kolicinaAsString = getDataFromTextFields.kolicina.equals("") ? null : Integer.parseInt(getDataFromTextFields.kolicina);
+        BigDecimal cijenaAsString = getData.cijena.equals("") ? null : new BigDecimal(getData.cijena);
+        Integer kolicinaAsString = getData.kolicina.equals("") ? null : Integer.parseInt(getData.kolicina);
 
-        String alertData = setInputCheck(getDataFromTextFields.nazivArtikla, getDataFromTextFields.cijena,
-                getDataFromTextFields.kolicina, getDataFromTextFields.jedinicnaMjera);
+        String alertData = setInputCheck(getData.nazivArtikla, getData.cijena,
+                getData.kolicina, getData.jedinicnaMjera);
         RobaEntity newRoba = null;
         if (!alertData.isEmpty()) {
             utilService.getWarningAlert(alertData);
         } else {
-            newRoba = new RobaEntity(nextId(), getDataFromTextFields.nazivArtikla, kolicinaAsString,
-                    cijenaAsString, getDataFromTextFields.opis, getDataFromTextFields.jedinicnaMjera);
-            try {
-                newRoba = robaService.createRoba(newRoba);
-            } catch (Exception ex) {
-                logger.error("Error in method 'create article'", ex);
-            }
+            newRoba = new RobaEntity(nextId(), getData.nazivArtikla, kolicinaAsString,
+                    cijenaAsString, getData.opis, getData.jedinicnaMjera);
+            newRoba = robaService.createRoba(newRoba);
             robaObservableList.add(newRoba);
             tableView.setItems(robaObservableList);
             initialize();
-            logger.info("Article records saved successfully!");
         }
-        utilService.getnformationMessageAlert();
         return newRoba;
     }
 
@@ -186,7 +180,7 @@ public class RobaController {
 
     private Long nextId() {
         return robaObservableList.size() > 0 ?
-                robaObservableList.stream().mapToLong(RobaEntity::getIdRobe).max().getAsLong() + 1 : 1;
+                robaObservableList.stream().mapToLong(RobaEntity::getIdRobe).max().getAsLong() + 1001 : 1001;
     }
 
     private String setInputCheck(String naziv, String kolicina, String cijena, String jmj) {
@@ -200,7 +194,7 @@ public class RobaController {
 
     public void setButtonDelete() {
         RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (roba != null && utilService.getConfirmForDeleteAlert()) {
+        if (roba != null && utilService.getConfirmForRemoveAlert()) {
             robaService.deleteRoba(roba.getIdRobe());
             initialize();
         }

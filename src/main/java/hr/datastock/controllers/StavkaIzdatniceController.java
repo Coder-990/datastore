@@ -180,7 +180,7 @@ public class StavkaIzdatniceController {
 
     private Long nextId() {
         return stavkaIzdatniceObservableList.size() > 0 ?
-                stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1 : 1;
+                stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1001 : 1001;
     }
 
     private String checkInputValues(IzdatnicaEntity company, RobaEntity article, String amount) {

@@ -61,56 +61,37 @@ public class FirmeController {
         setValuesToTableColumns();
         clearRecords();
         tableView.setItems(firmeObservableList);
-        logger.info("$%$%$% Poduzece records initialized successfully!$%$%$%");
     }
 
-    private void setValuesToTableColumns() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
-        tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
-        tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
-    }
-
-    public void getAllDataFromTableView() {
+    public void getAllDataFromTableViewButton() {
         FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         if (firma != null) {
-            String oib = firma.getOibFirme();
+            final String oib = firma.getOibFirme();
             textFieldOIB.setText(oib);
-            String naziv = firma.getNazivFirme();
+            final String naziv = firma.getNazivFirme();
             textFieldNaziv.setText(naziv);
         }
     }
 
     public void setButtonSearch() {
-        String naziv = textFieldNaziv.getText();
-        String oib = textFieldOIB.getText();
-        List<FirmeEntity> filteredListOfCompanies = new ArrayList<>(firmeObservableList
-                .filtered(company -> company.getNazivFirme().toLowerCase().contains(naziv))
-                .filtered(company -> company.getOibFirme().toLowerCase().contains(oib)));
-        tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
+        GetDataFromTextField getData = new GetDataFromTextField();
+        filteredSearchingOf(getData);
     }
 
     public FirmeEntity setButtonSave() {
-        String oib = textFieldOIB.getText();
-        String naziv = textFieldNaziv.getText();
-        String alertData = setInputCheck(naziv, oib);
+        GetDataFromTextField getData = new GetDataFromTextField();
+        final String alertData = setInputCheckingOf(getData.naziv, getData.oib);
+        FirmeEntity newFirma = null;
         if (!alertData.isEmpty()) {
             utilService.getWarningAlert(alertData);
         } else {
-            FirmeEntity newCompany = new FirmeEntity(nextId(), oib, naziv);
-            try {
-                firmeService.createFirma(newCompany);
-            } catch (Exception ex) {
-                logger.error("Error in method 'stButtonSave' company", ex);
-                ex.printStackTrace();
-            }
-            firmeObservableList.add(newCompany);
+            newFirma = new FirmeEntity(nextId(), getData.oib, getData.naziv);
+            firmeService.createFirma(newFirma);
+            firmeObservableList.add(newFirma);
             tableView.setItems(firmeObservableList);
             initialize();
         }
-        return firmeService.createFirma(new FirmeEntity(nextId(), oib, naziv));
+        return newFirma;
     }
 
     public FirmeEntity setButtonUpdate() {
@@ -120,31 +101,15 @@ public class FirmeController {
         FirmeEntity updatedFirma = null;
         if (firma != null && !newOib.equals("") && !newNaziv.equals("")) {
             updatedFirma = new FirmeEntity(firma.getIdFirme(), newOib, newNaziv);
-            try {
-                updatedFirma = firmeService.updateFirma(updatedFirma, firma.getIdFirme());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            updatedFirma = firmeService.updateFirma(updatedFirma, firma.getIdFirme());
             initialize();
         }
         return updatedFirma;
     }
 
-    private Long nextId() {
-        return firmeObservableList.size() > 0 ?
-                firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
-    }
-
-    private String setInputCheck(String naziv, String oib) {
-        List<String> listaProvjere = new ArrayList<>();
-        if (oib.trim().isEmpty()) listaProvjere.add("Company identity number!");
-        if (naziv.trim().isEmpty()) listaProvjere.add("Company name!");
-        return String.join("\n", listaProvjere);
-    }
-
     public void setButtonDelete() {
         FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (firma != null) {
+        if (firma != null && utilService.getConfirmForRemoveAlert()) {
             firmeService.deleteFirma(firma.getIdFirme());
             initialize();
         }
@@ -152,6 +117,46 @@ public class FirmeController {
 
     public void setButtonClearFields() {
         clearRecords();
+    }
+
+    private void setValuesToTableColumns() {
+        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
+        tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
+        tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
+        setStyle();
+    }
+
+    private void setStyle() {
+        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
+    }
+
+    private class GetDataFromTextField {
+        final String oib = textFieldOIB.getText();
+        final String naziv = textFieldNaziv.getText();
+    }
+
+    private void filteredSearchingOf(GetDataFromTextField getData) {
+        List<FirmeEntity> filteredListOfCompanies = new ArrayList<>(firmeObservableList
+                .filtered(company -> company.getNazivFirme().toLowerCase().contains(getData.naziv))
+                .filtered(company -> company.getOibFirme().toLowerCase().contains(getData.oib)));
+        tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
+    }
+    private Long nextId() {
+        return firmeObservableList.size() > 0 ?
+                firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1001 : 1001;
+    }
+
+    private String setInputCheckingOf(String naziv, String oib) {
+        return getDialogData(naziv, oib);
+    }
+
+    private String getDialogData(String naziv, String oib) {
+        List<String> listaProvjere = new ArrayList<>();
+        if (oib.trim().isEmpty()) listaProvjere.add("Company identity number!");
+        if (naziv.trim().isEmpty()) listaProvjere.add("Company name!");
+        return String.join("\n", listaProvjere);
     }
 
     private void clearRecords() {
