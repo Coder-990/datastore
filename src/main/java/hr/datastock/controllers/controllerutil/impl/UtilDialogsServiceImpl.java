@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
-public class UtilDialogsImpl implements UtilService {
+public class UtilDialogsServiceImpl implements UtilService {
 
     @Override
     public void getWarningAlert(String alert) {
         Alert alertWindow = new Alert(Alert.AlertType.WARNING);
-        alertWindow.setTitle("Error");
-        alertWindow.setHeaderText("Please input missing records: ");
+        alertWindow.setTitle("Warning");
+        alertWindow.setHeaderText("Some data is mising: ");
         alertWindow.setContentText(alert);
         alertWindow.showAndWait();
     }
@@ -29,18 +29,18 @@ public class UtilDialogsImpl implements UtilService {
     }
 
     @Override
-    public boolean getConfirmForDeleteAlert() {
+    public boolean getConfirmForRemoveAlert() {
         Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
         alertWindow.setTitle("Delete item");
-        alertWindow.setHeaderText("Are you sure to delete?");
-        alertWindow.setContentText("You are about to remove this item from database, Continue?");
-        AtomicBoolean isDeleted = new AtomicBoolean(false);
+        alertWindow.setHeaderText("Are you sure to continue?");
+        alertWindow.setContentText("You are about to remove this item from table, Continue?");
+        AtomicBoolean isRemoved = new AtomicBoolean(false);
         alertWindow.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK)
-               isDeleted.set(true);
+               isRemoved.set(true);
         });
         alertWindow.getAlertType();
-        return isDeleted.get();
+        return isRemoved.get();
     }
 
     @Override

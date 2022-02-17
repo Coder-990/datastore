@@ -6,7 +6,7 @@ public interface UtilService {
 
     void getErrorAlert(String alert);
 
-    boolean getConfirmForDeleteAlert();
+    boolean getConfirmForRemoveAlert();
 
     void getnformationMessageAlert();
 }

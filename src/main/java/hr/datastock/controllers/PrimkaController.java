@@ -17,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,9 +32,9 @@ public class PrimkaController {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     @FXML
-    private ComboBox<FirmeEntity> comboBoxPrimka;
+    private ComboBox<FirmeEntity> comboBoxCreate;
     @FXML
-    private ComboBox<FirmeEntity> comboBoxFirmaEntity;
+    private ComboBox<FirmeEntity> comboBoxSearch;
     @FXML
     private TableView<PrimkaEntity> tableView;
     @FXML
@@ -65,39 +63,83 @@ public class PrimkaController {
     @Autowired
     private UtilService utilService;
 
-    private ObservableList<PrimkaEntity> primkaObservableList;
-    private ObservableList<FirmeEntity> firmeEntityObservableList;
+    private ObservableList<PrimkaEntity> primkeObservableList;
 
     @FXML
     public void initialize() {
-        primkaObservableList = FXCollections.observableList(primkaService.getAll());
-        firmeEntityObservableList = FXCollections.observableList(firmeService.getAll());
-        setComboBoyFirmeEntity();
+        primkeObservableList = FXCollections.observableList(primkaService.getAll());
+        ObservableList<FirmeEntity> firmeEntityObservableList = FXCollections.observableList(firmeService.getAll());
+        setComboBoxFirmeEntity(firmeEntityObservableList);
         setComboBoxPrimkaEntity();
-        provideAllProperties();
+        setTableColumnProperties();
         clearRecords();
-        tableView.setItems(primkaObservableList);
-        logger.info("$%$%$% Primka records initialized successfully!$%$%$%");
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.setItems(primkeObservableList);
     }
 
-    private void setComboBoyFirmeEntity() {
-        comboBoxFirmaEntity.setItems(firmeEntityObservableList);
-        comboBoxFirmaEntity.getSelectionModel().selectFirst();
+    public void setButtonSearch() {
+        final LocalDate datePicker = datePickerDatum.getValue() == null ? null : datePickerDatum.getValue();
+        final String oibFirme = comboBoxCreate.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxCreate.getSelectionModel().getSelectedItem().getOibFirme();
+        filteredSearchingOf(datePicker, oibFirme);
+    }
+
+    public PrimkaEntity setButtonSave() {
+        final FirmeEntity selectedFirma = comboBoxSearch.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxSearch.getSelectionModel().getSelectedItem();
+        final LocalDate selectedDate = datePickerDatum.getValue();
+        final String alertData = setInputCheckingOf(selectedDate, selectedFirma);
+        PrimkaEntity newPrimka = null;
+        if (!alertData.isEmpty()) {
+            utilService.getWarningAlert(alertData);
+        } else {
+            newPrimka = primkaService.createPrimka(new PrimkaEntity(nextId(), selectedDate, selectedFirma));
+            primkeObservableList.add(newPrimka);
+            tableView.setItems(primkeObservableList);
+            initialize();
+        }
+        return newPrimka;
+    }
+
+    public void setButtonDelete() {
+        PrimkaEntity primka = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (primka != null && utilService.getConfirmForRemoveAlert()) {
+            primkaService.deletePrimka(primka.getIdPrimke());
+            initialize();
+        }
+    }
+
+    public void setButtonClearFields() {
+        clearRecords();
+    }
+
+    private void setComboBoxFirmeEntity(ObservableList<FirmeEntity> firmeEntityObservableList) {
+        comboBoxSearch.setItems(firmeEntityObservableList);
+        comboBoxSearch.getSelectionModel().selectFirst();
     }
 
     private void setComboBoxPrimkaEntity() {
-        Set<FirmeEntity> listaOIBaFirme = primkaObservableList.stream().map(PrimkaEntity::getPrimkaFirme).collect(Collectors.toSet());
-        ObservableList<FirmeEntity> firmeEntityComboSearchObservableList = FXCollections.observableList(new ArrayList<>(listaOIBaFirme));
-        comboBoxPrimka.setItems(firmeEntityComboSearchObservableList);
-        comboBoxPrimka.getSelectionModel().selectFirst();
+        final Set<FirmeEntity> oibFirmeFilterList = primkeObservableList.stream()
+                .map(PrimkaEntity::getPrimkaFirme).collect(Collectors.toSet());
+        comboBoxCreate.setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
+        comboBoxCreate.getSelectionModel().selectFirst();
     }
 
-    private void provideAllProperties() {
+    private void setTableColumnProperties() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idPrimke"));
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-
         tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("primkaFirme"));
+        setStyle();
+        setCellValueProperties();
+    }
+
+    private void setStyle() {
+        tableColumnFirmeEntity.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
+    }
+
+    private void setCellValueProperties() {
         tableColumnDatum.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(LocalDate item, boolean empty) {
@@ -110,8 +152,6 @@ public class PrimkaController {
             }
         });
 
-        tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("primkaFirme"));
-        tableColumnFirmeEntity.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnFirmeEntity.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(FirmeEntity item, boolean empty) {
@@ -125,75 +165,34 @@ public class PrimkaController {
         });
     }
 
-    public void setButtonSearch() {
-        final LocalDate datePickerFormat = datePickerDatum.getValue() == null ? null :
-                datePickerDatum.getValue();
-        final String oibFirme = comboBoxPrimka.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxPrimka.getSelectionModel().getSelectedItem().getOibFirme();
-        buttonSearch(datePickerFormat, oibFirme);
-    }
-
-    private void buttonSearch(LocalDate datePickerFormat, String oibFirme) {
-        FilteredList<PrimkaEntity> searchList = primkaObservableList
+    private void filteredSearchingOf(LocalDate datePickerFormat, String oibFirme) {
+        FilteredList<PrimkaEntity> searchList = primkeObservableList
                 .filtered(primka -> oibFirme == null || primka.getPrimkaFirme().getOibFirme().equals(oibFirme))
                 .filtered(primka -> datePickerFormat == null || primka.getDatum().equals(datePickerFormat));
         tableView.setItems(FXCollections.observableList(searchList));
     }
 
-    public PrimkaEntity setButtonSave() {
-        final FirmeEntity firma = comboBoxFirmaEntity.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxFirmaEntity.getSelectionModel().getSelectedItem();
-        final LocalDate datum = datePickerDatum.getValue();
-
-        final String alertData = setInputCheck(datum, firma);
-        PrimkaEntity newPrimka = null;
-        if (Optional.ofNullable(firma).isPresent()) {
-            if (!alertData.isEmpty()) {
-                utilService.getWarningAlert(alertData);
-            } else {
-                try {
-                    newPrimka = primkaService.createPrimka(new PrimkaEntity(nextId(), datum, firma));
-                } catch (Exception ex) {
-                    logger.error("Error in method 'createPrimka'", ex);
-                    ex.printStackTrace();
-                }
-                primkaObservableList.add(newPrimka);
-                tableView.setItems(primkaObservableList);
-                initialize();
-            }
-        }
-        return newPrimka;
-    }
-
     private Long nextId() {
-        return primkaObservableList.size() > 0 ?
-                primkaObservableList.stream().mapToLong(PrimkaEntity::getIdPrimke).max().getAsLong() + 1 : 1;
+        return primkeObservableList.size() > 0 ?
+                primkeObservableList.stream().mapToLong(PrimkaEntity::getIdPrimke).max().getAsLong() + 1001 : 1001;
     }
 
-    private String setInputCheck(LocalDate datum, FirmeEntity firme) {
+    private String setInputCheckingOf(LocalDate datum, FirmeEntity firme) {
+        return getDialogData(datum, firme);
+    }
+
+    private String getDialogData(LocalDate datum, FirmeEntity firme) {
         List<String> listaProvjere = new ArrayList<>();
         if (firme == null || firme.getOibFirme().trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Date!");
         return String.join("\n", listaProvjere);
     }
 
-    public void setButtonDelete() {
-        PrimkaEntity primka = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (primka != null) {
-            primkaService.deletePrimka(primka.getIdPrimke());
-            initialize();
-        }
-    }
-
-    public void setButtonClearFields() {
-        clearRecords();
-    }
-
     private void clearRecords() {
         datePickerDatum.setValue(null);
         datePickerDatum.getEditor().clear();
-        comboBoxPrimka.getSelectionModel().clearSelection();
-        comboBoxFirmaEntity.getSelectionModel().clearSelection();
+        comboBoxCreate.getSelectionModel().clearSelection();
+        comboBoxSearch.getSelectionModel().clearSelection();
         tableView.getSelectionModel().clearSelection();
     }
 }

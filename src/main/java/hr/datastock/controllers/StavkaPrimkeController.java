@@ -167,7 +167,7 @@ public class StavkaPrimkeController {
 
     private Long nextId() {
         return stavkaPrimkeObservableList.size() > 0 ?
-                stavkaPrimkeObservableList.stream().mapToLong(StavkaPrimkeEntity::getIdStavkaPrimke).max().getAsLong() + 1 : 1;
+                stavkaPrimkeObservableList.stream().mapToLong(StavkaPrimkeEntity::getIdStavkaPrimke).max().getAsLong() + 1001 : 1001;
     }
 
     private String checkInputValues(PrimkaEntity company, RobaEntity article, String amount) {
