@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public class DatastockJavaFXAplication extends Application {
+
     private ConfigurableApplicationContext applcationContext;
 
     @Override

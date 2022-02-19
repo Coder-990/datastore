@@ -69,11 +69,12 @@ public class StavkaIzdatniceController {
     private UtilService utilService;
 
     private ObservableList<StavkaIzdatniceEntity> stavkaIzdatniceObservableList;
+    private ObservableList<StavkaIzdatniceEntity> filteredStavkaIzdatniceObservableListOfStorno;
 
     @FXML
     public void initialize() {
         stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll());
-        ObservableList<StavkaIzdatniceEntity> filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
+        filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
                         stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
         setComboBoxIzdatnicaEntity();
         setComboBoxRobaEntity();
@@ -177,7 +178,7 @@ public class StavkaIzdatniceController {
     }
 
     private void filteredSearchingOf(String firma, String artikl, String kolicina) {
-        FilteredList<StavkaIzdatniceEntity> searchList = stavkaIzdatniceObservableList
+        FilteredList<StavkaIzdatniceEntity> searchList = filteredStavkaIzdatniceObservableListOfStorno
                 .filtered(stavkaIzdatnice -> firma.equals("") || stavkaIzdatnice.getStavkaIzdatniceIzdatnica()
                         .getIzdatnicaFirme().getNazivFirme().toLowerCase().trim().contains(firma))
                 .filtered(stavkaIzdatnice -> artikl.equals("") || stavkaIzdatnice.getStavkaIzdatniceRobe()

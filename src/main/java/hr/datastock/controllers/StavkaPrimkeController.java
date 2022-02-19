@@ -66,11 +66,12 @@ public class StavkaPrimkeController {
     private UtilService utilService;
 
     private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
+    private ObservableList<StavkaPrimkeEntity> filteredStavkaPrimkeObservableListOfStorno;
 
     @FXML
     public void initialize() {
         stavkaPrimkeObservableList = FXCollections.observableList(stavkaPrimkeService.getAll());
-        ObservableList<StavkaPrimkeEntity> filteredStavkaPrimkeObservableListOfStorno = FXCollections.observableList(
+        filteredStavkaPrimkeObservableListOfStorno = FXCollections.observableList(
                 stavkaPrimkeObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
         setComboBoxPrimkaEntity();
         setComboBoxRobaEntity();
@@ -174,7 +175,7 @@ public class StavkaPrimkeController {
     }
 
     private void filteredSearchingOf(String firma, String artikl, String kolicina) {
-        FilteredList<StavkaPrimkeEntity> searchList = stavkaPrimkeObservableList
+        FilteredList<StavkaPrimkeEntity> searchList = filteredStavkaPrimkeObservableListOfStorno
                 .filtered(stavkaPrimke -> firma.equals("") || stavkaPrimke.getStavkaPrimkePrimka()
                         .getPrimkaFirme().getNazivFirme().toLowerCase().trim().contains(firma))
                 .filtered(stavkaPrimke -> artikl.equals("") || stavkaPrimke.getStavkaPrimkeRobe()

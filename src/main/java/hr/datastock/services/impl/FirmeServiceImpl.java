@@ -20,17 +20,6 @@ public class FirmeServiceImpl implements FirmeService {
         return firmeRepository.findAll();
     }
 
-//    @Override
-//    public Long getById(Long id){
-//        if (Objects.nonNull(id)){
-//            Optional<FirmeEntity> firma = firmeRepository.findById(id);
-//            if (firma.isPresent()){
-//                return firma.get().getIdFirme();
-//            }
-//        }
-//        return null;
-//    }
-
     @Override
     public FirmeEntity createFirma(FirmeEntity firma) {
         return firmeRepository.save(firma);
