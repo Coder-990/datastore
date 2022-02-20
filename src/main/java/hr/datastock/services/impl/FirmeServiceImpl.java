@@ -21,11 +21,6 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public Long getById(Long id){
-        return firmeRepository.findById(id).get().getIdFirme();
-    }
-
-    @Override
     public FirmeEntity createFirma(FirmeEntity firma) {
         return firmeRepository.save(firma);
     }
