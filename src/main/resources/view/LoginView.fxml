@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="login-view" stylesheets="@style/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.datastock.controllers.LoginController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="login-view" stylesheets="@style/applicationLogin.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.datastock.controllers.LoginController">
    <children>
       <HBox prefHeight="94.0" prefWidth="773.0" styleClass="login-title">
          <children>

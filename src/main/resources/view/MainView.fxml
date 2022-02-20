@@ -32,7 +32,7 @@
                     <MenuItem fx:id="menuItemStavkaPrimke" mnemonicParsing="false" onAction="#screenStavkaPrimke" text="Open" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Storno stavkePrimke">
+                  <Menu mnemonicParsing="false" text="Storno stavke primke">
                      <items>
                         <MenuItem fx:id="menuItemStornoStavkaPrimke" mnemonicParsing="false" onAction="#screenStornoStavkaPrimke" text="Open" />
                      </items>
