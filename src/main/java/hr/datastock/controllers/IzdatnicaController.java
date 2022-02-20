@@ -11,8 +11,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +24,6 @@ import java.util.stream.Collectors;
 @Component
 public class IzdatnicaController {
 
-    public static final Logger logger = LoggerFactory.getLogger(IzdatnicaController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
     public static final String DATE_FORMAT = "dd.MM.yyyy";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
@@ -68,32 +65,26 @@ public class IzdatnicaController {
     @FXML
     public void initialize() {
         izdatnicaObservableList = FXCollections.observableList(izdatnicaService.getAll());
-        ObservableList<FirmeEntity> firmeEntityObservableList = FXCollections.observableList(firmeService.getAll());
-        setComboBoxFirmeEntity(firmeEntityObservableList);
+        setComboBoxFirmeEntity();
         setComboBoxIzdatnicaEntity();
         setTableColumnProperties();
         clearRecords();
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setItems(izdatnicaObservableList);
     }
 
     public void setButtonSearch() {
-        final LocalDate datePicker = datePickerDatum.getValue() == null ? null : datePickerDatum.getValue();
-        final String oibFirme = comboBoxCreate.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxCreate.getSelectionModel().getSelectedItem().getOibFirme();
-        filteredSearchingOf(datePicker, oibFirme);
+        GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
+        filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
     }
 
     public IzdatnicaEntity setButtonSave() {
-        final FirmeEntity selectedFirma = comboBoxSearch.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxSearch.getSelectionModel().getSelectedItem();
-        final LocalDate selectedDate = datePickerDatum.getValue();
-        final String alertData = setInputCheckingOf(selectedDate, selectedFirma);
+        ComboAndPickerSelectedPropertiesData create = new ComboAndPickerSelectedPropertiesData();
+        final String alertData = setInputCheckingOf(create.selectedDate, create.selectedFirma);
         IzdatnicaEntity newIzdatnica = null;
         if (!alertData.isEmpty()) {
             utilService.getWarningAlert(alertData);
         } else {
-            newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), selectedDate, selectedFirma));
+            newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), create.selectedDate, create.selectedFirma));
             izdatnicaObservableList.add(newIzdatnica);
             tableView.setItems(izdatnicaObservableList);
             initialize();
@@ -103,7 +94,7 @@ public class IzdatnicaController {
 
     public void setButtonDelete() {
         IzdatnicaEntity izdatnica = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (izdatnica != null && utilService.getConfirmForRemoveAlert() ) {
+        if (izdatnica != null && utilService.getConfirmForRemoveAlert()) {
             izdatnicaService.deleteIzdatnica(izdatnica.getIdIzdatnice());
             initialize();
         }
@@ -113,8 +104,8 @@ public class IzdatnicaController {
         clearRecords();
     }
 
-    private void setComboBoxFirmeEntity(ObservableList<FirmeEntity> firmeEntityObservableList) {
-        comboBoxSearch.setItems(firmeEntityObservableList);
+    private void setComboBoxFirmeEntity() {
+        comboBoxSearch.setItems(FXCollections.observableList(firmeService.getAll()));
         comboBoxSearch.getSelectionModel().selectFirst();
     }
 
@@ -126,11 +117,15 @@ public class IzdatnicaController {
     }
 
     private void setTableColumnProperties() {
+        setProperty();
+        setStyle();
+        setCellValueProperties();
+    }
+
+    private void setProperty() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idIzdatnice"));
         tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
         tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("izdatnicaFirme"));
-        setStyle();
-        setCellValueProperties();
     }
 
     private void setStyle() {
@@ -194,5 +189,17 @@ public class IzdatnicaController {
         comboBoxCreate.getSelectionModel().clearSelection();
         comboBoxSearch.getSelectionModel().clearSelection();
         tableView.getSelectionModel().clearSelection();
+    }
+
+    private class GetDataFromComboAndPicker {
+        final LocalDate datePicker = datePickerDatum.getValue() == null ? null : datePickerDatum.getValue();
+        final String oibFirme = comboBoxCreate.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxCreate.getSelectionModel().getSelectedItem().getOibFirme();
+    }
+
+    private class ComboAndPickerSelectedPropertiesData {
+        final FirmeEntity selectedFirma = comboBoxSearch.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxSearch.getSelectionModel().getSelectedItem();
+        final LocalDate selectedDate = datePickerDatum.getValue();
     }
 }

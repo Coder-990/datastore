@@ -1,0 +1,47 @@
+* {
+    primary: #1262c;
+    secondary: #3282b8;
+    primary-light: #0f4c75;
+    secondary-light: #bbe1fa;
+}
+
+.login-view {
+    -fx-pref-width: 860px;
+}
+
+.login-title {
+    -fx-alignment: center-left;
+    -fx-padding: 16px;
+
+}
+
+.login-title > .header {
+    -fx-font-size: 20px;
+}
+
+.login-body {
+    -fx-padding: 0 32 16 16;
+}
+
+.al-center-letf {
+    -fx-alignment: center-left;
+}
+
+.sp-5 {
+    -fx-spacing: 5px;
+}
+
+.wd-120 {
+    -fx-pref-width: 120px;
+}
+
+.text-field, .password-field, .button {
+    -fx-background-color: transparent;
+    -fx-border-style: solid;
+    -fx-border-color: secondary;
+}
+
+.button:hover, .button:focused {
+    -fx-background-color: secondary;
+    -fx-text-fill: white;
+}

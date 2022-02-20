@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public class DatastockJavaFXAplication extends Application {
+
     private ConfigurableApplicationContext applcationContext;
 
     @Override
@@ -27,7 +28,7 @@ public class DatastockJavaFXAplication extends Application {
         applcationContext.publishEvent(new StageReadyEvent(stage));
     }
 
-    static class StageReadyEvent extends ApplicationEvent {
+    public static class StageReadyEvent extends ApplicationEvent {
 
         public StageReadyEvent(Stage stage) {
             super(stage);

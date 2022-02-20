@@ -6,10 +6,11 @@ import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,6 @@ import java.util.List;
 @Component
 public class FirmeController {
 
-    public static final Logger logger = LoggerFactory.getLogger(FirmeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     @FXML
@@ -120,21 +120,20 @@ public class FirmeController {
     }
 
     private void setValuesToTableColumns() {
+        setProperty();
+        setStyle();
+    }
+
+    private void setProperty() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
         tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
         tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
-        setStyle();
     }
 
     private void setStyle() {
         tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
-    }
-
-    private class GetDataFromTextField {
-        final String oib = textFieldOIB.getText();
-        final String naziv = textFieldNaziv.getText();
     }
 
     private void filteredSearchingOf(GetDataFromTextField getData) {
@@ -163,5 +162,9 @@ public class FirmeController {
         textFieldNaziv.clear();
         textFieldOIB.clear();
         tableView.getSelectionModel().clearSelection();
+    }
+    private class GetDataFromTextField {
+        final String oib = textFieldOIB.getText();
+        final String naziv = textFieldNaziv.getText();
     }
 }

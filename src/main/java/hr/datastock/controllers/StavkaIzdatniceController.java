@@ -13,17 +13,16 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class StavkaIzdatniceController {
 
-    public static final Logger logger = LoggerFactory.getLogger(StavkaIzdatniceController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     @FXML
@@ -68,40 +67,85 @@ public class StavkaIzdatniceController {
     private UtilService utilService;
 
     private ObservableList<StavkaIzdatniceEntity> stavkaIzdatniceObservableList;
-    private ObservableList<IzdatnicaEntity> izdatniceObservableList;
-    private ObservableList<RobaEntity> robaObservableList;
+    private ObservableList<StavkaIzdatniceEntity> filteredStavkaIzdatniceObservableListOfStorno;
 
     @FXML
     public void initialize() {
-
-        stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll().stream().filter(isStorno -> !isStorno.getStorno()).toList());
-        izdatniceObservableList = FXCollections.observableList(izdatnicaService.getAll());
-        robaObservableList = FXCollections.observableList(robaService.getAll());
+        stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll());
+        filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
+                stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
         setComboBoxIzdatnicaEntity();
         setComboBoxRobaEntity();
-        provideAllProperties();
+        setTableColumnProperties();
         clearRecords();
-        tableView.setItems(stavkaIzdatniceObservableList);
-        logger.info("$%$%$% Izdatnica records initialized successfully!$%$%$%");
+        tableView.setItems(filteredStavkaIzdatniceObservableListOfStorno);
+    }
+
+    public void setButtonSearch() {
+        TextFieldInsertedPropertiesData searchBy = new TextFieldInsertedPropertiesData();
+        filteredSearchingOf(searchBy.company, searchBy.articleName, searchBy.amount);
+    }
+
+    public StavkaIzdatniceEntity setButtonSave() {
+        ComboBoxSelectedPropertiesData create = new ComboBoxSelectedPropertiesData();
+        final String alertData = setInputCheckingOf(
+                create.selectedIzdatnica, create.selectedArticle, String.valueOf(create.amount));
+        StavkaIzdatniceEntity newStavkaIzdatnica = null;
+        if (!alertData.isEmpty()) {
+            utilService.getWarningAlert(alertData);
+        } else {
+            newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(new StavkaIzdatniceEntity(nextId(),
+                    create.selectedIzdatnica, create.selectedArticle, create.amount, false, null));
+            stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
+            tableView.setItems(stavkaIzdatniceObservableList);
+            initialize();
+        }
+        return newStavkaIzdatnica;
+    }
+
+    public void setButtonStorno() {
+        StavkaIzdatniceEntity stavkaIzdatnice = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (stavkaIzdatnice != null && utilService.getConfirmForRemoveAlert()) {
+            stavkaIzdatniceService.createStornoStavkeIzdatnice(stavkaIzdatnice);
+            initialize();
+        }
+    }
+
+    public void setButtonClearFields() {
+        clearRecords();
     }
 
     private void setComboBoxIzdatnicaEntity() {
-        comboBoxIzdatnica.setItems(izdatniceObservableList);
+        comboBoxIzdatnica.setItems(FXCollections.observableList(izdatnicaService.getAll()));
         comboBoxIzdatnica.getSelectionModel().getSelectedItem();
     }
 
     private void setComboBoxRobaEntity() {
-        comboBoxRoba.setItems(robaObservableList);
+        comboBoxRoba.setItems(FXCollections.observableList(robaService.getAll()));
         comboBoxRoba.getSelectionModel().getSelectedItem();
     }
 
-    @FXML
-    private void provideAllProperties() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+    private void setTableColumnProperties() {
+        setProperty();
+        setStyle();
+        setCellValueProperties();
+    }
 
+    private void setProperty() {
+        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
         tableColumnIdIzdatnice.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceIzdatnica"));
+        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
+        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
+    }
+
+    private void setStyle() {
+        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnIdIzdatnice.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
+    }
+
+    private void setCellValueProperties() {
         tableColumnIdIzdatnice.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(IzdatnicaEntity item, boolean empty) {
@@ -109,13 +153,13 @@ public class StavkaIzdatniceController {
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.getIzdatnicaFirme().getNazivFirme() + "-[" + item.getDatum() + "]");
+                    setText(item.getIzdatnicaFirme().getOibFirme() + "-(" +
+                            item.getIzdatnicaFirme().getNazivFirme() + ")-[created: " +
+                            item.getDatum() + "]");
                 }
             }
         });
 
-        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
-        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnArticle.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(RobaEntity item, boolean empty) {
@@ -123,59 +167,22 @@ public class StavkaIzdatniceController {
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.getNazivArtikla() + "-[" + item.getCijena() + "]-[" + item.getKolicina() + "]");
+                    setText(item.getNazivArtikla() + "-(price: " +
+                            item.getCijena() + ")-[pieces: " +
+                            item.getKolicina() + "]");
                 }
             }
         });
-
-        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
-        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    public void setButtonSearch() {
-        final String company = textFieldCompany.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
-                textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
-        final String articleName = textFieldArticle.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
-                textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
-        final Integer amount = textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
-                Integer.valueOf(textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT));
-        buttonSearch(company, articleName, amount);
-    }
-
-    private void buttonSearch(String company, String articleName, Integer amount) {
-        FilteredList<StavkaIzdatniceEntity> searchList = stavkaIzdatniceObservableList
-                .filtered(stavkaIzdatnice -> stavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().getNazivFirme().toLowerCase().contains(company))
-                .filtered(stavkaIzdatnice -> stavkaIzdatnice.getStavkaIzdatniceRobe().getNazivArtikla().toLowerCase().contains(articleName))
-                .filtered(stavkaIzdatnice -> amount == null || Objects.equals(stavkaIzdatnice.getKolicina(), amount));
+    private void filteredSearchingOf(String firma, String artikl, String kolicina) {
+        FilteredList<StavkaIzdatniceEntity> searchList = filteredStavkaIzdatniceObservableListOfStorno
+                .filtered(stavkaIzdatnice -> firma.equals("") || stavkaIzdatnice.getStavkaIzdatniceIzdatnica()
+                        .getIzdatnicaFirme().getNazivFirme().toLowerCase().trim().contains(firma))
+                .filtered(stavkaIzdatnice -> artikl.equals("") || stavkaIzdatnice.getStavkaIzdatniceRobe()
+                        .getNazivArtikla().toLowerCase().contains(artikl))
+                .filtered(stavkaIzdatnice -> kolicina.equals("") || stavkaIzdatnice.getKolicina().toString().equals(kolicina));
         tableView.setItems(FXCollections.observableList(searchList));
-    }
-
-    public StavkaIzdatniceEntity setButtonSave() {
-        final IzdatnicaEntity companyNameDate = comboBoxIzdatnica.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxIzdatnica.getSelectionModel().getSelectedItem();
-
-        final RobaEntity article = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxRoba.getSelectionModel().getSelectedItem();
-
-        final Integer amount = textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim().equals("") ? null :
-                Integer.valueOf(textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim());
-
-        final String alertData = checkInputValues(companyNameDate, article, String.valueOf(amount));
-        StavkaIzdatniceEntity newStavkaIzdatnica = null;
-        if (Optional.ofNullable(companyNameDate).isPresent() && Optional.ofNullable(article).isPresent() &&
-                Optional.ofNullable(amount).isPresent()) {
-            if (!alertData.isEmpty()) {
-                utilService.getWarningAlert(alertData);
-            } else {
-                newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(
-                        new StavkaIzdatniceEntity(nextId(), companyNameDate, article, amount, false, null));
-               //TODO: tu iz nekog razloga puca, iskreira objekt ali ga pokaze nakon ponovnog pokretanja aplikacije
-                stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
-                tableView.setItems(stavkaIzdatniceObservableList);
-                initialize();
-            }
-        }
-        return newStavkaIzdatnica;
     }
 
     private Long nextId() {
@@ -183,25 +190,16 @@ public class StavkaIzdatniceController {
                 stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1001 : 1001;
     }
 
-    private String checkInputValues(IzdatnicaEntity company, RobaEntity article, String amount) {
+    private String setInputCheckingOf(IzdatnicaEntity company, RobaEntity article, String amount) {
+        return getDialogData(company, article, amount);
+    }
+
+    private String getDialogData(IzdatnicaEntity company, RobaEntity article, String amount) {
         List<String> listaProvjere = new ArrayList<>();
-        if (company == null || company.getIzdatnicaFirme().getNazivFirme().trim().isEmpty())
-            listaProvjere.add("Company name!");
-        if (article == null || article.toString().trim().isEmpty()) listaProvjere.add("Article name!");
-        if (amount == null || amount.trim().isEmpty()) listaProvjere.add("Amount!");
+        if (company == null || company.getIzdatnicaFirme().getNazivFirme().isEmpty()) listaProvjere.add("Company!");
+        if (article == null || article.toString().isEmpty()) listaProvjere.add("Article!");
+        if (amount == null || amount.isEmpty()) listaProvjere.add("Amount!");
         return String.join("\n", listaProvjere);
-    }
-
-    public void setButtonClearFields() {
-        clearRecords();
-    }
-
-    public void setButtonStorno() {
-        StavkaIzdatniceEntity stavkaIzdatnice = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (stavkaIzdatnice != null) {
-            stavkaIzdatniceService.createStornoStavkeIzdatnice(stavkaIzdatnice);
-            initialize();
-        }
     }
 
     private void clearRecords() {
@@ -211,5 +209,20 @@ public class StavkaIzdatniceController {
         comboBoxIzdatnica.getSelectionModel().clearSelection();
         comboBoxRoba.getSelectionModel().clearSelection();
         tableView.getSelectionModel().clearSelection();
+    }
+
+    private class TextFieldInsertedPropertiesData {
+        final String company = textFieldCompany.getText().trim().toLowerCase(Locale.ROOT);
+        final String articleName = textFieldArticle.getText().trim().toLowerCase(Locale.ROOT);
+        final String amount = textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
+    }
+
+    private class ComboBoxSelectedPropertiesData {
+        final IzdatnicaEntity selectedIzdatnica = comboBoxIzdatnica.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxIzdatnica.getSelectionModel().getSelectedItem();
+        final RobaEntity selectedArticle = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxRoba.getSelectionModel().getSelectedItem();
+        final Integer amount = textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim().equals("") ? null :
+                Integer.valueOf(textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim());
     }
 }

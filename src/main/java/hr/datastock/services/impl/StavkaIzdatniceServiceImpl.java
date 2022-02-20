@@ -26,6 +26,20 @@ public class StavkaIzdatniceServiceImpl implements StavkaIzdatniceService {
     }
 
     @Override
+    public StavkaIzdatniceEntity createEqualityBetweenAmount(StavkaIzdatniceEntity stavkaIzdatnicaEquality) {
+        return stavkaIzdatniceRepository.findById(stavkaIzdatnicaEquality.getIdStavkaIzdatnice())
+                .map(existingStavka -> {
+                    existingStavka.setIdStavkaIzdatnice(stavkaIzdatnicaEquality.getIdStavkaIzdatnice());
+                    existingStavka.setStavkaIzdatniceIzdatnica(stavkaIzdatnicaEquality.getStavkaIzdatniceIzdatnica());
+                    existingStavka.setStavkaIzdatniceRobe(stavkaIzdatnicaEquality.getStavkaIzdatniceRobe());
+                    existingStavka.setKolicina(stavkaIzdatnicaEquality.getKolicina());
+                    existingStavka.setStorno(false);
+                    existingStavka.setDatumStorno(null);
+                    return stavkaIzdatniceRepository.saveAndFlush(existingStavka);
+                }).orElse(null);
+    }
+
+    @Override
     public StavkaIzdatniceEntity createStornoStavkeIzdatnice(StavkaIzdatniceEntity stornoStavke) {
         return stavkaIzdatniceRepository.findById(stornoStavke.getIdStavkaIzdatnice())
                 .map(existingStavka -> {

@@ -1,7 +1,11 @@
 package hr.datastock.controllers;
 
 import hr.datastock.controllers.controllerutil.UtilService;
-import hr.datastock.entities.*;
+import hr.datastock.entities.PrimkaEntity;
+import hr.datastock.entities.RobaEntity;
+import hr.datastock.entities.StavkaPrimkeEntity;
+import hr.datastock.services.PrimkaService;
+import hr.datastock.services.RobaService;
 import hr.datastock.services.StavkaPrimkeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,18 +13,16 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class StavkaPrimkeController {
 
-    public static final Logger logger = LoggerFactory.getLogger(StavkaPrimkeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     @FXML
@@ -48,48 +50,102 @@ public class StavkaPrimkeController {
     @FXML
     private Button buttonSave;
     @FXML
+    private Button buttonStorno;
+    @FXML
     private Button buttonClearFields;
 
     @Autowired
     private StavkaPrimkeService stavkaPrimkeService;
 
     @Autowired
+    private PrimkaService primkaService;
+
+    @Autowired
+    private RobaService robaService;
+
+    @Autowired
     private UtilService utilService;
 
     private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
+    private ObservableList<StavkaPrimkeEntity> filteredStavkaPrimkeObservableListOfStorno;
 
     @FXML
     public void initialize() {
         stavkaPrimkeObservableList = FXCollections.observableList(stavkaPrimkeService.getAll());
+        filteredStavkaPrimkeObservableListOfStorno = FXCollections.observableList(
+                stavkaPrimkeObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
         setComboBoxPrimkaEntity();
         setComboBoxRobaEntity();
-        provideAllProperties();
+        setTableColumnProperties();
         clearRecords();
-        tableView.setItems(stavkaPrimkeObservableList);
-        logger.info("$%$%$% Izdatnica records initialized successfully!$%$%$%");
+        tableView.setItems(filteredStavkaPrimkeObservableListOfStorno);
+    }
+
+    public void setButtonSearch() {
+        TextFieldInsertedPropertiesData searchBy = new TextFieldInsertedPropertiesData();
+        filteredSearchingOf(searchBy.company, searchBy.articleName, searchBy.amount);
+    }
+
+    public StavkaPrimkeEntity setButtonSave() {
+        ComboBoxSelectedPropertiesData create = new ComboBoxSelectedPropertiesData();
+        final String alertData = setInputCheckingOf(
+                create.selectedPrimka, create.selectedArticle, String.valueOf(create.amount));
+        StavkaPrimkeEntity newStavkaPrimke = null;
+        if (!alertData.isEmpty()) {
+            utilService.getWarningAlert(alertData);
+        } else {
+            newStavkaPrimke = stavkaPrimkeService.createStavkaPrimke(new StavkaPrimkeEntity(nextId(),
+                    create.selectedPrimka, create.selectedArticle, create.amount, false, null));
+            stavkaPrimkeObservableList.add(newStavkaPrimke);
+            tableView.setItems(stavkaPrimkeObservableList);
+            initialize();
+        }
+        return newStavkaPrimke;
+    }
+
+    public void setButtonStorno() {
+        StavkaPrimkeEntity stavkaPrimke = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (stavkaPrimke != null && utilService.getConfirmForRemoveAlert()) {
+            stavkaPrimkeService.createStornoStavkePrimke(stavkaPrimke);
+            initialize();
+        }
+    }
+
+    public void setButtonClearFields() {
+        clearRecords();
     }
 
     private void setComboBoxPrimkaEntity() {
-        Set<PrimkaEntity> listOfCompanyAndDate = stavkaPrimkeObservableList.stream().map(StavkaPrimkeEntity::getStavkaPrimkePrimka).collect(Collectors.toSet());
-        ObservableList<PrimkaEntity> firmeEntityComboSearchObservableList = FXCollections.observableList(new ArrayList<>(listOfCompanyAndDate));
-        comboBoxPrimka.setItems(firmeEntityComboSearchObservableList);
+        comboBoxPrimka.setItems(FXCollections.observableList(primkaService.getAll()));
         comboBoxPrimka.getSelectionModel().selectFirst();
     }
 
     private void setComboBoxRobaEntity() {
-        Set<RobaEntity> listOfArticles = stavkaPrimkeObservableList.stream().map(StavkaPrimkeEntity::getStavkaPrimkeRobe).collect(Collectors.toSet());
-        ObservableList<RobaEntity> robaEntityObservableList = FXCollections.observableList(new ArrayList<>(listOfArticles));
-        comboBoxRoba.setItems(robaEntityObservableList);
+        comboBoxRoba.setItems(FXCollections.observableList(robaService.getAll()));
         comboBoxRoba.getSelectionModel().selectFirst();
     }
 
-    @FXML
-    private void provideAllProperties() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+    private void setTableColumnProperties() {
+        setProperty();
+        setStyle();
+        setCellValueProperties();
+    }
 
+    private void setProperty() {
+        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
         tableColumnPrimka.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
+        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
+        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
+    }
+
+    private void setStyle() {
+        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnPrimka.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
+        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
+    }
+
+    private void setCellValueProperties() {
         tableColumnPrimka.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(PrimkaEntity item, boolean empty) {
@@ -97,13 +153,13 @@ public class StavkaPrimkeController {
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.getPrimkaFirme().getNazivFirme() + "-[" + item.getDatum() + "]");
+                    setText(item.getPrimkaFirme().getOibFirme() + "-(" +
+                            item.getPrimkaFirme().getNazivFirme() + ")-[created: " +
+                            item.getDatum() + "]");
                 }
             }
         });
 
-        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
-        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
         tableColumnArticle.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(RobaEntity item, boolean empty) {
@@ -111,58 +167,22 @@ public class StavkaPrimkeController {
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.getNazivArtikla() + "-[" + item.getCijena() + "]-[" + item.getKolicina() + "]");
+                    setText(item.getNazivArtikla() + "-(price: " +
+                            item.getCijena() + ")-[pieces: " +
+                            item.getKolicina() + "]");
                 }
             }
         });
-
-        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
-        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    public void setButtonSearch() {
-        final String company = textFieldCompany.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
-                textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
-        final String articleName = textFieldArticle.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
-                textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
-        final Integer amount = textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT).equals("") ? null :
-                Integer.valueOf(textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT));
-        buttonSearch(company, articleName, amount);
-    }
-
-    private void buttonSearch(String company, String articleName, Integer amount) {
-        FilteredList<StavkaPrimkeEntity> searchList = stavkaPrimkeObservableList
-                .filtered(stavkaIzdatnice -> stavkaIzdatnice.getStavkaPrimkePrimka().getPrimkaFirme().getNazivFirme().toLowerCase().contains(company))
-                .filtered(stavkaIzdatnice -> stavkaIzdatnice.getStavkaPrimkeRobe().getNazivArtikla().toLowerCase().contains(articleName))
-                .filtered(stavkaIzdatnice -> amount == null || Objects.equals(stavkaIzdatnice.getKolicina(), amount));
+    private void filteredSearchingOf(String firma, String artikl, String kolicina) {
+        FilteredList<StavkaPrimkeEntity> searchList = filteredStavkaPrimkeObservableListOfStorno
+                .filtered(stavkaPrimke -> firma.equals("") || stavkaPrimke.getStavkaPrimkePrimka()
+                        .getPrimkaFirme().getNazivFirme().toLowerCase().trim().contains(firma))
+                .filtered(stavkaPrimke -> artikl.equals("") || stavkaPrimke.getStavkaPrimkeRobe()
+                        .getNazivArtikla().toLowerCase().contains(artikl))
+                .filtered(stavkaIzdatnice -> kolicina.equals("") || stavkaIzdatnice.getKolicina().toString().equals(kolicina));
         tableView.setItems(FXCollections.observableList(searchList));
-    }
-
-    public StavkaPrimkeEntity setButtonSave() {
-        final PrimkaEntity companyNameAndDate = comboBoxPrimka.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxPrimka.getSelectionModel().getSelectedItem();
-
-        final RobaEntity article = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
-                comboBoxRoba.getSelectionModel().getSelectedItem();
-
-        final Integer amount = textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim().equals("") ? null :
-                Integer.valueOf(textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim());
-
-        final String alertData = checkInputValues(companyNameAndDate, article, String.valueOf(amount));
-        StavkaPrimkeEntity newStavkaIzdatnica = null;
-        if (Optional.ofNullable(companyNameAndDate).isPresent() && Optional.ofNullable(article).isPresent() &&
-                Optional.ofNullable(amount).isPresent()) {
-            if (!alertData.isEmpty()) {
-                utilService.getWarningAlert(alertData);
-            } else {
-                newStavkaIzdatnica = stavkaPrimkeService.createStavkaIzdatnice(
-                        new StavkaPrimkeEntity(nextId(), companyNameAndDate, article, amount, false, null));
-                stavkaPrimkeObservableList.add(newStavkaIzdatnica);
-                tableView.setItems(stavkaPrimkeObservableList);
-                initialize();
-            }
-        }
-        return newStavkaIzdatnica;
     }
 
     private Long nextId() {
@@ -170,17 +190,16 @@ public class StavkaPrimkeController {
                 stavkaPrimkeObservableList.stream().mapToLong(StavkaPrimkeEntity::getIdStavkaPrimke).max().getAsLong() + 1001 : 1001;
     }
 
-    private String checkInputValues(PrimkaEntity company, RobaEntity article, String amount) {
-        List<String> listaProvjere = new ArrayList<>();
-        if (company == null || company.getPrimkaFirme().getNazivFirme().trim().isEmpty())
-            listaProvjere.add("Company name!");
-        if (article == null || article.toString().trim().isEmpty()) listaProvjere.add("Article name!");
-        if (amount == null || amount.trim().isEmpty()) listaProvjere.add("Amount!");
-        return String.join("\n", listaProvjere);
+    private String setInputCheckingOf(PrimkaEntity company, RobaEntity article, String amount) {
+        return getDialogData(company, article, amount);
     }
 
-    public void setButtonClearFields() {
-        clearRecords();
+    private String getDialogData(PrimkaEntity company, RobaEntity article, String amount) {
+        List<String> listaProvjere = new ArrayList<>();
+        if (company == null || company.getPrimkaFirme().getNazivFirme().isEmpty()) listaProvjere.add("Company name!");
+        if (article == null || article.toString().isEmpty()) listaProvjere.add("Article name!");
+        if (amount == null || amount.isEmpty()) listaProvjere.add("Amount!");
+        return String.join("\n", listaProvjere);
     }
 
     private void clearRecords() {
@@ -190,5 +209,20 @@ public class StavkaPrimkeController {
         comboBoxPrimka.getSelectionModel().clearSelection();
         comboBoxRoba.getSelectionModel().clearSelection();
         tableView.getSelectionModel().clearSelection();
+    }
+
+    private class TextFieldInsertedPropertiesData {
+        final String company = textFieldCompany.getText().trim().toLowerCase(Locale.ROOT);
+        final String articleName = textFieldArticle.getText().trim().toLowerCase(Locale.ROOT);
+        final String amount = textFieldKolicina.getText().trim().toLowerCase(Locale.ROOT);
+    }
+
+    private class ComboBoxSelectedPropertiesData {
+        final PrimkaEntity selectedPrimka = comboBoxPrimka.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxPrimka.getSelectionModel().getSelectedItem();
+        final RobaEntity selectedArticle = comboBoxRoba.getSelectionModel().getSelectedItem() == null ? null :
+                comboBoxRoba.getSelectionModel().getSelectedItem();
+        final Integer amount = textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim().equals("") ? null :
+                Integer.valueOf(textFieldKolicina.getText().toLowerCase(Locale.ROOT).trim());
     }
 }
