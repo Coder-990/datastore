@@ -1,14 +1,13 @@
 package hr.datastock.services;
 
-import hr.datastock.DatastockJavaFXAplication;
-
+import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 import java.io.IOException;
 
 public interface StageInitializerService {
 
-    void onStartOfLogin(DatastockJavaFXAplication.StageReadyEvent event);
+    void onStartOfLogin(StageReadyEvent event);
 
-    void onStartOfMain(DatastockJavaFXAplication.StageReadyEvent event);
+    void onStartOfMain(StageReadyEvent event);
 
     void onStartOfFirme() throws IOException;
 

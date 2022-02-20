@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.StageInitializer;
+import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,37 +29,37 @@ public class MainController {
     private MenuItem menuItemStornoStavkaIzdatnice;
 
     @Autowired
-    private StageInitializer stageInitializer;
+    private StageInitializerService stageInitializerService;
 
     public void screenFirme() throws IOException {
-        stageInitializer.onStartOfFirme();
+        stageInitializerService.onStartOfFirme();
     }
 
     public void screenRoba() throws IOException {
-        stageInitializer.onStartOfRoba();
+        stageInitializerService.onStartOfRoba();
     }
 
     public void screenIzdatnice() throws IOException {
-        stageInitializer.onStartOfIzdatnica();
+        stageInitializerService.onStartOfIzdatnica();
     }
 
     public void screenStavkaIzdatnice() throws IOException {
-        stageInitializer.onStartOfStavkaIzdatnica();
+        stageInitializerService.onStartOfStavkaIzdatnica();
     }
 
     public void screenStornoStavkaIzdatnice() throws IOException {
-        stageInitializer.onStartOfStornoStavkaIzdatnica();
+        stageInitializerService.onStartOfStornoStavkaIzdatnica();
     }
 
     public void screenPrimke() throws IOException {
-        stageInitializer.onStartOfPrimka();
+        stageInitializerService.onStartOfPrimka();
     }
 
     public void screenStavkaPrimke() throws IOException {
-        stageInitializer.onStartOfStavkaPrimka();
+        stageInitializerService.onStartOfStavkaPrimka();
     }
 
     public void screenStornoStavkaPrimke() throws IOException {
-        stageInitializer.onStartOfStornoStavkaPrimka();
+        stageInitializerService.onStartOfStornoStavkaPrimka();
     }
 }

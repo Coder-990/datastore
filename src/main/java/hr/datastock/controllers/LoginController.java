@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.DatastockJavaFXAplication;
+import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 import hr.datastock.services.StageInitializerService;
 import hr.datastock.services.RacunService;
 import javafx.fxml.FXML;
@@ -47,7 +47,7 @@ public class LoginController {
         try {
             racunService.login(textFieldUserId.getText(), textFieldPassword.getText());
             labelMessage.setText("Login Successful");
-            stageInitializerService.onStartOfMain(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));
+            stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
             setButtonClose();
         } catch (RuntimeException ex) {
             labelMessage.setText(ex.getMessage());
