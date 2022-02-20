@@ -4,7 +4,6 @@ import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.entities.StavkaIzdatniceEntity;
-import hr.datastock.entities.StavkaPrimkeEntity;
 import hr.datastock.services.IzdatnicaService;
 import hr.datastock.services.RobaService;
 import hr.datastock.services.StavkaIzdatniceService;
@@ -14,17 +13,16 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class StavkaIzdatniceController {
 
-    public static final Logger logger = LoggerFactory.getLogger(StavkaIzdatniceController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     @FXML
@@ -75,7 +73,7 @@ public class StavkaIzdatniceController {
     public void initialize() {
         stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll());
         filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
-                        stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
+                stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
         setComboBoxIzdatnicaEntity();
         setComboBoxRobaEntity();
         setTableColumnProperties();

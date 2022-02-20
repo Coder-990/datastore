@@ -8,8 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +18,6 @@ import java.util.List;
 @Component
 public class RobaController {
 
-    private static final Logger logger = LoggerFactory.getLogger(RobaController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     @FXML

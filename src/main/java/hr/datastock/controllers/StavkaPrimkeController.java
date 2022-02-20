@@ -1,7 +1,9 @@
 package hr.datastock.controllers;
 
 import hr.datastock.controllers.controllerutil.UtilService;
-import hr.datastock.entities.*;
+import hr.datastock.entities.PrimkaEntity;
+import hr.datastock.entities.RobaEntity;
+import hr.datastock.entities.StavkaPrimkeEntity;
 import hr.datastock.services.PrimkaService;
 import hr.datastock.services.RobaService;
 import hr.datastock.services.StavkaPrimkeService;
@@ -11,17 +13,16 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class StavkaPrimkeController {
 
-    public static final Logger logger = LoggerFactory.getLogger(StavkaPrimkeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     @FXML

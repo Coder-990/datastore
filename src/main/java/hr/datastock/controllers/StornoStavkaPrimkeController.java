@@ -1,6 +1,9 @@
 package hr.datastock.controllers;
 
-import hr.datastock.entities.*;
+import hr.datastock.entities.FirmeEntity;
+import hr.datastock.entities.PrimkaEntity;
+import hr.datastock.entities.RobaEntity;
+import hr.datastock.entities.StavkaPrimkeEntity;
 import hr.datastock.services.StavkaPrimkeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,8 +11,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,6 @@ import java.util.stream.Collectors;
 @Component
 public class StornoStavkaPrimkeController {
 
-    public static final Logger logger = LoggerFactory.getLogger(StornoStavkaPrimkeController.class);
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
     public static final String DATE_FORMAT = "dd.MM.yyyy";
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);

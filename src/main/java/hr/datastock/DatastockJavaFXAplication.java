@@ -28,8 +28,7 @@ public class DatastockJavaFXAplication extends Application {
         applcationContext.publishEvent(new StageReadyEvent(stage));
     }
 
-    static class StageReadyEvent extends ApplicationEvent {
-
+    public static class StageReadyEvent extends ApplicationEvent {
         public StageReadyEvent(Stage stage) {
             super(stage);
         }

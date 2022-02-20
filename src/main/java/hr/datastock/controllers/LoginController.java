@@ -1,12 +1,14 @@
 package hr.datastock.controllers;
 
-import hr.datastock.entities.RacunEntity;
+import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
+import hr.datastock.services.StageInitializerService;
 import hr.datastock.services.RacunService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,24 +30,26 @@ public class LoginController {
     @FXML
     private TextField textFieldUserId;
 
-    private RacunEntity loginUser;
+
+    @Autowired
+    StageInitializerService stageInitializerService;
 
     @Autowired
     RacunService racunService;
 
     @FXML
-     void setButtonClose() {
+    void setButtonClose() {
         buttonLogin.getScene().getWindow().hide();
     }
 
     @FXML
-     void setButtonLogin() {
+    void setButtonLogin() {
         try {
             racunService.login(textFieldUserId.getText(), textFieldPassword.getText());
             labelMessage.setText("Login Successful");
-            MainController.getMainScreen();
+            stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
             setButtonClose();
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             labelMessage.setText(ex.getMessage());
             ex.printStackTrace();
         }
