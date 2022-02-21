@@ -8,7 +8,7 @@ public interface PrimkaService {
 
     List<PrimkaEntity> getAll();
 
-    PrimkaEntity createPrimka(PrimkaEntity primka);
+    PrimkaEntity createPrimka(final PrimkaEntity primka);
 
-    void deletePrimka(Long id);
+    void deletePrimka(final Long id);
 }

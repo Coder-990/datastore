@@ -28,6 +28,6 @@ public class FirmeEntity {
 
     @Override
     public String toString() {
-        return oibFirme + " ["+ nazivFirme+"]";
+        return this.oibFirme + " ["+ this.nazivFirme+"]";
     }
 }

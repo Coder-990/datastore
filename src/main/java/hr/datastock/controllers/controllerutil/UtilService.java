@@ -8,5 +8,5 @@ public interface UtilService {
 
     boolean getConfirmForRemoveAlert();
 
-    void getnformationMessageAlert();
+    void getIformationMessageAlert();
 }

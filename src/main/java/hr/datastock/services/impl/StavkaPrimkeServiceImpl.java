@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StavkaPrimkeServiceImpl implements StavkaPrimkeService {
@@ -16,18 +17,18 @@ public class StavkaPrimkeServiceImpl implements StavkaPrimkeService {
     StavkaPrimkeRepository stavkaPrimkeRepository;
 
     @Override
-    public List<StavkaPrimkeEntity> getAll(){
-        return  stavkaPrimkeRepository.findAll();
+    public List<StavkaPrimkeEntity> getAll() {
+        return this.stavkaPrimkeRepository.findAll();
     }
 
     @Override
-    public StavkaPrimkeEntity createStavkaPrimke(StavkaPrimkeEntity primka){
-        return stavkaPrimkeRepository.save(primka);
+    public StavkaPrimkeEntity createStavkaPrimke(final StavkaPrimkeEntity primka) {
+        return this.stavkaPrimkeRepository.save(primka);
     }
 
     @Override
-    public StavkaPrimkeEntity createStornoStavkePrimke(StavkaPrimkeEntity stornoStavke) {
-        return stavkaPrimkeRepository.findById(stornoStavke.getIdStavkaPrimke())
+    public Optional<StavkaPrimkeEntity> createStornoStavkePrimke(final StavkaPrimkeEntity stornoStavke) {
+        return this.stavkaPrimkeRepository.findById(stornoStavke.getIdStavkaPrimke())
                 .map(existingStavka -> {
                     existingStavka.setIdStavkaPrimke(stornoStavke.getIdStavkaPrimke());
                     existingStavka.setStavkaPrimkePrimka(stornoStavke.getStavkaPrimkePrimka());
@@ -35,8 +36,8 @@ public class StavkaPrimkeServiceImpl implements StavkaPrimkeService {
                     existingStavka.setKolicina(stornoStavke.getKolicina());
                     existingStavka.setStorno(true);
                     existingStavka.setDatumStorno(LocalDate.now());
-                    return stavkaPrimkeRepository.saveAndFlush(existingStavka);
-                }).orElse(null);
+                    return this.stavkaPrimkeRepository.saveAndFlush(existingStavka);
+                });
     }
 
 }

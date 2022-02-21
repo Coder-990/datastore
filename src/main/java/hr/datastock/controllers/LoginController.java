@@ -39,16 +39,16 @@ public class LoginController {
 
     @FXML
     void setButtonClose() {
-        buttonLogin.getScene().getWindow().hide();
+        this.buttonLogin.getScene().getWindow().hide();
     }
 
     @FXML
     void setButtonLogin() {
         try {
-            racunService.login(textFieldUserId.getText(), textFieldPassword.getText());
-            labelMessage.setText("Login Successful");
-            stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
-            setButtonClose();
+            this.racunService.login(this.textFieldUserId.getText(), this.textFieldPassword.getText());
+            this.labelMessage.setText("Login Successful");
+            this.stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
+            this.setButtonClose();
         } catch (RuntimeException ex) {
             labelMessage.setText(ex.getMessage());
             ex.printStackTrace();

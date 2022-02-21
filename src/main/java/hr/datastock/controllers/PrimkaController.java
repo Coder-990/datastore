@@ -64,80 +64,80 @@ public class PrimkaController {
 
     @FXML
     public void initialize() {
-        primkeObservableList = FXCollections.observableList(primkaService.getAll());
-        setComboBoxFirmeEntity();
-        setComboBoxPrimkaEntity();
-        setTableColumnProperties();
-        clearRecords();
-        tableView.setItems(primkeObservableList);
+        this.primkeObservableList = FXCollections.observableList(this.primkaService.getAll());
+        this.setComboBoxFirmeEntity();
+        this.setComboBoxPrimkaEntity();
+        this.setTableColumnProperties();
+        this.clearRecords();
+        this.tableView.setItems(this.primkeObservableList);
     }
 
     public void setButtonSearch() {
-        GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
-        filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
+        final GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
+        this.filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
     }
 
     public PrimkaEntity setButtonSave() {
-        ComboAndPickerSelectedPropertiesData create = new ComboAndPickerSelectedPropertiesData();
-        final String alertData = setInputCheckingOf(create.selectedDate, create.selectedFirma);
+        final ComboAndPickerSelectedPropertiesData create = new ComboAndPickerSelectedPropertiesData();
+        final String alertData = this.setInputCheckingOf(create.selectedDate, create.selectedFirma);
         PrimkaEntity newPrimka = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            newPrimka = primkaService.createPrimka(new PrimkaEntity(nextId(), create.selectedDate, create.selectedFirma));
-            primkeObservableList.add(newPrimka);
-            tableView.setItems(primkeObservableList);
-            initialize();
+            newPrimka = this.primkaService.createPrimka(new PrimkaEntity(this.nextId(), create.selectedDate, create.selectedFirma));
+            this.primkeObservableList.add(newPrimka);
+            this.tableView.setItems(this.primkeObservableList);
+            this.initialize();
         }
         return newPrimka;
     }
 
     public void setButtonDelete() {
-        PrimkaEntity primka = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (primka != null && utilService.getConfirmForRemoveAlert()) {
-            primkaService.deletePrimka(primka.getIdPrimke());
-            initialize();
+        final PrimkaEntity primka = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (primka != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.primkaService.deletePrimka(primka.getIdPrimke());
+            this.initialize();
         }
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        this.clearRecords();
     }
 
     private void setComboBoxFirmeEntity() {
-        comboBoxSearch.setItems(FXCollections.observableList(firmeService.getAll()));
-        comboBoxSearch.getSelectionModel().selectFirst();
+        this.comboBoxSearch.setItems(FXCollections.observableList(this.firmeService.getAll()));
+        this.comboBoxSearch.getSelectionModel().selectFirst();
     }
 
     private void setComboBoxPrimkaEntity() {
-        final Set<FirmeEntity> oibFirmeFilterList = primkeObservableList.stream()
+        final Set<FirmeEntity> oibFirmeFilterList = this.primkeObservableList.stream()
                 .map(PrimkaEntity::getPrimkaFirme).collect(Collectors.toSet());
-        comboBoxCreate.setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
-        comboBoxCreate.getSelectionModel().selectFirst();
+        this.comboBoxCreate.setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
+        this.comboBoxCreate.getSelectionModel().selectFirst();
     }
 
     private void setTableColumnProperties() {
-        setProperty();
-        setStyle();
-        setCellValueProperties();
+        this.setProperty();
+        this.setStyle();
+        this.setCellValueProperties();
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idPrimke"));
-        tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("primkaFirme"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idPrimke"));
+        this.tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        this.tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("primkaFirme"));
     }
 
     private void setStyle() {
-        tableColumnFirmeEntity.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnFirmeEntity.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private void setCellValueProperties() {
-        tableColumnDatum.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnDatum.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(LocalDate item, boolean empty) {
+            protected void updateItem(final LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -147,9 +147,9 @@ public class PrimkaController {
             }
         });
 
-        tableColumnFirmeEntity.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnFirmeEntity.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(FirmeEntity item, boolean empty) {
+            protected void updateItem(final FirmeEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -160,35 +160,35 @@ public class PrimkaController {
         });
     }
 
-    private void filteredSearchingOf(LocalDate datePickerFormat, String oibFirme) {
-        FilteredList<PrimkaEntity> searchList = primkeObservableList
+    private void filteredSearchingOf(final LocalDate datePickerFormat, final String oibFirme) {
+        final FilteredList<PrimkaEntity> searchList = this.primkeObservableList
                 .filtered(primka -> oibFirme == null || primka.getPrimkaFirme().getOibFirme().equals(oibFirme))
                 .filtered(primka -> datePickerFormat == null || primka.getDatum().equals(datePickerFormat));
-        tableView.setItems(FXCollections.observableList(searchList));
+        this.tableView.setItems(FXCollections.observableList(searchList));
     }
 
     private Long nextId() {
-        return primkeObservableList.size() > 0 ?
-                primkeObservableList.stream().mapToLong(PrimkaEntity::getIdPrimke).max().getAsLong() + 1001 : 1001;
+        return !this.primkeObservableList.isEmpty() ?
+                this.primkeObservableList.stream().mapToLong(PrimkaEntity::getIdPrimke).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(LocalDate datum, FirmeEntity firme) {
-        return getDialogData(datum, firme);
+    private String setInputCheckingOf(final LocalDate datum, final FirmeEntity firme) {
+        return this.getDialogData(datum, firme);
     }
 
-    private String getDialogData(LocalDate datum, FirmeEntity firme) {
-        List<String> listaProvjere = new ArrayList<>();
+    private String getDialogData(final LocalDate datum, final FirmeEntity firme) {
+        final List<String> listaProvjere = new ArrayList<>();
         if (firme == null || firme.getOibFirme().trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Date!");
         return String.join("\n", listaProvjere);
     }
 
     private void clearRecords() {
-        datePickerDatum.setValue(null);
-        datePickerDatum.getEditor().clear();
-        comboBoxCreate.getSelectionModel().clearSelection();
-        comboBoxSearch.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().clearSelection();
+        this.datePickerDatum.setValue(null);
+        this.datePickerDatum.getEditor().clear();
+        this.comboBoxCreate.getSelectionModel().clearSelection();
+        this.comboBoxSearch.getSelectionModel().clearSelection();
+        this.tableView.getSelectionModel().clearSelection();
     }
 
     private class GetDataFromComboAndPicker {

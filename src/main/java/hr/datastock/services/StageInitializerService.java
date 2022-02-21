@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public interface StageInitializerService {
 
-    void onStartOfLogin(StageReadyEvent event);
+    void onStartOfLogin(final StageReadyEvent event);
 
-    void onStartOfMain(StageReadyEvent event);
+    void onStartOfMain(final StageReadyEvent event);
 
     void onStartOfFirme() throws IOException;
 

@@ -29,6 +29,6 @@ public class IzdatnicaEntity {
 
     @Override
     public String toString() {
-        return izdatnicaFirme.getNazivFirme() + "- [created: " + datum + "]";
+        return this.izdatnicaFirme.getNazivFirme() + "- [created: " + this.datum + "]";
     }
 }

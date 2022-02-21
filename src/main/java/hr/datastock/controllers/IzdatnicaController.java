@@ -64,80 +64,80 @@ public class IzdatnicaController {
 
     @FXML
     public void initialize() {
-        izdatnicaObservableList = FXCollections.observableList(izdatnicaService.getAll());
-        setComboBoxFirmeEntity();
-        setComboBoxIzdatnicaEntity();
-        setTableColumnProperties();
-        clearRecords();
-        tableView.setItems(izdatnicaObservableList);
+        this.izdatnicaObservableList = FXCollections.observableList(this.izdatnicaService.getAll());
+        this.setComboBoxFirmeEntity();
+        this.setComboBoxIzdatnicaEntity();
+        this.setTableColumnProperties();
+        this.clearRecords();
+        this.tableView.setItems(this.izdatnicaObservableList);
     }
 
     public void setButtonSearch() {
-        GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
-        filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
+        final GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
+        this.filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
     }
 
     public IzdatnicaEntity setButtonSave() {
-        ComboAndPickerSelectedPropertiesData create = new ComboAndPickerSelectedPropertiesData();
-        final String alertData = setInputCheckingOf(create.selectedDate, create.selectedFirma);
+        final ComboAndPickerSelectedPropertiesData create = new ComboAndPickerSelectedPropertiesData();
+        final String alertData = this.setInputCheckingOf(create.selectedDate, create.selectedFirma);
         IzdatnicaEntity newIzdatnica = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            newIzdatnica = izdatnicaService.createIzdatnica(new IzdatnicaEntity(nextId(), create.selectedDate, create.selectedFirma));
-            izdatnicaObservableList.add(newIzdatnica);
-            tableView.setItems(izdatnicaObservableList);
-            initialize();
+            newIzdatnica = this.izdatnicaService.createIzdatnica(new IzdatnicaEntity(this.nextId(), create.selectedDate, create.selectedFirma));
+            this.izdatnicaObservableList.add(newIzdatnica);
+            this.tableView.setItems(this.izdatnicaObservableList);
+            this.initialize();
         }
         return newIzdatnica;
     }
 
     public void setButtonDelete() {
-        IzdatnicaEntity izdatnica = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (izdatnica != null && utilService.getConfirmForRemoveAlert()) {
-            izdatnicaService.deleteIzdatnica(izdatnica.getIdIzdatnice());
-            initialize();
+        final IzdatnicaEntity izdatnica = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (izdatnica != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.izdatnicaService.deleteIzdatnica(izdatnica.getIdIzdatnice());
+            this.initialize();
         }
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        this.clearRecords();
     }
 
     private void setComboBoxFirmeEntity() {
-        comboBoxSearch.setItems(FXCollections.observableList(firmeService.getAll()));
-        comboBoxSearch.getSelectionModel().selectFirst();
+        this.comboBoxSearch.setItems(FXCollections.observableList(this.firmeService.getAll()));
+        this.comboBoxSearch.getSelectionModel().selectFirst();
     }
 
     private void setComboBoxIzdatnicaEntity() {
-        final Set<FirmeEntity> oibFirmeFilterList = izdatnicaObservableList.stream()
+        final Set<FirmeEntity> oibFirmeFilterList = this.izdatnicaObservableList.stream()
                 .map(IzdatnicaEntity::getIzdatnicaFirme).collect(Collectors.toSet());
-        comboBoxCreate.setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
-        comboBoxCreate.getSelectionModel().selectFirst();
+        this.comboBoxCreate.setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
+        this.comboBoxCreate.getSelectionModel().selectFirst();
     }
 
     private void setTableColumnProperties() {
-        setProperty();
-        setStyle();
-        setCellValueProperties();
+        this.setProperty();
+        this.setStyle();
+        this.setCellValueProperties();
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idIzdatnice"));
-        tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("izdatnicaFirme"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idIzdatnice"));
+        this.tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        this.tableColumnFirmeEntity.setCellValueFactory(new PropertyValueFactory<>("izdatnicaFirme"));
     }
 
     private void setStyle() {
-        tableColumnFirmeEntity.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnFirmeEntity.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private void setCellValueProperties() {
-        tableColumnDatum.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnDatum.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(LocalDate item, boolean empty) {
+            protected void updateItem(final LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -147,9 +147,9 @@ public class IzdatnicaController {
             }
         });
 
-        tableColumnFirmeEntity.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnFirmeEntity.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(FirmeEntity item, boolean empty) {
+            protected void updateItem(final FirmeEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -160,35 +160,35 @@ public class IzdatnicaController {
         });
     }
 
-    private void filteredSearchingOf(LocalDate datePickerFormat, String oibFirme) {
-        FilteredList<IzdatnicaEntity> searchList = izdatnicaObservableList
+    private void filteredSearchingOf(final LocalDate datePickerFormat, final String oibFirme) {
+        final FilteredList<IzdatnicaEntity> searchList = this.izdatnicaObservableList
                 .filtered(izdatnica -> oibFirme == null || izdatnica.getIzdatnicaFirme().getOibFirme().equals(oibFirme))
                 .filtered(izdatnica -> datePickerFormat == null || izdatnica.getDatum().equals(datePickerFormat));
-        tableView.setItems(FXCollections.observableList(searchList));
+        this.tableView.setItems(FXCollections.observableList(searchList));
     }
 
     private Long nextId() {
-        return izdatnicaObservableList.size() > 0 ?
-                izdatnicaObservableList.stream().mapToLong(IzdatnicaEntity::getIdIzdatnice).max().getAsLong() + 1001 : 1001;
+        return !this.izdatnicaObservableList.isEmpty() ?
+                this.izdatnicaObservableList.stream().mapToLong(IzdatnicaEntity::getIdIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(LocalDate datum, FirmeEntity firme) {
-        return getDialogData(datum, firme);
+    private String setInputCheckingOf(final LocalDate datum, final FirmeEntity firme) {
+        return this.getDialogData(datum, firme);
     }
 
-    private String getDialogData(LocalDate datum, FirmeEntity firme) {
-        List<String> listaProvjere = new ArrayList<>();
+    private String getDialogData(final LocalDate datum, final FirmeEntity firme) {
+        final List<String> listaProvjere = new ArrayList<>();
         if (firme == null || firme.getOibFirme().trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (datum == null || datum.toString().trim().isEmpty()) listaProvjere.add("Date!");
         return String.join("\n", listaProvjere);
     }
 
     private void clearRecords() {
-        datePickerDatum.setValue(null);
-        datePickerDatum.getEditor().clear();
-        comboBoxCreate.getSelectionModel().clearSelection();
-        comboBoxSearch.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().clearSelection();
+        this.datePickerDatum.setValue(null);
+        this.datePickerDatum.getEditor().clear();
+        this.comboBoxCreate.getSelectionModel().clearSelection();
+        this.comboBoxSearch.getSelectionModel().clearSelection();
+        this.tableView.getSelectionModel().clearSelection();
     }
 
     private class GetDataFromComboAndPicker {

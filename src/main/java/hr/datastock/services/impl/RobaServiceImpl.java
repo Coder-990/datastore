@@ -17,30 +17,30 @@ public class RobaServiceImpl implements RobaService {
 
     @Override
     public List<RobaEntity> getAll() {
-        return robaRepository.findAll();
+        return this.robaRepository.findAll();
     }
 
     @Override
-    public RobaEntity createRoba(RobaEntity roba) {
-        return robaRepository.save(roba);
+    public RobaEntity createRoba(final RobaEntity roba) {
+        return this.robaRepository.save(roba);
     }
 
     @Override
     public RobaEntity updateRoba(RobaEntity roba, Long id) {
-        return robaRepository.findById(id)
+        return this.robaRepository.findById(id)
                 .map(existingRoba -> {
                     existingRoba.setNazivArtikla(roba.getNazivArtikla());
                     existingRoba.setKolicina(roba.getKolicina());
                     existingRoba.setCijena(roba.getCijena());
                     existingRoba.setOpis(roba.getOpis());
                     existingRoba.setJmj(roba.getJmj());
-                    return robaRepository.saveAndFlush(existingRoba);
+                    return this.robaRepository.saveAndFlush(existingRoba);
                 }).orElseThrow(() -> new RobaEntityExistsRuntimeException(id));
     }
 
     @Override
-    public void deleteRoba(Long id) {
-        robaRepository.deleteById(id);
+    public void deleteRoba(final Long id) {
+        this.robaRepository.deleteById(id);
     }
 
 }

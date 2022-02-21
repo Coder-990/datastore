@@ -62,66 +62,66 @@ public class StornoStavkaPrimkeController {
 
     @FXML
     public void initialize() {
-        stavkaPrimkeObservableList = FXCollections.observableList(stavkaPrimkeService.getAll()
+        this.stavkaPrimkeObservableList = FXCollections.observableList(this.stavkaPrimkeService.getAll()
                 .stream().filter(StavkaPrimkeEntity::getStorno).toList());
-        setComboBoxrimkeEntity();
-        setComboBoxRobaEntity();
-        setTableColumnProperties();
-        clearRecords();
-        tableView.setItems(stavkaPrimkeObservableList);
+        this.setComboBoxrimkeEntity();
+        this.setComboBoxRobaEntity();
+        this.setTableColumnProperties();
+        this.clearRecords();
+        this.tableView.setItems(this.stavkaPrimkeObservableList);
     }
 
     public void setButtonSearch() {
-        TextFieldDatePickerInsertedPropertyData searchBy = new TextFieldDatePickerInsertedPropertyData();
-        felteredSearchingOf(searchBy.firma, searchBy.artikl, searchBy.datumStorno);
+        final TextFieldDatePickerInsertedPropertyData searchBy = new TextFieldDatePickerInsertedPropertyData();
+        this.felteredSearchingOf(searchBy.firma, searchBy.artikl, searchBy.datumStorno);
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        this.clearRecords();
     }
 
     private void setComboBoxrimkeEntity() {
-        Set<FirmeEntity> listOfFirme = stavkaPrimkeObservableList.stream()
+        final Set<FirmeEntity> listOfFirme = this.stavkaPrimkeObservableList.stream()
                 .map(stornoStavkaPrimke -> stornoStavkaPrimke.getStavkaPrimkePrimka().getPrimkaFirme())
                 .collect(Collectors.toSet());
-        comboBoxPrimka.setItems(FXCollections.observableList(new ArrayList<>(listOfFirme)));
-        comboBoxPrimka.getSelectionModel().getSelectedItem();
+        this.comboBoxPrimka.setItems(FXCollections.observableList(new ArrayList<>(listOfFirme)));
+        this.comboBoxPrimka.getSelectionModel().getSelectedItem();
     }
 
     private void setComboBoxRobaEntity() {
-        Set<RobaEntity> listOfArticles = stavkaPrimkeObservableList.stream()
+        final Set<RobaEntity> listOfArticles = this.stavkaPrimkeObservableList.stream()
                 .map(StavkaPrimkeEntity::getStavkaPrimkeRobe)
                 .collect(Collectors.toSet());
-        comboBoxRoba.setItems(FXCollections.observableList(new ArrayList<>(listOfArticles)));
-        comboBoxRoba.getSelectionModel().getSelectedItem();
+        this.comboBoxRoba.setItems(FXCollections.observableList(new ArrayList<>(listOfArticles)));
+        this.comboBoxRoba.getSelectionModel().getSelectedItem();
     }
 
     private void setTableColumnProperties() {
-        setProperty();
-        setStyle();
-        setCellValueFactory();
+        this.setProperty();
+        this.setStyle();
+        this.setCellValueFactory();
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
-        tableColumnIdPrimke.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
-        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
-        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
-        tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datumStorno"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
+        this.tableColumnIdPrimke.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
+        this.tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
+        this.tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
+        this.tableColumnDatum.setCellValueFactory(new PropertyValueFactory<>("datumStorno"));
     }
 
     private void setStyle() {
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnIdPrimke.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnIdPrimke.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnDatum.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private void setCellValueFactory() {
-        tableColumnIdPrimke.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnIdPrimke.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(PrimkaEntity item, boolean empty) {
+            protected void updateItem(final PrimkaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -133,9 +133,9 @@ public class StornoStavkaPrimkeController {
             }
         });
 
-        tableColumnArticle.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnArticle.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(RobaEntity item, boolean empty) {
+            protected void updateItem(final RobaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -147,9 +147,9 @@ public class StornoStavkaPrimkeController {
             }
         });
 
-        tableColumnDatum.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnDatum.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(LocalDate item, boolean empty) {
+            protected void updateItem(final LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -160,30 +160,30 @@ public class StornoStavkaPrimkeController {
         });
     }
 
-    private void felteredSearchingOf(String firma, String artikl, LocalDate datePickerStorno) {
-        FilteredList<StavkaPrimkeEntity> searchList = stavkaPrimkeObservableList
+    private void felteredSearchingOf(final String firma, final String artikl, final LocalDate datePickerStorno) {
+        final FilteredList<StavkaPrimkeEntity> searchList = this.stavkaPrimkeObservableList
                 .filtered(stavkaPrimke -> firma.equals("") || stavkaPrimke.getStavkaPrimkePrimka()
                         .getPrimkaFirme().getNazivFirme().toLowerCase().trim().contains(firma.toLowerCase()))
                 .filtered(stavkaPrimke -> artikl.equals("") || stavkaPrimke.getStavkaPrimkeRobe().toString()
                         .toLowerCase().trim().contains(artikl.toLowerCase()))
-                .filtered(stavkaPrimke -> comboBoxPrimka.getSelectionModel().getSelectedItem() == null ||
+                .filtered(stavkaPrimke -> this.comboBoxPrimka.getSelectionModel().getSelectedItem() == null ||
                         stavkaPrimke.getStavkaPrimkePrimka().getPrimkaFirme().equals(
-                                comboBoxPrimka.getSelectionModel().getSelectedItem()))
-                .filtered(stavkaPrimke -> comboBoxRoba.getSelectionModel().getSelectedItem() == null ||
-                        stavkaPrimke.getStavkaPrimkeRobe().equals(comboBoxRoba.getSelectionModel().getSelectedItem()))
+                                this.comboBoxPrimka.getSelectionModel().getSelectedItem()))
+                .filtered(stavkaPrimke -> this.comboBoxRoba.getSelectionModel().getSelectedItem() == null ||
+                        stavkaPrimke.getStavkaPrimkeRobe().equals(this.comboBoxRoba.getSelectionModel().getSelectedItem()))
                 .filtered(stavkaPrimke -> datePickerStorno == null ||
                         stavkaPrimke.getDatumStorno().equals(datePickerStorno));
-        tableView.setItems(FXCollections.observableList(searchList));
+        this.tableView.setItems(FXCollections.observableList(searchList));
     }
 
     private void clearRecords() {
-        datePickerDatumStorno.setValue(null);
-        datePickerDatumStorno.getEditor().clear();
-        textFieldCompany.clear();
-        textFieldArticle.clear();
-        comboBoxPrimka.getSelectionModel().clearSelection();
-        comboBoxRoba.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().clearSelection();
+        this.datePickerDatumStorno.setValue(null);
+        this.datePickerDatumStorno.getEditor().clear();
+        this.textFieldCompany.clear();
+        this.textFieldArticle.clear();
+        this.comboBoxPrimka.getSelectionModel().clearSelection();
+        this.comboBoxRoba.getSelectionModel().clearSelection();
+        this.tableView.getSelectionModel().clearSelection();
     }
 
     private class TextFieldDatePickerInsertedPropertyData {

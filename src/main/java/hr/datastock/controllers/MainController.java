@@ -32,34 +32,34 @@ public class MainController {
     private StageInitializerService stageInitializerService;
 
     public void screenFirme() throws IOException {
-        stageInitializerService.onStartOfFirme();
+        this.stageInitializerService.onStartOfFirme();
     }
 
     public void screenRoba() throws IOException {
-        stageInitializerService.onStartOfRoba();
+        this.stageInitializerService.onStartOfRoba();
     }
 
     public void screenIzdatnice() throws IOException {
-        stageInitializerService.onStartOfIzdatnica();
+        this.stageInitializerService.onStartOfIzdatnica();
     }
 
     public void screenStavkaIzdatnice() throws IOException {
-        stageInitializerService.onStartOfStavkaIzdatnica();
+        this.stageInitializerService.onStartOfStavkaIzdatnica();
     }
 
     public void screenStornoStavkaIzdatnice() throws IOException {
-        stageInitializerService.onStartOfStornoStavkaIzdatnica();
+        this.stageInitializerService.onStartOfStornoStavkaIzdatnica();
     }
 
     public void screenPrimke() throws IOException {
-        stageInitializerService.onStartOfPrimka();
+        this.stageInitializerService.onStartOfPrimka();
     }
 
     public void screenStavkaPrimke() throws IOException {
-        stageInitializerService.onStartOfStavkaPrimka();
+        this.stageInitializerService.onStartOfStavkaPrimka();
     }
 
     public void screenStornoStavkaPrimke() throws IOException {
-        stageInitializerService.onStartOfStornoStavkaPrimka();
+        this.stageInitializerService.onStartOfStornoStavkaPrimka();
     }
 }

@@ -71,84 +71,84 @@ public class StavkaPrimkeController {
 
     @FXML
     public void initialize() {
-        stavkaPrimkeObservableList = FXCollections.observableList(stavkaPrimkeService.getAll());
-        filteredStavkaPrimkeObservableListOfStorno = FXCollections.observableList(
-                stavkaPrimkeObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
-        setComboBoxPrimkaEntity();
-        setComboBoxRobaEntity();
-        setTableColumnProperties();
-        clearRecords();
-        tableView.setItems(filteredStavkaPrimkeObservableListOfStorno);
+        this.stavkaPrimkeObservableList = FXCollections.observableList(this.stavkaPrimkeService.getAll());
+        this.filteredStavkaPrimkeObservableListOfStorno = FXCollections.observableList(
+                this.stavkaPrimkeObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
+        this.setComboBoxPrimkaEntity();
+        this.setComboBoxRobaEntity();
+        this.setTableColumnProperties();
+        this.clearRecords();
+        this.tableView.setItems(this.filteredStavkaPrimkeObservableListOfStorno);
     }
 
     public void setButtonSearch() {
-        TextFieldInsertedPropertiesData searchBy = new TextFieldInsertedPropertiesData();
-        filteredSearchingOf(searchBy.company, searchBy.articleName, searchBy.amount);
+        final TextFieldInsertedPropertiesData searchBy = new TextFieldInsertedPropertiesData();
+        this.filteredSearchingOf(searchBy.company, searchBy.articleName, searchBy.amount);
     }
 
     public StavkaPrimkeEntity setButtonSave() {
-        ComboBoxSelectedPropertiesData create = new ComboBoxSelectedPropertiesData();
-        final String alertData = setInputCheckingOf(
+        final ComboBoxSelectedPropertiesData create = new ComboBoxSelectedPropertiesData();
+        final String alertData = this.setInputCheckingOf(
                 create.selectedPrimka, create.selectedArticle, String.valueOf(create.amount));
         StavkaPrimkeEntity newStavkaPrimke = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            newStavkaPrimke = stavkaPrimkeService.createStavkaPrimke(new StavkaPrimkeEntity(nextId(),
+            newStavkaPrimke = stavkaPrimkeService.createStavkaPrimke(new StavkaPrimkeEntity(this.nextId(),
                     create.selectedPrimka, create.selectedArticle, create.amount, false, null));
-            stavkaPrimkeObservableList.add(newStavkaPrimke);
-            tableView.setItems(stavkaPrimkeObservableList);
-            initialize();
+            this.stavkaPrimkeObservableList.add(newStavkaPrimke);
+            this.tableView.setItems(this.stavkaPrimkeObservableList);
+            this.initialize();
         }
         return newStavkaPrimke;
     }
 
     public void setButtonStorno() {
-        StavkaPrimkeEntity stavkaPrimke = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (stavkaPrimke != null && utilService.getConfirmForRemoveAlert()) {
-            stavkaPrimkeService.createStornoStavkePrimke(stavkaPrimke);
-            initialize();
+        final StavkaPrimkeEntity stavkaPrimke = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (stavkaPrimke != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.stavkaPrimkeService.createStornoStavkePrimke(stavkaPrimke);
+            this.initialize();
         }
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        this.clearRecords();
     }
 
     private void setComboBoxPrimkaEntity() {
-        comboBoxPrimka.setItems(FXCollections.observableList(primkaService.getAll()));
-        comboBoxPrimka.getSelectionModel().selectFirst();
+        this.comboBoxPrimka.setItems(FXCollections.observableList(this.primkaService.getAll()));
+        this.comboBoxPrimka.getSelectionModel().selectFirst();
     }
 
     private void setComboBoxRobaEntity() {
-        comboBoxRoba.setItems(FXCollections.observableList(robaService.getAll()));
-        comboBoxRoba.getSelectionModel().selectFirst();
+        this.comboBoxRoba.setItems(FXCollections.observableList(this.robaService.getAll()));
+        this.comboBoxRoba.getSelectionModel().selectFirst();
     }
 
     private void setTableColumnProperties() {
-        setProperty();
-        setStyle();
-        setCellValueProperties();
+        this.setProperty();
+        this.setStyle();
+        this.setCellValueProperties();
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
-        tableColumnPrimka.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
-        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
-        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
+        this.tableColumnPrimka.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
+        this.tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
+        this.tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
     }
 
     private void setStyle() {
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnPrimka.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnPrimka.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private void setCellValueProperties() {
-        tableColumnPrimka.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnPrimka.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(PrimkaEntity item, boolean empty) {
+            protected void updateItem(final PrimkaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -160,9 +160,9 @@ public class StavkaPrimkeController {
             }
         });
 
-        tableColumnArticle.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnArticle.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(RobaEntity item, boolean empty) {
+            protected void updateItem(final RobaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -175,26 +175,26 @@ public class StavkaPrimkeController {
         });
     }
 
-    private void filteredSearchingOf(String firma, String artikl, String kolicina) {
-        FilteredList<StavkaPrimkeEntity> searchList = filteredStavkaPrimkeObservableListOfStorno
+    private void filteredSearchingOf(final String firma, final String artikl, final String kolicina) {
+        final FilteredList<StavkaPrimkeEntity> searchList = this.filteredStavkaPrimkeObservableListOfStorno
                 .filtered(stavkaPrimke -> firma.equals("") || stavkaPrimke.getStavkaPrimkePrimka()
                         .getPrimkaFirme().getNazivFirme().toLowerCase().trim().contains(firma))
                 .filtered(stavkaPrimke -> artikl.equals("") || stavkaPrimke.getStavkaPrimkeRobe()
                         .getNazivArtikla().toLowerCase().contains(artikl))
                 .filtered(stavkaIzdatnice -> kolicina.equals("") || stavkaIzdatnice.getKolicina().toString().equals(kolicina));
-        tableView.setItems(FXCollections.observableList(searchList));
+        this.tableView.setItems(FXCollections.observableList(searchList));
     }
 
     private Long nextId() {
-        return stavkaPrimkeObservableList.size() > 0 ?
-                stavkaPrimkeObservableList.stream().mapToLong(StavkaPrimkeEntity::getIdStavkaPrimke).max().getAsLong() + 1001 : 1001;
+        return !this.stavkaPrimkeObservableList.isEmpty() ?
+                this.stavkaPrimkeObservableList.stream().mapToLong(StavkaPrimkeEntity::getIdStavkaPrimke).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(PrimkaEntity company, RobaEntity article, String amount) {
-        return getDialogData(company, article, amount);
+    private String setInputCheckingOf(final PrimkaEntity company, final RobaEntity article, final String amount) {
+        return this.getDialogData(company, article, amount);
     }
 
-    private String getDialogData(PrimkaEntity company, RobaEntity article, String amount) {
+    private String getDialogData(final PrimkaEntity company, final RobaEntity article, final String amount) {
         List<String> listaProvjere = new ArrayList<>();
         if (company == null || company.getPrimkaFirme().getNazivFirme().isEmpty()) listaProvjere.add("Company name!");
         if (article == null || article.toString().isEmpty()) listaProvjere.add("Article name!");
@@ -203,12 +203,12 @@ public class StavkaPrimkeController {
     }
 
     private void clearRecords() {
-        textFieldKolicina.clear();
-        textFieldCompany.clear();
-        textFieldArticle.clear();
-        comboBoxPrimka.getSelectionModel().clearSelection();
-        comboBoxRoba.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().clearSelection();
+        this.textFieldKolicina.clear();
+        this.textFieldCompany.clear();
+        this.textFieldArticle.clear();
+        this.comboBoxPrimka.getSelectionModel().clearSelection();
+        this.comboBoxRoba.getSelectionModel().clearSelection();
+        this.tableView.getSelectionModel().clearSelection();
     }
 
     private class TextFieldInsertedPropertiesData {

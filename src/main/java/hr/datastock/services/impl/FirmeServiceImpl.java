@@ -17,26 +17,26 @@ public class FirmeServiceImpl implements FirmeService {
 
     @Override
     public List<FirmeEntity> getAll() {
-        return firmeRepository.findAll();
+        return this.firmeRepository.findAll();
     }
 
     @Override
-    public FirmeEntity createFirma(FirmeEntity firma) {
-        return firmeRepository.save(firma);
+    public void createFirma(final FirmeEntity firma) {
+        this.firmeRepository.save(firma);
     }
 
     @Override
-    public FirmeEntity updateFirma(FirmeEntity updateFirma, Long id) {
-        return firmeRepository.findById(id)
+    public FirmeEntity updateFirma(final FirmeEntity updateFirma, final Long id) {
+        return this.firmeRepository.findById(id)
                 .map(existingFirma -> {
                     existingFirma.setOibFirme(updateFirma.getOibFirme());
                     existingFirma.setNazivFirme(updateFirma.getNazivFirme());
-                    return firmeRepository.saveAndFlush(existingFirma);
+                    return this.firmeRepository.saveAndFlush(existingFirma);
                 }).orElseThrow(() -> new FirmeEntityExistsRuntimeException(id));
     }
 
     @Override
     public void deleteFirma(Long id) {
-        firmeRepository.deleteById(id);
+        this.firmeRepository.deleteById(id);
     }
 }

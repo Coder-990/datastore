@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class UtilDialogsServiceImpl implements UtilService {
 
     @Override
-    public void getWarningAlert(String alert) {
-        Alert alertWindow = new Alert(Alert.AlertType.WARNING);
+    public void getWarningAlert(final String alert) {
+        final Alert alertWindow = new Alert(Alert.AlertType.WARNING);
         alertWindow.setTitle("Warning");
         alertWindow.setHeaderText("Some data is mising: ");
         alertWindow.setContentText(alert);
@@ -20,8 +20,8 @@ public class UtilDialogsServiceImpl implements UtilService {
     }
 
     @Override
-    public void getErrorAlert(String alert) {
-        Alert alertWindow = new Alert(Alert.AlertType.ERROR);
+    public void getErrorAlert(final String alert) {
+        final Alert alertWindow = new Alert(Alert.AlertType.ERROR);
         alertWindow.setTitle("Error");
         alertWindow.setHeaderText("Please input missing records: ");
         alertWindow.setContentText(alert);
@@ -30,11 +30,11 @@ public class UtilDialogsServiceImpl implements UtilService {
 
     @Override
     public boolean getConfirmForRemoveAlert() {
-        Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
+        final Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
         alertWindow.setTitle("Delete item");
         alertWindow.setHeaderText("Are you sure to continue?");
         alertWindow.setContentText("You are about to remove this item from table, Continue?");
-        AtomicBoolean isRemoved = new AtomicBoolean(false);
+        final AtomicBoolean isRemoved = new AtomicBoolean(false);
         alertWindow.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK)
                isRemoved.set(true);
@@ -44,8 +44,8 @@ public class UtilDialogsServiceImpl implements UtilService {
     }
 
     @Override
-    public void getnformationMessageAlert() {
-        Alert alertWindow = new Alert(Alert.AlertType.INFORMATION);
+    public void getIformationMessageAlert() {
+        final Alert alertWindow = new Alert(Alert.AlertType.INFORMATION);
         alertWindow.setTitle("Info");
         alertWindow.setHeaderText("Job done");
         alertWindow.showAndWait();

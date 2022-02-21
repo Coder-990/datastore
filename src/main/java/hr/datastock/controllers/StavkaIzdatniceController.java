@@ -71,84 +71,84 @@ public class StavkaIzdatniceController {
 
     @FXML
     public void initialize() {
-        stavkaIzdatniceObservableList = FXCollections.observableList(stavkaIzdatniceService.getAll());
-        filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
-                stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
-        setComboBoxIzdatnicaEntity();
-        setComboBoxRobaEntity();
-        setTableColumnProperties();
-        clearRecords();
-        tableView.setItems(filteredStavkaIzdatniceObservableListOfStorno);
+        this.stavkaIzdatniceObservableList = FXCollections.observableList(this.stavkaIzdatniceService.getAll());
+        this.filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
+                this.stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
+        this.setComboBoxIzdatnicaEntity();
+        this.setComboBoxRobaEntity();
+        this.setTableColumnProperties();
+        this.clearRecords();
+        this.tableView.setItems(this.filteredStavkaIzdatniceObservableListOfStorno);
     }
 
     public void setButtonSearch() {
-        TextFieldInsertedPropertiesData searchBy = new TextFieldInsertedPropertiesData();
-        filteredSearchingOf(searchBy.company, searchBy.articleName, searchBy.amount);
+        final TextFieldInsertedPropertiesData searchBy = new TextFieldInsertedPropertiesData();
+        this.filteredSearchingOf(searchBy.company, searchBy.articleName, searchBy.amount);
     }
 
     public StavkaIzdatniceEntity setButtonSave() {
-        ComboBoxSelectedPropertiesData create = new ComboBoxSelectedPropertiesData();
-        final String alertData = setInputCheckingOf(
+        final ComboBoxSelectedPropertiesData create = new ComboBoxSelectedPropertiesData();
+        final String alertData = this.setInputCheckingOf(
                 create.selectedIzdatnica, create.selectedArticle, String.valueOf(create.amount));
         StavkaIzdatniceEntity newStavkaIzdatnica = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(new StavkaIzdatniceEntity(nextId(),
+            newStavkaIzdatnica = stavkaIzdatniceService.createStavkaIzdatnice(new StavkaIzdatniceEntity(this.nextId(),
                     create.selectedIzdatnica, create.selectedArticle, create.amount, false, null));
-            stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
-            tableView.setItems(stavkaIzdatniceObservableList);
-            initialize();
+            this.stavkaIzdatniceObservableList.add(newStavkaIzdatnica);
+            this.tableView.setItems(this.stavkaIzdatniceObservableList);
+            this.initialize();
         }
         return newStavkaIzdatnica;
     }
 
     public void setButtonStorno() {
-        StavkaIzdatniceEntity stavkaIzdatnice = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (stavkaIzdatnice != null && utilService.getConfirmForRemoveAlert()) {
-            stavkaIzdatniceService.createStornoStavkeIzdatnice(stavkaIzdatnice);
-            initialize();
+        final StavkaIzdatniceEntity stavkaIzdatnice = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (stavkaIzdatnice != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.stavkaIzdatniceService.createStornoStavkeIzdatnice(stavkaIzdatnice);
+            this.initialize();
         }
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        this.clearRecords();
     }
 
     private void setComboBoxIzdatnicaEntity() {
-        comboBoxIzdatnica.setItems(FXCollections.observableList(izdatnicaService.getAll()));
-        comboBoxIzdatnica.getSelectionModel().getSelectedItem();
+        this.comboBoxIzdatnica.setItems(FXCollections.observableList(this.izdatnicaService.getAll()));
+        this.comboBoxIzdatnica.getSelectionModel().getSelectedItem();
     }
 
     private void setComboBoxRobaEntity() {
-        comboBoxRoba.setItems(FXCollections.observableList(robaService.getAll()));
-        comboBoxRoba.getSelectionModel().getSelectedItem();
+        this.comboBoxRoba.setItems(FXCollections.observableList(this.robaService.getAll()));
+        this.comboBoxRoba.getSelectionModel().getSelectedItem();
     }
 
     private void setTableColumnProperties() {
-        setProperty();
-        setStyle();
-        setCellValueProperties();
+        this.setProperty();
+        this.setStyle();
+        this.setCellValueProperties();
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
-        tableColumnIdIzdatnice.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceIzdatnica"));
-        tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
-        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
+        this.tableColumnIdIzdatnice.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceIzdatnica"));
+        this.tableColumnArticle.setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
+        this.tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
     }
 
     private void setStyle() {
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnIdIzdatnice.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnArticle.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnIdIzdatnice.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private void setCellValueProperties() {
-        tableColumnIdIzdatnice.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnIdIzdatnice.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(IzdatnicaEntity item, boolean empty) {
+            protected void updateItem(final IzdatnicaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -160,9 +160,9 @@ public class StavkaIzdatniceController {
             }
         });
 
-        tableColumnArticle.setCellFactory(column -> new TableCell<>() {
+        this.tableColumnArticle.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(RobaEntity item, boolean empty) {
+            protected void updateItem(final RobaEntity item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || empty) {
                     setText(null);
@@ -175,27 +175,27 @@ public class StavkaIzdatniceController {
         });
     }
 
-    private void filteredSearchingOf(String firma, String artikl, String kolicina) {
-        FilteredList<StavkaIzdatniceEntity> searchList = filteredStavkaIzdatniceObservableListOfStorno
+    private void filteredSearchingOf(final String firma, final String artikl, final String kolicina) {
+        final FilteredList<StavkaIzdatniceEntity> searchList = this.filteredStavkaIzdatniceObservableListOfStorno
                 .filtered(stavkaIzdatnice -> firma.equals("") || stavkaIzdatnice.getStavkaIzdatniceIzdatnica()
                         .getIzdatnicaFirme().getNazivFirme().toLowerCase().trim().contains(firma))
                 .filtered(stavkaIzdatnice -> artikl.equals("") || stavkaIzdatnice.getStavkaIzdatniceRobe()
                         .getNazivArtikla().toLowerCase().contains(artikl))
                 .filtered(stavkaIzdatnice -> kolicina.equals("") || stavkaIzdatnice.getKolicina().toString().equals(kolicina));
-        tableView.setItems(FXCollections.observableList(searchList));
+        this.tableView.setItems(FXCollections.observableList(searchList));
     }
 
     private Long nextId() {
-        return stavkaIzdatniceObservableList.size() > 0 ?
-                stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1001 : 1001;
+        return !this.stavkaIzdatniceObservableList.isEmpty() ?
+                this.stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(IzdatnicaEntity company, RobaEntity article, String amount) {
-        return getDialogData(company, article, amount);
+    private String setInputCheckingOf(final IzdatnicaEntity company, final RobaEntity article, final String amount) {
+        return this.getDialogData(company, article, amount);
     }
 
-    private String getDialogData(IzdatnicaEntity company, RobaEntity article, String amount) {
-        List<String> listaProvjere = new ArrayList<>();
+    private String getDialogData(final IzdatnicaEntity company, final RobaEntity article, final String amount) {
+        final List<String> listaProvjere = new ArrayList<>();
         if (company == null || company.getIzdatnicaFirme().getNazivFirme().isEmpty()) listaProvjere.add("Company!");
         if (article == null || article.toString().isEmpty()) listaProvjere.add("Article!");
         if (amount == null || amount.isEmpty()) listaProvjere.add("Amount!");
@@ -203,12 +203,12 @@ public class StavkaIzdatniceController {
     }
 
     private void clearRecords() {
-        textFieldKolicina.clear();
-        textFieldCompany.clear();
-        textFieldArticle.clear();
-        comboBoxIzdatnica.getSelectionModel().clearSelection();
-        comboBoxRoba.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().clearSelection();
+        this.textFieldKolicina.clear();
+        this.textFieldCompany.clear();
+        this.textFieldArticle.clear();
+        this.comboBoxIzdatnica.getSelectionModel().clearSelection();
+        this.comboBoxRoba.getSelectionModel().clearSelection();
+        this.tableView.getSelectionModel().clearSelection();
     }
 
     private class TextFieldInsertedPropertiesData {

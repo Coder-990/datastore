@@ -65,83 +65,83 @@ public class RobaController {
 
     @FXML
     public void initialize() {
-        robaObservableList = FXCollections.observableList(robaService.getAll());
-        setValuesToTableColumns();
-        setButtonClearFields();
-        textAreaTableColumnOpis.setWrapText(true);
-        tableView.setItems(robaObservableList);
+        this.robaObservableList = FXCollections.observableList(this.robaService.getAll());
+        this.setValuesToTableColumns();
+        this.setButtonClearFields();
+        this.textAreaTableColumnOpis.setWrapText(true);
+        this.tableView.setItems(this.robaObservableList);
     }
 
     public void getAllDataFromTableView() {
-        RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        final RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         if (roba != null) {
-            String nazivArtikla = roba.getNazivArtikla();
-            textFieldNaziv.setText(nazivArtikla);
-            String cijena = String.valueOf(roba.getCijena());
-            textFieldCijena.setText(cijena);
-            String kolicina = String.valueOf(roba.getKolicina());
-            textFieldKolicina.setText(kolicina);
-            String jedinicnaMjera = roba.getJmj();
-            textFieldJedinicaMjere.setText(jedinicnaMjera);
-            String opis = roba.getOpis();
-            textAreaTableColumnOpis.setText(opis);
+            final String nazivArtikla = roba.getNazivArtikla();
+            this.textFieldNaziv.setText(nazivArtikla);
+            final String cijena = String.valueOf(roba.getCijena());
+            this.textFieldCijena.setText(cijena);
+            final String kolicina = String.valueOf(roba.getKolicina());
+            this.textFieldKolicina.setText(kolicina);
+            final String jedinicnaMjera = roba.getJmj();
+            this.textFieldJedinicaMjere.setText(jedinicnaMjera);
+            final String opis = roba.getOpis();
+            this.textAreaTableColumnOpis.setText(opis);
         }
     }
 
     public void setButtonSearch() {
         GetDataFromTextFields getDataFromTextFields = new GetDataFromTextFields();
-        filteredSerachOf(getDataFromTextFields);
+        this.filteredSerachOf(getDataFromTextFields);
     }
 
     public RobaEntity setButtonSave() {
-        GetDataFromTextFields getData = new GetDataFromTextFields();
+        final GetDataFromTextFields getData = new GetDataFromTextFields();
 
         final BigDecimal cijenaAsString = getData.cijena.equals("") ? null : new BigDecimal(getData.cijena);
         final Integer kolicinaAsString = getData.kolicina.equals("") ? null : Integer.parseInt(getData.kolicina);
 
-        final String alertData = setInputCheckingOf(getData.nazivArtikla, getData.cijena,
+        final String alertData = this.setInputCheckingOf(getData.nazivArtikla, getData.cijena,
                 getData.kolicina, getData.jedinicnaMjera);
         RobaEntity newRoba = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            newRoba = new RobaEntity(nextId(), getData.nazivArtikla, kolicinaAsString,
+            newRoba = new RobaEntity(this.nextId(), getData.nazivArtikla, kolicinaAsString,
                     cijenaAsString, getData.opis, getData.jedinicnaMjera);
-            newRoba = robaService.createRoba(newRoba);
-            robaObservableList.add(newRoba);
-            tableView.setItems(robaObservableList);
-            initialize();
+            newRoba = this.robaService.createRoba(newRoba);
+            this.robaObservableList.add(newRoba);
+            this.tableView.setItems(this.robaObservableList);
+            this.initialize();
         }
         return newRoba;
     }
 
     public RobaEntity setButtonUpdate() {
-        GetDataFromTextFields get = new GetDataFromTextFields();
+        final GetDataFromTextFields get = new GetDataFromTextFields();
         final BigDecimal cijenaAsString = get.cijena.equals("") ? null : new BigDecimal(get.cijena);
         final Integer kolicinaAsString = get.kolicina.equals("") ? null : Integer.parseInt(get.kolicina);
 
         RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        final String alertData = setInputCheckingOf(get.nazivArtikla, get.cijena,
+        final String alertData = this.setInputCheckingOf(get.nazivArtikla, get.cijena,
                 get.kolicina, get.jedinicnaMjera);
         RobaEntity updateRoba = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            updateRoba = new RobaEntity(nextId(), get.nazivArtikla, kolicinaAsString,
+            updateRoba = new RobaEntity(this.nextId(), get.nazivArtikla, kolicinaAsString,
                     cijenaAsString, get.opis, get.jedinicnaMjera);
-            updateRoba = robaService.updateRoba(updateRoba, roba.getIdRobe());
-            robaObservableList.add(updateRoba);
-            tableView.setItems(robaObservableList);
-            initialize();
+            updateRoba = this.robaService.updateRoba(updateRoba, roba.getIdRobe());
+            this.robaObservableList.add(updateRoba);
+            this.tableView.setItems(this.robaObservableList);
+            this.initialize();
         }
         return updateRoba;
     }
 
     public void setButtonDelete() {
-        RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (roba != null && utilService.getConfirmForRemoveAlert()) {
-            robaService.deleteRoba(roba.getIdRobe());
-            initialize();
+        final RobaEntity roba = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (roba != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.robaService.deleteRoba(roba.getIdRobe());
+            this.initialize();
         }
     }
 
@@ -149,49 +149,51 @@ public class RobaController {
         clearRecords();
     }
 
-    private void filteredSerachOf(GetDataFromTextFields getDataFromTextFields) {
-        List<RobaEntity> filtriranaListaArtikla = new ArrayList<>(robaObservableList
+    private void filteredSerachOf(final GetDataFromTextFields getDataFromTextFields) {
+        final List<RobaEntity> filtriranaListaArtikla = new ArrayList<>(this.robaObservableList
                 .filtered(roba -> roba.getNazivArtikla().toLowerCase().contains(getDataFromTextFields.nazivArtikla))
-                .filtered(roba -> getDataFromTextFields.cijena == null || getDataFromTextFields.cijena.equals("") ||
-                        roba.getCijena().equals(new BigDecimal(getDataFromTextFields.cijena)))
-                .filtered(artikl -> getDataFromTextFields.kolicina == null || getDataFromTextFields.kolicina.equals("")
+                .filtered(roba -> getDataFromTextFields.cijena == null
+                        || getDataFromTextFields.cijena.equals("")
+                        || roba.getCijena().equals(new BigDecimal(getDataFromTextFields.cijena)))
+                .filtered(artikl -> getDataFromTextFields.kolicina == null
+                        || getDataFromTextFields.kolicina.equals("")
                         || artikl.getKolicina() == Integer.parseInt(getDataFromTextFields.kolicina))
                 .filtered(roba -> roba.getOpis().toLowerCase().contains(getDataFromTextFields.opis)));
-        tableView.setItems(FXCollections.observableList(filtriranaListaArtikla));
+        this.tableView.setItems(FXCollections.observableList(filtriranaListaArtikla));
     }
 
     private void setValuesToTableColumns() {
-        setProperties();
-        setStyle();
+        this.setProperties();
+        this.setStyle();
     }
 
     private void setProperties() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idRobe"));
-        tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivArtikla"));
-        tableColumnCijena.setCellValueFactory(new PropertyValueFactory<>("cijena"));
-        tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
-        tableColumnJedinicnaMjera.setCellValueFactory(new PropertyValueFactory<>("jmj"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idRobe"));
+        this.tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivArtikla"));
+        this.tableColumnCijena.setCellValueFactory(new PropertyValueFactory<>("cijena"));
+        this.tableColumnKolicina.setCellValueFactory(new PropertyValueFactory<>("kolicina"));
+        this.tableColumnJedinicnaMjera.setCellValueFactory(new PropertyValueFactory<>("jmj"));
     }
 
     private void setStyle() {
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnCijena.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnJedinicnaMjera.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnCijena.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnKolicina.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnJedinicnaMjera.setStyle(FX_ALIGNMENT_CENTER);
     }
 
     private Long nextId() {
-        return robaObservableList.size() > 0 ?
-                robaObservableList.stream().mapToLong(RobaEntity::getIdRobe).max().getAsLong() + 1001 : 1001;
+        return !this.robaObservableList.isEmpty() ?
+                this.robaObservableList.stream().mapToLong(RobaEntity::getIdRobe).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(String naziv, String kolicina, String cijena, String jmj) {
-        return getDialogData(naziv, kolicina, cijena, jmj);
+    private String setInputCheckingOf(final String naziv, final String kolicina, final String cijena, final String jmj) {
+        return this.getDialogData(naziv, kolicina, cijena, jmj);
     }
 
-    private String getDialogData(String naziv, String kolicina, String cijena, String jmj) {
-        List<String> listaProvjere = new ArrayList<>();
+    private String getDialogData(final String naziv, final String kolicina, final String cijena, final String jmj) {
+        final List<String> listaProvjere = new ArrayList<>();
         if (naziv.trim().isEmpty()) listaProvjere.add("naziv");
         if (kolicina.trim().isEmpty()) listaProvjere.add("kolicina");
         if (cijena.trim().isEmpty()) listaProvjere.add("cijena");
@@ -200,12 +202,12 @@ public class RobaController {
     }
 
     public void clearRecords() {
-        tableView.getSelectionModel().clearSelection();
-        textFieldNaziv.clear();
-        textFieldCijena.clear();
-        textFieldKolicina.clear();
-        textFieldJedinicaMjere.clear();
-        textAreaTableColumnOpis.clear();
+        this.tableView.getSelectionModel().clearSelection();
+        this.textFieldNaziv.clear();
+        this.textFieldCijena.clear();
+        this.textFieldKolicina.clear();
+        this.textFieldJedinicaMjere.clear();
+        this.textAreaTableColumnOpis.clear();
     }
 
     private class GetDataFromTextFields {

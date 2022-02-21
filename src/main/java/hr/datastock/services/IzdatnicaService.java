@@ -8,7 +8,7 @@ public interface IzdatnicaService {
 
     List<IzdatnicaEntity> getAll();
 
-    IzdatnicaEntity createIzdatnica(IzdatnicaEntity izdatnica);
+    IzdatnicaEntity createIzdatnica(final IzdatnicaEntity izdatnica);
 
-    void deleteIzdatnica(Long id);
+    void deleteIzdatnica(final Long id);
 }

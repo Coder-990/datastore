@@ -29,6 +29,6 @@ public class PrimkaEntity {
 
     @Override
     public String toString() {
-        return primkaFirme.getNazivFirme() + "-[" + datum + "]";
+        return this.primkaFirme.getNazivFirme() + "-[" + this.datum + "]";
     }
 }

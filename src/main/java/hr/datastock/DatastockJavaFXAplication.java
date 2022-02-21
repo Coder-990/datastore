@@ -14,27 +14,28 @@ public class DatastockJavaFXAplication extends Application {
 
     @Override
     public void init() {
-        applcationContext = new SpringApplicationBuilder(DatastockApplication.class).run();
+        this.applcationContext = new SpringApplicationBuilder(DatastockApplication.class).run();
     }
 
     @Override
     public void stop() {
-        applcationContext.close();
+        this.applcationContext.close();
         Platform.exit();
     }
 
     @Override
-    public void start(Stage stage) {
-        applcationContext.publishEvent(new StageReadyEvent(stage));
+    public void start(final Stage stage) {
+        this.applcationContext.publishEvent(new StageReadyEvent(stage));
     }
 
     public static class StageReadyEvent extends ApplicationEvent {
 
-        public StageReadyEvent(Stage stage) {
+        public StageReadyEvent(final Stage stage) {
             super(stage);
         }
+
         public Stage getStage() {
-            return ((Stage) getSource());
+            return ((Stage) this.getSource());
         }
     }
 }

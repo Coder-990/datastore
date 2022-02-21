@@ -16,16 +16,16 @@ public class PrimkaServiceImpl implements PrimkaService {
 
     @Override
     public List<PrimkaEntity> getAll(){
-        return  primkaRepository.findAll();
+        return  this.primkaRepository.findAll();
     }
 
     @Override
-    public PrimkaEntity createPrimka(PrimkaEntity primka){
-        return primkaRepository.save(primka);
+    public PrimkaEntity createPrimka(final PrimkaEntity primka){
+        return this.primkaRepository.save(primka);
     }
 
     @Override
-    public void deletePrimka(Long id){
-        primkaRepository.deleteById(id);
+    public void deletePrimka(final Long id){
+        this.primkaRepository.deleteById(id);
     }
 }

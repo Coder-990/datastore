@@ -57,111 +57,111 @@ public class FirmeController {
 
     @FXML
     public void initialize() {
-        firmeObservableList = FXCollections.observableList(firmeService.getAll());
-        setValuesToTableColumns();
-        clearRecords();
-        tableView.setItems(firmeObservableList);
+        this.firmeObservableList = FXCollections.observableList(this.firmeService.getAll());
+        this.setValuesToTableColumns();
+        this.clearRecords();
+        this.tableView.setItems(this.firmeObservableList);
     }
 
     public void getAllDataFromTableViewButton() {
-        FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        final FirmeEntity firma = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         if (firma != null) {
             final String oib = firma.getOibFirme();
-            textFieldOIB.setText(oib);
+            this.textFieldOIB.setText(oib);
             final String naziv = firma.getNazivFirme();
-            textFieldNaziv.setText(naziv);
+            this.textFieldNaziv.setText(naziv);
         }
     }
 
     public void setButtonSearch() {
-        GetDataFromTextField getData = new GetDataFromTextField();
-        filteredSearchingOf(getData);
+        final GetDataFromTextField getData = new GetDataFromTextField();
+        this.filteredSearchingOf(getData);
     }
 
     public FirmeEntity setButtonSave() {
-        GetDataFromTextField getData = new GetDataFromTextField();
-        final String alertData = setInputCheckingOf(getData.naziv, getData.oib);
+        final GetDataFromTextField getData = new GetDataFromTextField();
+        final String alertData = this.setInputCheckingOf(getData.naziv, getData.oib);
         FirmeEntity newFirma = null;
         if (!alertData.isEmpty()) {
-            utilService.getWarningAlert(alertData);
+            this.utilService.getWarningAlert(alertData);
         } else {
-            newFirma = new FirmeEntity(nextId(), getData.oib, getData.naziv);
-            firmeService.createFirma(newFirma);
-            firmeObservableList.add(newFirma);
-            tableView.setItems(firmeObservableList);
-            initialize();
+            newFirma = new FirmeEntity(this.nextId(), getData.oib, getData.naziv);
+            this.firmeService.createFirma(newFirma);
+            this.firmeObservableList.add(newFirma);
+            this.tableView.setItems(this.firmeObservableList);
+            this.initialize();
         }
         return newFirma;
     }
 
     public FirmeEntity setButtonUpdate() {
-        String newOib = textFieldOIB.getText();
-        String newNaziv = textFieldNaziv.getText();
-        FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        final String newOib = textFieldOIB.getText();
+        final String newNaziv = textFieldNaziv.getText();
+        final FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
         FirmeEntity updatedFirma = null;
         if (firma != null && !newOib.equals("") && !newNaziv.equals("")) {
             updatedFirma = new FirmeEntity(firma.getIdFirme(), newOib, newNaziv);
-            updatedFirma = firmeService.updateFirma(updatedFirma, firma.getIdFirme());
-            initialize();
+            updatedFirma = this.firmeService.updateFirma(updatedFirma, firma.getIdFirme());
+            this.initialize();
         }
         return updatedFirma;
     }
 
     public void setButtonDelete() {
-        FirmeEntity firma = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (firma != null && utilService.getConfirmForRemoveAlert()) {
-            firmeService.deleteFirma(firma.getIdFirme());
-            initialize();
+        final FirmeEntity firma = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        if (firma != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.firmeService.deleteFirma(firma.getIdFirme());
+            this.initialize();
         }
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        this.clearRecords();
     }
 
     private void setValuesToTableColumns() {
-        setProperty();
-        setStyle();
+        this.setProperty();
+        this.setStyle();
     }
 
     private void setProperty() {
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
-        tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
-        tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
+        this.tableColumnId.setCellValueFactory(new PropertyValueFactory<>("idFirme"));
+        this.tableColumnOIB.setCellValueFactory(new PropertyValueFactory<>("oibFirme"));
+        this.tableColumnNaziv.setCellValueFactory(new PropertyValueFactory<>("nazivFirme"));
     }
 
     private void setStyle() {
-        tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
-        tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnId.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnOIB.setStyle(FX_ALIGNMENT_CENTER);
+        this.tableColumnNaziv.setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    private void filteredSearchingOf(GetDataFromTextField getData) {
-        List<FirmeEntity> filteredListOfCompanies = new ArrayList<>(firmeObservableList
+    private void filteredSearchingOf(final GetDataFromTextField getData) {
+        final List<FirmeEntity> filteredListOfCompanies = new ArrayList<>(this.firmeObservableList
                 .filtered(company -> company.getNazivFirme().toLowerCase().contains(getData.naziv))
                 .filtered(company -> company.getOibFirme().toLowerCase().contains(getData.oib)));
-        tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
+        this.tableView.setItems(FXCollections.observableList(filteredListOfCompanies));
     }
     private Long nextId() {
-        return firmeObservableList.size() > 0 ?
-                firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1001 : 1001;
+        return !this.firmeObservableList.isEmpty() ?
+                this.firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(String naziv, String oib) {
-        return getDialogData(naziv, oib);
+    private String setInputCheckingOf(final String naziv, final String oib) {
+        return this.getDialogData(naziv, oib);
     }
 
-    private String getDialogData(String naziv, String oib) {
-        List<String> listaProvjere = new ArrayList<>();
+    private String getDialogData(final String naziv, final String oib) {
+        final List<String> listaProvjere = new ArrayList<>();
         if (oib.trim().isEmpty()) listaProvjere.add("Company identity number!");
         if (naziv.trim().isEmpty()) listaProvjere.add("Company name!");
         return String.join("\n", listaProvjere);
     }
 
     private void clearRecords() {
-        textFieldNaziv.clear();
-        textFieldOIB.clear();
-        tableView.getSelectionModel().clearSelection();
+        this.textFieldNaziv.clear();
+        this.textFieldOIB.clear();
+        this.tableView.getSelectionModel().clearSelection();
     }
     private class GetDataFromTextField {
         final String oib = textFieldOIB.getText();

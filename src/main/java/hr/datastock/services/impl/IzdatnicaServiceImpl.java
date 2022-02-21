@@ -16,16 +16,16 @@ public class IzdatnicaServiceImpl implements IzdatnicaService {
 
     @Override
     public List<IzdatnicaEntity> getAll(){
-       return  izdatnicaRepository.findAll();
+       return  this.izdatnicaRepository.findAll();
     }
 
     @Override
-    public IzdatnicaEntity createIzdatnica(IzdatnicaEntity izdatnica){
-        return izdatnicaRepository.save(izdatnica);
+    public IzdatnicaEntity createIzdatnica(final IzdatnicaEntity izdatnica){
+        return this.izdatnicaRepository.save(izdatnica);
     }
 
     @Override
-    public void deleteIzdatnica(Long id){
-        izdatnicaRepository.deleteById(id);
+    public void deleteIzdatnica(final Long id){
+        this.izdatnicaRepository.deleteById(id);
     }
 }

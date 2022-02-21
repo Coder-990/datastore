@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StavkaIzdatniceServiceImpl implements StavkaIzdatniceService {
@@ -17,31 +18,17 @@ public class StavkaIzdatniceServiceImpl implements StavkaIzdatniceService {
 
     @Override
     public List<StavkaIzdatniceEntity> getAll() {
-        return stavkaIzdatniceRepository.findAll();
+        return this.stavkaIzdatniceRepository.findAll();
     }
 
     @Override
-    public StavkaIzdatniceEntity createStavkaIzdatnice(StavkaIzdatniceEntity izdatnica) {
-        return stavkaIzdatniceRepository.save(izdatnica);
+    public StavkaIzdatniceEntity createStavkaIzdatnice(final StavkaIzdatniceEntity izdatnica) {
+        return this.stavkaIzdatniceRepository.save(izdatnica);
     }
 
     @Override
-    public StavkaIzdatniceEntity createEqualityBetweenAmount(StavkaIzdatniceEntity stavkaIzdatnicaEquality) {
-        return stavkaIzdatniceRepository.findById(stavkaIzdatnicaEquality.getIdStavkaIzdatnice())
-                .map(existingStavka -> {
-                    existingStavka.setIdStavkaIzdatnice(stavkaIzdatnicaEquality.getIdStavkaIzdatnice());
-                    existingStavka.setStavkaIzdatniceIzdatnica(stavkaIzdatnicaEquality.getStavkaIzdatniceIzdatnica());
-                    existingStavka.setStavkaIzdatniceRobe(stavkaIzdatnicaEquality.getStavkaIzdatniceRobe());
-                    existingStavka.setKolicina(stavkaIzdatnicaEquality.getKolicina());
-                    existingStavka.setStorno(false);
-                    existingStavka.setDatumStorno(null);
-                    return stavkaIzdatniceRepository.saveAndFlush(existingStavka);
-                }).orElse(null);
-    }
-
-    @Override
-    public StavkaIzdatniceEntity createStornoStavkeIzdatnice(StavkaIzdatniceEntity stornoStavke) {
-        return stavkaIzdatniceRepository.findById(stornoStavke.getIdStavkaIzdatnice())
+    public Optional<StavkaIzdatniceEntity> createStornoStavkeIzdatnice(final StavkaIzdatniceEntity stornoStavke) {
+        return this.stavkaIzdatniceRepository.findById(stornoStavke.getIdStavkaIzdatnice())
                 .map(existingStavka -> {
                     existingStavka.setIdStavkaIzdatnice(stornoStavke.getIdStavkaIzdatnice());
                     existingStavka.setStavkaIzdatniceIzdatnica(stornoStavke.getStavkaIzdatniceIzdatnica());
@@ -49,7 +36,21 @@ public class StavkaIzdatniceServiceImpl implements StavkaIzdatniceService {
                     existingStavka.setKolicina(stornoStavke.getKolicina());
                     existingStavka.setStorno(true);
                     existingStavka.setDatumStorno(LocalDate.now());
-                    return stavkaIzdatniceRepository.saveAndFlush(existingStavka);
+                    return this.stavkaIzdatniceRepository.saveAndFlush(existingStavka);
+                });
+    }
+
+    @Override
+    public StavkaIzdatniceEntity createEqualityBetweenAmount(final StavkaIzdatniceEntity stavkaIzdatnicaEquality) {
+        return this.stavkaIzdatniceRepository.findById(stavkaIzdatnicaEquality.getIdStavkaIzdatnice())
+                .map(existingStavka -> {
+                    existingStavka.setIdStavkaIzdatnice(stavkaIzdatnicaEquality.getIdStavkaIzdatnice());
+                    existingStavka.setStavkaIzdatniceIzdatnica(stavkaIzdatnicaEquality.getStavkaIzdatniceIzdatnica());
+                    existingStavka.setStavkaIzdatniceRobe(stavkaIzdatnicaEquality.getStavkaIzdatniceRobe());
+                    existingStavka.setKolicina(stavkaIzdatnicaEquality.getKolicina());
+                    existingStavka.setStorno(false);
+                    existingStavka.setDatumStorno(null);
+                    return this.stavkaIzdatniceRepository.saveAndFlush(existingStavka);
                 }).orElse(null);
     }
 }
