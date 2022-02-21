@@ -24,4 +24,6 @@ public interface StageInitializerService {
     void onStartOfStavkaPrimka() throws IOException;
 
     void onStartOfStornoStavkaPrimka() throws IOException;
+
+    void onStartOfRacun() throws IOException;
 }

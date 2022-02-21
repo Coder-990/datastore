@@ -1,5 +1,5 @@
 * {
-    primary: #1262c;
+    primary: #1b262c;
     secondary: #3282b8;
     primary-light: #0f4c75;
     secondary-light: #bbe1fa;
@@ -43,5 +43,37 @@
 
 .button:hover, .button:focused {
     -fx-background-color: secondary;
+    -fx-text-fill: white;
+}
+
+.main-view {
+    -fx-pref-height: 460px;
+    -fx-pref-width: 860px;
+}
+
+.side-bar {
+    -fx-padding: 10 0 0 0;
+    -fx-background-color: primary;
+}
+
+.side-bar-menu {
+    -fx-alignment: center;
+    -fx-spacing: 5px;
+    -fx-pref-height: 60px;
+    -fx-pref-width: 80px;
+    -fx-min-width: 80px;
+}
+
+.side-bar-menu:hover {
+    -fx-background-color: secondary;
+}
+
+.side-bar-menu:hover .label, .side-bar-menu:hover SVGPath {
+    -fx-fill: primary;
+    -fx-text-fill: primary;
+}
+
+.side-bar-menu .label, .side-bar-menu SVGPath {
+    -fx-fill: white;
     -fx-text-fill: white;
 }

@@ -41,11 +41,14 @@ public class StageInitializerImpl implements StageInitializerService {
     @Value("classpath:/view/FirmeView.fxml")
     private Resource resourceFirme;
 
-    @Value("classpath:/view/MainView.fxml")
+    @Value("classpath:/view/ImprovedMainView.fxml")
     private Resource resourceMain;
 
     @Value("classpath:/view/LoginView.fxml")
     private Resource resourceLogin;
+
+    @Value("classpath:/view/RacunView.fxml")
+    private Resource resourceRacun;
 
     private final String applicationTitle;
     private final ApplicationContext applicationContext;
@@ -82,7 +85,7 @@ public class StageInitializerImpl implements StageInitializerService {
     private void setStage(final StageReadyEvent event, final Parent root) {
         Stage stage = event.getStage();
         stage.setTitle(this.applicationTitle);
-        stage.setScene(new Scene(root, 860, 460));
+        stage.setScene(new Scene(root, 980, 560));
         stage.show();
     }
 
@@ -138,6 +141,12 @@ public class StageInitializerImpl implements StageInitializerService {
     @Override
     public void onStartOfStornoStavkaPrimka() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.resourceStornoStavkaPrimke.getURL());
+        fxmlLoader.setControllerFactory(this.applicationContext::getBean);
+        this.setStage(new StageReadyEvent(new Stage()), fxmlLoader.load());
+    }
+    @Override
+    public void onStartOfRacun() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(this.resourceRacun.getURL());
         fxmlLoader.setControllerFactory(this.applicationContext::getBean);
         this.setStage(new StageReadyEvent(new Stage()), fxmlLoader.load());
     }

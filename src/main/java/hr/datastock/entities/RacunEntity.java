@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class RacunEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userid")
     private String userId;
     @Basic

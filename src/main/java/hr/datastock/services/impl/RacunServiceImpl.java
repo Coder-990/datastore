@@ -31,4 +31,9 @@ public class RacunServiceImpl implements RacunService {
             throw new RacunEntityRuntimeExcpetion("Please enter correct password!");
         }
     }
+
+    @Override
+    public void createAccount(final RacunEntity racun){
+        this.racunRepository.save(racun);
+    }
 }

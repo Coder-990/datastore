@@ -1,8 +1,10 @@
 package hr.datastock.controllers;
 
+import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,21 +14,27 @@ import java.io.IOException;
 public class MainController {
 
     @FXML
-    private MenuItem menuItemFirme;
+    private VBox vBoxSideBarFirme;
     @FXML
-    private MenuItem menuItemPrimke;
+    private VBox vBoxSideBarRoba;
     @FXML
-    private MenuItem menuItemIzdatnice;
+    private VBox vBoxSideBarPrimke;
     @FXML
-    private MenuItem menuItemRoba;
+    private VBox vBoxSideBarStavkaPrimke;
     @FXML
-    private MenuItem menuItemStavkaIzdatnice;
+    private VBox vBoxSideBarStornoStavkaPrimke;
     @FXML
-    private MenuItem menuItemStavkaPrimke;
+    private VBox vBoxSideBarIzdatnice;
     @FXML
-    private MenuItem menuItemStornoStavkaPrimke;
+    private VBox vBoxSideBarStavkaIzdatnice;
     @FXML
-    private MenuItem menuItemStornoStavkaIzdatnice;
+    private VBox vBoxSideBarStornoStavkaIzdatnice;
+    @FXML
+    private VBox vBoxSideBarExit;
+    @FXML
+    private VBox vBoxSideBarLogout;
+    @FXML
+    private VBox vBoxSideBarUserManagment;
 
     @Autowired
     private StageInitializerService stageInitializerService;
@@ -37,6 +45,18 @@ public class MainController {
 
     public void screenRoba() throws IOException {
         this.stageInitializerService.onStartOfRoba();
+    }
+
+    public void screenPrimke() throws IOException {
+        this.stageInitializerService.onStartOfPrimka();
+    }
+
+    public void screenStavkaPrimke() throws IOException {
+        this.stageInitializerService.onStartOfStavkaPrimka();
+    }
+
+    public void screenStornoStavkaPrimke() throws IOException {
+        this.stageInitializerService.onStartOfStornoStavkaPrimka();
     }
 
     public void screenIzdatnice() throws IOException {
@@ -51,15 +71,18 @@ public class MainController {
         this.stageInitializerService.onStartOfStornoStavkaIzdatnica();
     }
 
-    public void screenPrimke() throws IOException {
-        this.stageInitializerService.onStartOfPrimka();
+    public void onMouseClickExit() {
+        this.vBoxSideBarExit.getScene().getWindow().hide();
     }
 
-    public void screenStavkaPrimke() throws IOException {
-        this.stageInitializerService.onStartOfStavkaPrimka();
+    public void onMouseClickUserManagment() throws IOException {
+        this.vBoxSideBarUserManagment.getScene().getWindow().hide();
+        this.stageInitializerService.onStartOfRacun();
     }
 
-    public void screenStornoStavkaPrimke() throws IOException {
-        this.stageInitializerService.onStartOfStornoStavkaPrimka();
+    public void onMouseClickLogout() {
+        this.vBoxSideBarLogout.getScene().getWindow().hide();
+        this.stageInitializerService.onStartOfLogin(new StageReadyEvent(new Stage()));
     }
+
 }

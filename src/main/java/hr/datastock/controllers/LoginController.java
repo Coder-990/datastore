@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class LoginController {
 
@@ -20,6 +22,9 @@ public class LoginController {
 
     @FXML
     private Button buttonLogin;
+
+    @FXML
+    private Button buttonRegister;
 
     @FXML
     private Label labelMessage;
@@ -46,12 +51,17 @@ public class LoginController {
     void setButtonLogin() {
         try {
             this.racunService.login(this.textFieldUserId.getText(), this.textFieldPassword.getText());
-            this.labelMessage.setText("Login Successful");
             this.stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
             this.setButtonClose();
         } catch (RuntimeException ex) {
             labelMessage.setText(ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    @FXML
+    void setButtonRegister() throws IOException {
+        this.stageInitializerService.onStartOfRacun();
+        this.setButtonClose();
     }
 }
