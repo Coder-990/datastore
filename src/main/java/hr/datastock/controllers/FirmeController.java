@@ -163,6 +163,7 @@ public class FirmeController {
         this.textFieldOIB.clear();
         this.tableView.getSelectionModel().clearSelection();
     }
+
     private class GetDataFromTextField {
         final String oib = textFieldOIB.getText();
         final String naziv = textFieldNaziv.getText();

@@ -1,4 +1,7 @@
-drop table if exists firme cascade;
+drop database if exists  datastock;
+create database datastock;
+use datastock;
+
 create table firme
 (
     IDFirme    int          not null
@@ -7,7 +10,6 @@ create table firme
     NazivFirme varchar(255) null
 );
 
-drop table if exists izdatnica cascade;
 create table izdatnica
 (
     IDIzdatnice int      not null
@@ -18,7 +20,6 @@ create table izdatnica
         foreign key (IDFirme) references firme (IDFirme)
 );
 
-drop table if exists primka cascade;
 create table primka
 (
     IDPrimke int      not null
@@ -29,8 +30,6 @@ create table primka
         foreign key (IDFirme) references firme (IDFirme)
 );
 
-
-drop table if exists roba cascade;
 create table roba
 (
     IDRobe       int          not null
@@ -42,8 +41,6 @@ create table roba
     Jmj          varchar(255) null
 );
 
-
-drop table if exists stavkaizdatnice cascade;
 create table stavkaizdatnice
 (
     IDStavkaIzdatnice int not null
@@ -51,13 +48,14 @@ create table stavkaizdatnice
     IDIzdatnice       int null,
     IDRobe            int null,
     Kolicina          int null,
+    Storno         boolean null,
+    DatumStorno    datetime null,
     constraint stavkaizdatnice_izdatnica__fk
         foreign key (IDIzdatnice) references izdatnica (IDIzdatnice),
     constraint stavkaizdatnice_roba__fk
         foreign key (IDRobe) references roba (IDRobe)
 );
 
-drop table if exists stavkaprimke cascade;
 create table stavkaprimke
 (
     IDStavkaPrimke int not null
@@ -65,13 +63,14 @@ create table stavkaprimke
     IDPrimke       int null,
     IDRobe         int null,
     Kolicina       int null,
+    Storno         boolean null,
+    DatumStorno    datetime null,
     constraint stavkaprimke_primka__fk
         foreign key (IDPrimke) references primka (IDPrimke),
     constraint stavkaprimke_roba__fk
         foreign key (IDRobe) references roba (IDRobe)
 );
 
-drop table if exists racun cascade;
 create table racun
 (
     userId   varchar(255) not null

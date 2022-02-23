@@ -3,6 +3,7 @@ package hr.datastock.controllers;
 import hr.datastock.DatastockJavaFXAplication;
 import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.RacunEntity;
+import hr.datastock.security.PasswordEncryptionService;
 import hr.datastock.services.RacunService;
 import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXML;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Component
 public class RacunController {
@@ -47,6 +47,9 @@ public class RacunController {
     @Autowired
     private StageInitializerService stageInitializerService;
 
+    @Autowired
+    private PasswordEncryptionService passwordEncryptionService;
+
 
     @FXML
     public RacunEntity setButtonCreateUser() {
@@ -57,7 +60,8 @@ public class RacunController {
         if (!alertData.isEmpty()) {
             this.utilService.getWarningAlert(alertData);
         } else {
-            newRacun = new RacunEntity(userId, password);
+            String encryptedPassword = passwordEncryptionService.createMD5(password);
+            newRacun = new RacunEntity(userId, encryptedPassword);
             this.getMessage(newRacun.getUserId(), newRacun.getPassword());
             this.racunService.createAccount(newRacun);
         }

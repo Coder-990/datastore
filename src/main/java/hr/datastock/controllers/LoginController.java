@@ -1,6 +1,7 @@
 package hr.datastock.controllers;
 
 import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
+import hr.datastock.security.PasswordEncryptionService;
 import hr.datastock.services.StageInitializerService;
 import hr.datastock.services.RacunService;
 import javafx.fxml.FXML;
@@ -42,6 +43,9 @@ public class LoginController {
     @Autowired
     RacunService racunService;
 
+    @Autowired
+    PasswordEncryptionService passwordEncryptionService;
+
     @FXML
     void setButtonClose() {
         this.buttonLogin.getScene().getWindow().hide();
@@ -50,7 +54,7 @@ public class LoginController {
     @FXML
     void setButtonLogin() {
         try {
-            this.racunService.login(this.textFieldUserId.getText(), this.textFieldPassword.getText());
+            this.racunService.login(this.textFieldUserId.getText(), passwordEncryptionService.createMD5(this.textFieldPassword.getText()));
             this.stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
             this.setButtonClose();
         } catch (RuntimeException ex) {
