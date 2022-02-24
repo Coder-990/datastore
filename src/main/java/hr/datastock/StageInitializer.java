@@ -15,7 +15,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
     @Override
     public void onApplicationEvent(final StageReadyEvent event) {
-        this.stageInitializerService.onStartOfLogin(event);
+        this.stageInitializerService.getLoginScreen(event);
     }
 }
 

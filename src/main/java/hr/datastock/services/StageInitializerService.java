@@ -5,25 +5,25 @@ import java.io.IOException;
 
 public interface StageInitializerService {
 
-    void onStartOfLogin(final StageReadyEvent event);
+    void getLoginScreen(final StageReadyEvent event);
 
-    void onStartOfMain(final StageReadyEvent event);
+    void getMainMenuScreen(final StageReadyEvent event);
 
-    void onStartOfFirme() throws IOException;
+    void getFirmeScreen() throws IOException;
 
-    void onStartOfRoba() throws IOException;
+    void getRobaScreen() throws IOException;
 
-    void onStartOfIzdatnica() throws IOException;
+    void getIzdatnicaScreen() throws IOException;
 
-    void onStartOfStavkaIzdatnica() throws IOException;
+    void getStavkaIzdatnicaScreen() throws IOException;
 
-    void onStartOfStornoStavkaIzdatnica() throws IOException;
+    void getStornoStavkaIzdatnicaScreen() throws IOException;
 
-    void onStartOfPrimka() throws IOException;
+    void getPrimkaScreen() throws IOException;
 
-    void onStartOfStavkaPrimka() throws IOException;
+    void getStavkaPrimkaScreen() throws IOException;
 
-    void onStartOfStornoStavkaPrimka() throws IOException;
+    void getStornoStavkaPrimkaScreen() throws IOException;
 
-    void onStartOfRacun() throws IOException;
+    void getRacunScreen() throws IOException;
 }

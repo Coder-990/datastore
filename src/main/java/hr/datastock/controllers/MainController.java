@@ -39,50 +39,50 @@ public class MainController {
     @Autowired
     private StageInitializerService stageInitializerService;
 
-    public void screenFirme() throws IOException {
-        this.stageInitializerService.onStartOfFirme();
+    public void setScreenFirme() throws IOException {
+        this.stageInitializerService.getFirmeScreen();
     }
 
-    public void screenRoba() throws IOException {
-        this.stageInitializerService.onStartOfRoba();
+    public void setScreenRoba() throws IOException {
+        this.stageInitializerService.getRobaScreen();
     }
 
-    public void screenPrimke() throws IOException {
-        this.stageInitializerService.onStartOfPrimka();
+    public void setScreenPrimke() throws IOException {
+        this.stageInitializerService.getPrimkaScreen();
     }
 
-    public void screenStavkaPrimke() throws IOException {
-        this.stageInitializerService.onStartOfStavkaPrimka();
+    public void setScreenStavkaPrimke() throws IOException {
+        this.stageInitializerService.getStavkaPrimkaScreen();
     }
 
-    public void screenStornoStavkaPrimke() throws IOException {
-        this.stageInitializerService.onStartOfStornoStavkaPrimka();
+    public void setScreenStornoStavkaPrimke() throws IOException {
+        this.stageInitializerService.getStornoStavkaPrimkaScreen();
     }
 
-    public void screenIzdatnice() throws IOException {
-        this.stageInitializerService.onStartOfIzdatnica();
+    public void setScreenIzdatnice() throws IOException {
+        this.stageInitializerService.getIzdatnicaScreen();
     }
 
-    public void screenStavkaIzdatnice() throws IOException {
-        this.stageInitializerService.onStartOfStavkaIzdatnica();
+    public void setScreenStavkaIzdatnice() throws IOException {
+        this.stageInitializerService.getStavkaIzdatnicaScreen();
     }
 
-    public void screenStornoStavkaIzdatnice() throws IOException {
-        this.stageInitializerService.onStartOfStornoStavkaIzdatnica();
+    public void setScreenStornoStavkaIzdatnice() throws IOException {
+        this.stageInitializerService.getStornoStavkaIzdatnicaScreen();
     }
 
-    public void onMouseClickExit() {
+    public void setExitApplicationOnMouseClick() {
         this.vBoxSideBarExit.getScene().getWindow().hide();
     }
 
-    public void onMouseClickUserManagment() throws IOException {
+    public void setRegistrationScreenOnMouseClick() throws IOException {
         this.vBoxSideBarUserManagment.getScene().getWindow().hide();
-        this.stageInitializerService.onStartOfRacun();
+        this.stageInitializerService.getRacunScreen();
     }
 
-    public void onMouseClickLogout() {
+    public void setLogoutScreenOnMouseClick() {
         this.vBoxSideBarLogout.getScene().getWindow().hide();
-        this.stageInitializerService.onStartOfLogin(new StageReadyEvent(new Stage()));
+        this.stageInitializerService.getLoginScreen(new StageReadyEvent(new Stage()));
     }
 
 }

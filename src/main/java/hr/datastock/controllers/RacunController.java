@@ -75,7 +75,7 @@ public class RacunController {
 
     @FXML
     public void setButtonBackToLogin() {
-        this.stageInitializerService.onStartOfLogin(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));
+        this.stageInitializerService.getLoginScreen(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));
         this.buttonLogin.getScene().getWindow().hide();
     }
 

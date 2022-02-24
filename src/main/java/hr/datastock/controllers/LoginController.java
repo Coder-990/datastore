@@ -20,22 +20,16 @@ public class LoginController {
 
     @FXML
     private Button buttonClose;
-
     @FXML
     private Button buttonLogin;
-
     @FXML
     private Button buttonRegister;
-
     @FXML
     private Label labelMessage;
-
     @FXML
     private PasswordField textFieldPassword;
-
     @FXML
     private TextField textFieldUserId;
-
 
     @Autowired
     StageInitializerService stageInitializerService;
@@ -48,14 +42,15 @@ public class LoginController {
 
     @FXML
     void setButtonClose() {
-        this.buttonLogin.getScene().getWindow().hide();
+        this.buttonClose.getScene().getWindow().hide();
     }
 
     @FXML
     void setButtonLogin() {
         try {
-            this.racunService.login(this.textFieldUserId.getText(), passwordEncryptionService.createMD5(this.textFieldPassword.getText()));
-            this.stageInitializerService.onStartOfMain(new StageReadyEvent(new Stage()));
+            this.racunService.login(this.textFieldUserId.getText(),
+                    passwordEncryptionService.createMD5(this.textFieldPassword.getText()));
+            this.stageInitializerService.getMainMenuScreen(new StageReadyEvent(new Stage()));
             this.setButtonClose();
         } catch (RuntimeException ex) {
             labelMessage.setText(ex.getMessage());
@@ -65,7 +60,7 @@ public class LoginController {
 
     @FXML
     void setButtonRegister() throws IOException {
-        this.stageInitializerService.onStartOfRacun();
+        this.stageInitializerService.getRacunScreen();
         this.setButtonClose();
     }
 }
