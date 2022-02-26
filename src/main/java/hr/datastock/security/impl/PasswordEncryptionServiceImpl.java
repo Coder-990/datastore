@@ -1,12 +1,12 @@
 package hr.datastock.security.impl;
 
 import hr.datastock.security.PasswordEncryptionService;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-@Service
+@Component
 public class PasswordEncryptionServiceImpl implements PasswordEncryptionService {
 
     @Override

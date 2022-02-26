@@ -14,17 +14,14 @@ public class RobaServiceImpl implements RobaService {
 
     @Autowired
     private RobaRepository robaRepository;
-
     @Override
     public List<RobaEntity> getAll() {
         return this.robaRepository.findAll();
     }
-
     @Override
     public RobaEntity createRoba(final RobaEntity roba) {
         return this.robaRepository.save(roba);
     }
-
     @Override
     public RobaEntity updateRoba(RobaEntity roba, Long id) {
         return this.robaRepository.findById(id)
@@ -37,7 +34,6 @@ public class RobaServiceImpl implements RobaService {
                     return this.robaRepository.saveAndFlush(existingRoba);
                 }).orElseThrow(() -> new RobaEntityExistsRuntimeException(id));
     }
-
     @Override
     public void deleteRoba(final Long id) {
         this.robaRepository.deleteById(id);

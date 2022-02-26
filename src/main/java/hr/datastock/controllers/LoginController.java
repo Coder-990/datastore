@@ -2,8 +2,8 @@ package hr.datastock.controllers;
 
 import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 import hr.datastock.security.PasswordEncryptionService;
-import hr.datastock.services.StageInitializerService;
 import hr.datastock.services.RacunService;
+import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,19 +30,22 @@ public class LoginController {
     private PasswordField textFieldPassword;
     @FXML
     private TextField textFieldUserId;
-
     @Autowired
     StageInitializerService stageInitializerService;
-
     @Autowired
     RacunService racunService;
-
     @Autowired
     PasswordEncryptionService passwordEncryptionService;
 
     @FXML
     void setButtonClose() {
         this.buttonClose.getScene().getWindow().hide();
+    }
+
+    @FXML
+    void setButtonRegister() throws IOException {
+        this.stageInitializerService.getRacunScreen();
+        this.setButtonClose();
     }
 
     @FXML
@@ -56,11 +59,5 @@ public class LoginController {
             labelMessage.setText(ex.getMessage());
             ex.printStackTrace();
         }
-    }
-
-    @FXML
-    void setButtonRegister() throws IOException {
-        this.stageInitializerService.getRacunScreen();
-        this.setButtonClose();
     }
 }

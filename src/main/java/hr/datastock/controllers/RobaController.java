@@ -62,6 +62,9 @@ public class RobaController {
     private UtilService utilService;
 
     private ObservableList<RobaEntity> robaObservableList;
+    private TableViewSelectedData tvSelectedData;
+    private TextFieldsData textFieldsData;
+    private DataFromPropertiesForRobaEntity dataPoperty;
 
     @FXML
     public void initialize() {
@@ -73,93 +76,74 @@ public class RobaController {
     }
 
     public void getAllDataFromTableView() {
-        final RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (roba != null) {
-            final String nazivArtikla = roba.getNazivArtikla();
-            this.textFieldNaziv.setText(nazivArtikla);
-            final String cijena = String.valueOf(roba.getCijena());
-            this.textFieldCijena.setText(cijena);
-            final String kolicina = String.valueOf(roba.getKolicina());
-            this.textFieldKolicina.setText(kolicina);
-            final String jedinicnaMjera = roba.getJmj();
-            this.textFieldJedinicaMjere.setText(jedinicnaMjera);
-            final String opis = roba.getOpis();
-            this.textAreaTableColumnOpis.setText(opis);
+        this.tvSelectedData = new TableViewSelectedData();
+        if (this.tvSelectedData.roba != null) {
+            this.setDataToTextFields(this.tvSelectedData);
         }
     }
 
     public void setButtonSearch() {
-        GetDataFromTextFields getDataFromTextFields = new GetDataFromTextFields();
-        this.filteredSerachOf(getDataFromTextFields);
+        this.textFieldsData = new TextFieldsData();
+        this.filteredSerachOf(this.textFieldsData);
     }
 
     public RobaEntity setButtonSave() {
-        final GetDataFromTextFields getData = new GetDataFromTextFields();
-
-        final BigDecimal cijenaAsString = getData.cijena.equals("") ? null : new BigDecimal(getData.cijena);
-        final Integer kolicinaAsString = getData.kolicina.equals("") ? null : Integer.parseInt(getData.kolicina);
-
-        final String alertData = this.setInputCheckingOf(getData.nazivArtikla, getData.cijena,
-                getData.kolicina, getData.jedinicnaMjera);
+        this.dataPoperty = new DataFromPropertiesForRobaEntity();
+        this.textFieldsData = new TextFieldsData();
         RobaEntity newRoba = null;
-        if (!alertData.isEmpty()) {
-            this.utilService.getWarningAlert(alertData);
+        if (!this.dataPoperty.alertData.isEmpty()) {
+            this.utilService.getWarningAlert(this.dataPoperty.alertData);
         } else {
-            newRoba = new RobaEntity(this.nextId(), getData.nazivArtikla, kolicinaAsString,
-                    cijenaAsString, getData.opis, getData.jedinicnaMjera);
-            newRoba = this.robaService.createRoba(newRoba);
-            this.robaObservableList.add(newRoba);
-            this.tableView.setItems(this.robaObservableList);
-            this.initialize();
+            newRoba = this.robaService.createRoba(new RobaEntity(this.nextId(), this.textFieldsData.nazivArtikla,
+                    this.dataPoperty.kolicinaAsString, this.dataPoperty.cijenaAsString,
+                    this.textFieldsData.opis, this.textFieldsData.jedinicnaMjera));
+            this.setNewData(newRoba);
         }
         return newRoba;
     }
 
     public RobaEntity setButtonUpdate() {
-        final GetDataFromTextFields get = new GetDataFromTextFields();
-        final BigDecimal cijenaAsString = get.cijena.equals("") ? null : new BigDecimal(get.cijena);
-        final Integer kolicinaAsString = get.kolicina.equals("") ? null : Integer.parseInt(get.kolicina);
-
-        RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        final String alertData = this.setInputCheckingOf(get.nazivArtikla, get.cijena,
-                get.kolicina, get.jedinicnaMjera);
+        this.tvSelectedData = new TableViewSelectedData();
+        this.textFieldsData = new TextFieldsData();
+        this.dataPoperty = new DataFromPropertiesForRobaEntity();
         RobaEntity updateRoba = null;
-        if (!alertData.isEmpty()) {
-            this.utilService.getWarningAlert(alertData);
+        if (!this.dataPoperty.alertData.isEmpty()) {
+            this.utilService.getWarningAlert(this.dataPoperty.alertData);
         } else {
-            updateRoba = new RobaEntity(this.nextId(), get.nazivArtikla, kolicinaAsString,
-                    cijenaAsString, get.opis, get.jedinicnaMjera);
-            updateRoba = this.robaService.updateRoba(updateRoba, roba.getIdRobe());
-            this.robaObservableList.add(updateRoba);
-            this.tableView.setItems(this.robaObservableList);
-            this.initialize();
+            updateRoba = this.robaService.updateRoba(new RobaEntity(this.tvSelectedData.roba.getIdRobe(),
+                    this.textFieldsData.nazivArtikla, this.dataPoperty.kolicinaAsString, this.dataPoperty.cijenaAsString,
+                    this.textFieldsData.opis, this.textFieldsData.jedinicnaMjera), this.tvSelectedData.roba.getIdRobe());
+            this.setNewData(updateRoba);
         }
         return updateRoba;
     }
 
     public void setButtonDelete() {
-        final RobaEntity roba = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (roba != null && this.utilService.getConfirmForRemoveAlert()) {
-            this.robaService.deleteRoba(roba.getIdRobe());
+        if (this.tvSelectedData.roba != null && this.utilService.getConfirmForRemoveAlert()) {
+            this.robaService.deleteRoba(this.tvSelectedData.roba.getIdRobe());
             this.initialize();
         }
     }
 
     public void setButtonClearFields() {
-        clearRecords();
+        setClearAllRecords();
     }
 
-    private void filteredSerachOf(final GetDataFromTextFields getDataFromTextFields) {
+    private void filteredSerachOf(final TextFieldsData tfData) {
         final List<RobaEntity> filtriranaListaArtikla = new ArrayList<>(this.robaObservableList
-                .filtered(roba -> roba.getNazivArtikla().toLowerCase().contains(getDataFromTextFields.nazivArtikla))
-                .filtered(roba -> getDataFromTextFields.cijena == null
-                        || getDataFromTextFields.cijena.equals("")
-                        || roba.getCijena().equals(new BigDecimal(getDataFromTextFields.cijena)))
-                .filtered(artikl -> getDataFromTextFields.kolicina == null
-                        || getDataFromTextFields.kolicina.equals("")
-                        || artikl.getKolicina() == Integer.parseInt(getDataFromTextFields.kolicina))
-                .filtered(roba -> roba.getOpis().toLowerCase().contains(getDataFromTextFields.opis)));
+                .filtered(roba -> roba.getNazivArtikla().toLowerCase().contains(tfData.nazivArtikla))
+                .filtered(roba -> tfData.cijena == null || tfData.cijena.equals("")
+                        || roba.getCijena().equals(new BigDecimal(tfData.cijena)))
+                .filtered(artikl -> tfData.kolicina == null || tfData.kolicina.equals("")
+                        || artikl.getKolicina() == Integer.parseInt(tfData.kolicina))
+                .filtered(roba -> roba.getOpis().toLowerCase().contains(tfData.opis)));
         this.tableView.setItems(FXCollections.observableList(filtriranaListaArtikla));
+    }
+
+    private void setNewData(RobaEntity robaEntity) {
+        this.robaObservableList.add(robaEntity);
+        this.tableView.setItems(this.robaObservableList);
+        this.initialize();
     }
 
     private void setValuesToTableColumns() {
@@ -188,7 +172,7 @@ public class RobaController {
                 this.robaObservableList.stream().mapToLong(RobaEntity::getIdRobe).max().getAsLong() + 1 : 1;
     }
 
-    private String setInputCheckingOf(final String naziv, final String kolicina, final String cijena, final String jmj) {
+    protected String setInputCheckingOf(final String naziv, final String kolicina, final String cijena, final String jmj) {
         return this.getDialogData(naziv, kolicina, cijena, jmj);
     }
 
@@ -201,7 +185,7 @@ public class RobaController {
         return String.join("\n", listaProvjere);
     }
 
-    public void clearRecords() {
+    private void setClearAllRecords() {
         this.tableView.getSelectionModel().clearSelection();
         this.textFieldNaziv.clear();
         this.textFieldCijena.clear();
@@ -210,11 +194,36 @@ public class RobaController {
         this.textAreaTableColumnOpis.clear();
     }
 
-    private class GetDataFromTextFields {
+    private void setDataToTextFields(TableViewSelectedData selectedData) {
+        this.textFieldNaziv.setText(selectedData.nazivArtikla);
+        this.textFieldCijena.setText(selectedData.cijena);
+        this.textFieldKolicina.setText(selectedData.kolicina);
+        this.textFieldJedinicaMjere.setText(selectedData.jedinicnaMjera);
+        this.textAreaTableColumnOpis.setText(selectedData.opis);
+    }
+
+    private class TableViewSelectedData {
+        final RobaEntity roba = tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        final String nazivArtikla = roba.getNazivArtikla();
+        final String cijena = String.valueOf(roba.getCijena());
+        final String kolicina = String.valueOf(roba.getKolicina());
+        final String jedinicnaMjera = roba.getJmj();
+        final String opis = roba.getOpis();
+    }
+
+    private class TextFieldsData {
         final String nazivArtikla = textFieldNaziv.getText();
         final String cijena = textFieldCijena.getText();
         final String kolicina = textFieldKolicina.getText();
         final String opis = textAreaTableColumnOpis.getText();
         final String jedinicnaMjera = textFieldJedinicaMjere.getText();
+    }
+
+    private class DataFromPropertiesForRobaEntity {
+        final TextFieldsData getData = new TextFieldsData();
+        final BigDecimal cijenaAsString = getData.cijena.equals("") ? null : new BigDecimal(getData.cijena);
+        final Integer kolicinaAsString = getData.kolicina.equals("") ? null : Integer.parseInt(getData.kolicina);
+        final String alertData = setInputCheckingOf(getData.nazivArtikla, getData.cijena,
+                getData.kolicina, getData.jedinicnaMjera);
     }
 }

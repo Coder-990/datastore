@@ -21,8 +21,9 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public void createFirma(final FirmeEntity firma) {
+    public FirmeEntity createFirma(final FirmeEntity firma) {
         this.firmeRepository.save(firma);
+        return firma;
     }
 
     @Override

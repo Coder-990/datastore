@@ -72,11 +72,6 @@ public class IzdatnicaController {
         this.tableView.setItems(this.izdatnicaObservableList);
     }
 
-    public void setButtonSearch() {
-        final GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
-        this.filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
-    }
-
     public IzdatnicaEntity setButtonSave() {
         final ComboAndPickerSelectedPropertiesData create = new ComboAndPickerSelectedPropertiesData();
         final String alertData = this.setInputCheckingOf(create.selectedDate, create.selectedFirma);
@@ -84,12 +79,18 @@ public class IzdatnicaController {
         if (!alertData.isEmpty()) {
             this.utilService.getWarningAlert(alertData);
         } else {
-            newIzdatnica = this.izdatnicaService.createIzdatnica(new IzdatnicaEntity(this.nextId(), create.selectedDate, create.selectedFirma));
+            newIzdatnica = this.izdatnicaService.createIzdatnica(new IzdatnicaEntity(this.nextId(),
+                    create.selectedDate, create.selectedFirma));
             this.izdatnicaObservableList.add(newIzdatnica);
             this.tableView.setItems(this.izdatnicaObservableList);
             this.initialize();
         }
         return newIzdatnica;
+    }
+
+    public void setButtonSearch() {
+        final GetDataFromComboAndPicker searchBy = new GetDataFromComboAndPicker();
+        this.filteredSearchingOf(searchBy.datePicker, searchBy.oibFirme);
     }
 
     public void setButtonDelete() {

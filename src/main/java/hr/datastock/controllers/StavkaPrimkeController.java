@@ -104,7 +104,8 @@ public class StavkaPrimkeController {
     }
 
     public void setButtonStorno() {
-        final StavkaPrimkeEntity stavkaPrimke = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
+        final StavkaPrimkeEntity stavkaPrimke = this.tableColumnId.getTableView()
+                .getSelectionModel().getSelectedItem();
         if (stavkaPrimke != null && this.utilService.getConfirmForRemoveAlert()) {
             this.stavkaPrimkeService.createStornoStavkePrimke(stavkaPrimke);
             this.initialize();

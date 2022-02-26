@@ -8,7 +8,7 @@ public interface FirmeService {
 
     List<FirmeEntity> getAll();
 
-    void createFirma(final FirmeEntity company);
+    FirmeEntity createFirma(final FirmeEntity company);
 
     FirmeEntity updateFirma(final FirmeEntity company, final Long id);
 

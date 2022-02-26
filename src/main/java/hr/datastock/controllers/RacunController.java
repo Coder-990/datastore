@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.DatastockJavaFXAplication;
+import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 import hr.datastock.controllers.controllerutil.UtilService;
 import hr.datastock.entities.RacunEntity;
 import hr.datastock.security.PasswordEncryptionService;
@@ -22,34 +22,24 @@ public class RacunController {
 
     @FXML
     private TextField textfieldUserID;
-
     @FXML
     private TextField textfieldPassword;
-
     @FXML
     private Button buttonCreateUser;
-
     @FXML
     private Button buttonLogin;
-
     @FXML
     private Button buttonClearFields;
-
     @FXML
     private Label labelMessageGetCredidentials;
-
     @Autowired
     private UtilService utilService;
-
     @Autowired
     private RacunService racunService;
-
     @Autowired
     private StageInitializerService stageInitializerService;
-
     @Autowired
     private PasswordEncryptionService passwordEncryptionService;
-
 
     @FXML
     public RacunEntity setButtonCreateUser() {
@@ -75,7 +65,7 @@ public class RacunController {
 
     @FXML
     public void setButtonBackToLogin() {
-        this.stageInitializerService.getLoginScreen(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));
+        this.stageInitializerService.getLoginScreen(new StageReadyEvent(new Stage()));
         this.buttonLogin.getScene().getWindow().hide();
     }
 
