@@ -11,14 +11,22 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class FirmeController {
+
+    private final FirmeService firmeService;
+    private final UtilService utilService;
+    private ObservableList<FirmeEntity> firmeObservableList;
+    private TableViewSelectedData tvSelectedData;
+    private TextFieldsData textFieldsData;
+    private DataFromPropertiesForFirmeEntity dataPoperty;
 
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
@@ -47,17 +55,6 @@ public class FirmeController {
     @FXML
     private Button buttonUpdate;
 
-    @Autowired
-    private FirmeService firmeService;
-
-    @Autowired
-    private UtilService utilService;
-
-    private ObservableList<FirmeEntity> firmeObservableList;
-    private TableViewSelectedData tvSelectedData;
-    private TextFieldsData textFieldsData;
-    private DataFromPropertiesForFirmeEntity dataPoperty;
-
     @FXML
     public void initialize() {
         this.firmeObservableList = FXCollections.observableList(this.firmeService.getAll());
@@ -85,8 +82,7 @@ public class FirmeController {
         if (!this.dataPoperty.alertData.isEmpty()) {
             this.utilService.getWarningAlert(this.dataPoperty.alertData);
         } else {
-            newFirma = this.firmeService.createFirma(new FirmeEntity(this.nextId(),
-                    this.textFieldsData.oib, this.textFieldsData.naziv));
+            newFirma = this.firmeService.createFirma(this.saveFirma());
             setNewData(newFirma);
             this.initialize();
         }
@@ -117,6 +113,11 @@ public class FirmeController {
 
     public void setButtonClearFields() {
         this.clearRecords();
+    }
+
+    private FirmeEntity saveFirma() {
+        return FirmeEntity.builder()
+                .idFirme(this.nextId()).oibFirme(this.textFieldsData.oib).nazivFirme(this.textFieldsData.naziv).build();
     }
 
     private void filteredSearchingOf(final TextFieldsData getData) {
@@ -191,6 +192,5 @@ public class FirmeController {
         final TextFieldsData getData = new TextFieldsData();
         final String alertData = setInputCheckingOf(getData.naziv, getData.oib);
     }
-
 
 }

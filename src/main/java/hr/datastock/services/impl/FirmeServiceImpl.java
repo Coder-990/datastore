@@ -4,16 +4,16 @@ import hr.datastock.entities.FirmeEntity;
 import hr.datastock.exceptions.FirmeEntityExistsRuntimeException;
 import hr.datastock.repositories.FirmeRepository;
 import hr.datastock.services.FirmeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@RequiredArgsConstructor
+@Service
 public class FirmeServiceImpl implements FirmeService {
 
-    @Autowired
-    private FirmeRepository firmeRepository;
+    private final FirmeRepository firmeRepository;
 
     @Override
     public List<FirmeEntity> getAll() {
@@ -22,8 +22,7 @@ public class FirmeServiceImpl implements FirmeService {
 
     @Override
     public FirmeEntity createFirma(final FirmeEntity firma) {
-        this.firmeRepository.save(firma);
-        return firma;
+        return this.firmeRepository.save(firma);
     }
 
     @Override

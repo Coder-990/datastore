@@ -25,7 +25,6 @@ public class FirmeEntity {
     @Column(name = "NazivFirme")
     private String nazivFirme;
 
-
     @Override
     public String toString() {
         return this.oibFirme + " ["+ this.nazivFirme+"]";
