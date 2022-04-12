@@ -49,7 +49,7 @@
               </rowConstraints>
          <children>
                   <Button fx:id="buttonUpdate" mnemonicParsing="false" onAction="#setButtonUpdate" prefHeight="50.0" prefWidth="100.0" text="Update" GridPane.columnIndex="1" />
-                  <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClearFields" prefHeight="33.0" prefWidth="104.0" text="Clear" GridPane.rowIndex="3" />
+                  <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClear" prefHeight="33.0" prefWidth="104.0" text="Clear" GridPane.rowIndex="3" />
                   <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#setButtonSearch" prefHeight="32.0" prefWidth="100.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="5" />
               <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#setButtonDelete" prefHeight="50.0" prefWidth="100.0" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="34.0" prefWidth="96.0" text="Save" />

@@ -119,7 +119,7 @@ public class RobaController {
     }
 
     public void setButtonDelete() {
-        if (this.tvSelectedData.roba != null && this.utilService.getConfirmForRemoveAlert()) {
+        if (this.tvSelectedData.roba != null && this.utilService.isEntityRemoved()) {
             this.robaService.deleteRoba(this.tvSelectedData.roba.getIdRobe());
             this.initialize();
         }

@@ -1,12 +1,14 @@
 package hr.datastock.controllers.controllerutil;
 
+import hr.datastock.entities.FirmeEntity;
+
 public interface UtilService {
 
-    void getWarningAlert(String alert);
+    FirmeEntity getWarningAlert(String alert);
 
-    void getErrorAlert(String alert);
+    boolean isEntityUnableToRemove();
 
-    boolean getConfirmForRemoveAlert();
+    boolean isEntityRemoved();
 
-    void getIformationMessageAlert();
+    boolean isDataPickedFromTableViewAlert();
 }

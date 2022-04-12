@@ -105,7 +105,7 @@ public class StavkaIzdatniceController {
 
     public void setButtonStorno() {
         final StavkaIzdatniceEntity stavkaIzdatnice = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (stavkaIzdatnice != null && this.utilService.getConfirmForRemoveAlert()) {
+        if (stavkaIzdatnice != null && this.utilService.isEntityRemoved()) {
             this.stavkaIzdatniceService.createStornoStavkeIzdatnice(stavkaIzdatnice);
             this.initialize();
         }

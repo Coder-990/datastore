@@ -1,6 +1,7 @@
 package hr.datastock.controllers.controllerutil.impl;
 
 import hr.datastock.controllers.controllerutil.UtilService;
+import hr.datastock.entities.FirmeEntity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.springframework.stereotype.Component;
@@ -11,25 +12,32 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class UtilDialogsServiceImpl implements UtilService {
 
     @Override
-    public void getWarningAlert(final String alert) {
+    public FirmeEntity getWarningAlert(final String alert) {
         final Alert alertWindow = new Alert(Alert.AlertType.WARNING);
         alertWindow.setTitle("Warning");
         alertWindow.setHeaderText("Some data is mising: ");
         alertWindow.setContentText(alert);
         alertWindow.showAndWait();
+        return null;
     }
 
     @Override
-    public void getErrorAlert(final String alert) {
+    public boolean isEntityUnableToRemove() {
         final Alert alertWindow = new Alert(Alert.AlertType.ERROR);
         alertWindow.setTitle("Error");
-        alertWindow.setHeaderText("Please input missing records: ");
-        alertWindow.setContentText(alert);
-        alertWindow.showAndWait();
+        alertWindow.setHeaderText("Unable to delete attached data.");
+        alertWindow.setContentText("You are unable to delete selected data, entity ID is attached by other entity ID");
+        final AtomicBoolean isEntityIdAttached = new AtomicBoolean(false);
+        alertWindow.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK)
+                isEntityIdAttached.set(true);
+        });
+        alertWindow.getAlertType();
+        return isEntityIdAttached.get();
     }
 
     @Override
-    public boolean getConfirmForRemoveAlert() {
+    public boolean isEntityRemoved() {
         final Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
         alertWindow.setTitle("Delete item");
         alertWindow.setHeaderText("Are you sure to continue?");
@@ -44,10 +52,16 @@ public class UtilDialogsServiceImpl implements UtilService {
     }
 
     @Override
-    public void getIformationMessageAlert() {
+    public boolean isDataPickedFromTableViewAlert() {
         final Alert alertWindow = new Alert(Alert.AlertType.INFORMATION);
         alertWindow.setTitle("Info");
-        alertWindow.setHeaderText("Job done");
-        alertWindow.showAndWait();
+        alertWindow.setHeaderText("None data is picked, pick some data");
+        final AtomicBoolean isPicked = new AtomicBoolean(false);
+        alertWindow.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK)
+                isPicked.set(true);
+        });
+        alertWindow.getAlertType();
+        return isPicked.get();
     }
 }

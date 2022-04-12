@@ -95,7 +95,7 @@ public class IzdatnicaController {
 
     public void setButtonDelete() {
         final IzdatnicaEntity izdatnica = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (izdatnica != null && this.utilService.getConfirmForRemoveAlert()) {
+        if (izdatnica != null && this.utilService.isEntityRemoved()) {
             this.izdatnicaService.deleteIzdatnica(izdatnica.getIdIzdatnice());
             this.initialize();
         }

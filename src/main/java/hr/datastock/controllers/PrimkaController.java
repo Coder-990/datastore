@@ -94,7 +94,7 @@ public class PrimkaController {
 
     public void setButtonDelete() {
         final PrimkaEntity primka = this.tableColumnId.getTableView().getSelectionModel().getSelectedItem();
-        if (primka != null && this.utilService.getConfirmForRemoveAlert()) {
+        if (primka != null && this.utilService.isEntityRemoved()) {
             this.primkaService.deletePrimka(primka.getIdPrimke());
             this.initialize();
         }
