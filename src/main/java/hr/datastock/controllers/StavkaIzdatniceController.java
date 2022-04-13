@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.controllerutil.UtilService;
+import hr.datastock.controllers.dialogutil.UtilService;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.entities.StavkaIzdatniceEntity;

@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.controllerutil.UtilService;
+import hr.datastock.controllers.dialogutil.UtilService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.PrimkaEntity;
 import hr.datastock.services.FirmeService;

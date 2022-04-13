@@ -1,7 +1,7 @@
 package hr.datastock.controllers;
 
 import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
-import hr.datastock.controllers.controllerutil.UtilService;
+import hr.datastock.controllers.dialogutil.UtilService;
 import hr.datastock.entities.RacunEntity;
 import hr.datastock.security.PasswordEncryptionService;
 import hr.datastock.services.RacunService;

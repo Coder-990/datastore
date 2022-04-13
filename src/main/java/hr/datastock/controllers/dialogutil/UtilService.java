@@ -1,4 +1,4 @@
-package hr.datastock.controllers.controllerutil;
+package hr.datastock.controllers.dialogutil;
 
 import hr.datastock.entities.FirmeEntity;
 
