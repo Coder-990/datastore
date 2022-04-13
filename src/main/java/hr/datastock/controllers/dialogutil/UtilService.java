@@ -1,10 +1,8 @@
 package hr.datastock.controllers.dialogutil;
 
-import hr.datastock.entities.FirmeEntity;
-
 public interface UtilService {
 
-    FirmeEntity getWarningAlert(String alert);
+    void getWarningAlert(String alert);
 
     boolean isEntityUnableToRemove();
 

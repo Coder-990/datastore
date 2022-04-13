@@ -22,23 +22,18 @@ public class FirmeController {
     @Getter
     @FXML
     private TextField textFieldNaziv;
-
     @Getter
     @FXML
     private TextField textFieldOIB;
-
     @Getter
     @FXML
     private TableView<FirmeEntity> tableView;
-
     @Getter
     @FXML
     private TableColumn<FirmeEntity, Long> tableColumnId;
-
     @Getter
     @FXML
     private TableColumn<FirmeEntity, String> tableColumnNaziv;
-
     @Getter
     @FXML
     private TableColumn<FirmeEntity, String> tableColumnOIB;

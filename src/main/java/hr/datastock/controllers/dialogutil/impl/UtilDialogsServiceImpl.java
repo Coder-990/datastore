@@ -1,7 +1,6 @@
 package hr.datastock.controllers.dialogutil.impl;
 
 import hr.datastock.controllers.dialogutil.UtilService;
-import hr.datastock.entities.FirmeEntity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.springframework.stereotype.Component;
@@ -12,13 +11,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class UtilDialogsServiceImpl implements UtilService {
 
     @Override
-    public FirmeEntity getWarningAlert(final String alert) {
+    public void getWarningAlert(final String alert) {
         final Alert alertWindow = new Alert(Alert.AlertType.WARNING);
         alertWindow.setTitle("Warning");
         alertWindow.setHeaderText("Some data is mising: ");
         alertWindow.setContentText(alert);
         alertWindow.showAndWait();
-        return null;
     }
 
     @Override

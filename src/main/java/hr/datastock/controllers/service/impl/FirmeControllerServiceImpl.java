@@ -7,6 +7,7 @@ import hr.datastock.entities.FirmeEntity;
 import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.RequiredArgsConstructor;
@@ -48,17 +49,17 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     @Override
     public void searchData(FirmeController firmeController) {
         if (firmeController.getTextFieldNaziv() != null || firmeController.getTextFieldOIB() != null) {
-            final List<FirmeEntity> filteredListOfCompanies = new ArrayList<>(this.firmeObservableList
+            final FilteredList<FirmeEntity> filteredList = this.firmeObservableList
                     .filtered(company -> company.getNazivFirme().toLowerCase().contains(firmeController.getTextFieldNaziv().getText()))
-                    .filtered(company -> company.getOibFirme().toLowerCase().contains(firmeController.getTextFieldOIB().getText())));
-            firmeController.getTableView().setItems(FXCollections.observableList(filteredListOfCompanies));
+                    .filtered(company -> company.getOibFirme().toLowerCase().contains(firmeController.getTextFieldOIB().getText()));
+            firmeController.getTableView().setItems(FXCollections.observableList(filteredList));
         }
     }
 
     @Override
     public FirmeEntity saveFirma(FirmeController firmeController) {
         if (!this.getTextFieldDataForDialogCheck(firmeController).isEmpty())
-            return this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
+            this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
         FirmeEntity firma = this.save(firmeController);
         this.firmeService.createNew(firma);
         this.init(firmeController);
@@ -68,7 +69,7 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     @Override
     public FirmeEntity updateFirma(FirmeController firmeController) {
         if (!this.getTextFieldDataForDialogCheck(firmeController).isEmpty())
-            return this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
+            this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
         FirmeEntity firma = this.update(firmeController);
         this.firmeService.updateExisting(firma, firma.getIdFirme());
         this.init(firmeController);
@@ -106,12 +107,6 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
                 .idFirme(this.getTableViewFirma(firmeController).getIdFirme())
                 .oibFirme(firmeController.getTextFieldOIB().getText())
                 .nazivFirme(firmeController.getTextFieldNaziv().getText()).build();
-    }
-
-    private void setNewData(FirmeController firmeController, FirmeEntity firmeEntity) {
-        this.firmeObservableList.add(firmeEntity);
-        firmeController.getTableView().setItems(this.firmeObservableList);
-        this.init(firmeController);
     }
 
     private void setValuesToTableColumns(FirmeController firmeController) {
