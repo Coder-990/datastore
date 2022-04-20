@@ -11,13 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class RacunController {
 
     @FXML
@@ -32,14 +33,10 @@ public class RacunController {
     private Button buttonClearFields;
     @FXML
     private Label labelMessageGetCredidentials;
-    @Autowired
-    private UtilService utilService;
-    @Autowired
-    private RacunService racunService;
-    @Autowired
-    private StageInitializerService stageInitializerService;
-    @Autowired
-    private PasswordEncryptionService passwordEncryptionService;
+    private final UtilService utilService;
+    private final RacunService racunService;
+    private final StageInitializerService stageInitializerService;
+    private final PasswordEncryptionService passwordEncryptionService;
 
     @FXML
     public RacunEntity setButtonCreateUser() {

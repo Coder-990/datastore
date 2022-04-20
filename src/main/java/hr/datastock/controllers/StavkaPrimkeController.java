@@ -13,14 +13,15 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class StavkaPrimkeController {
 
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
@@ -54,17 +55,13 @@ public class StavkaPrimkeController {
     @FXML
     private Button buttonClearFields;
 
-    @Autowired
-    private StavkaPrimkeService stavkaPrimkeService;
+    private final StavkaPrimkeService stavkaPrimkeService;
 
-    @Autowired
-    private PrimkaService primkaService;
+    private final PrimkaService primkaService;
 
-    @Autowired
-    private RobaService robaService;
+    private final RobaService robaService;
 
-    @Autowired
-    private UtilService utilService;
+    private final UtilService utilService;
 
     private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
     private ObservableList<StavkaPrimkeEntity> filteredStavkaPrimkeObservableListOfStorno;

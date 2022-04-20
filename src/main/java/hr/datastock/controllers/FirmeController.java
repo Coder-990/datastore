@@ -99,7 +99,6 @@ public class FirmeController {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
         return firmeEntity;
-
     }
 
     public void setButtonDelete() {

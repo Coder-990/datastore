@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Component
+@Service
 public class StageInitializerServiceImpl implements StageInitializerService {
 
     private final String applicationTitle;
@@ -138,6 +138,7 @@ public class StageInitializerServiceImpl implements StageInitializerService {
         fxmlLoader.setControllerFactory(this.applicationContext::getBean);
         this.setStage(new StageReadyEvent(new Stage()), fxmlLoader.load());
     }
+
     @Override
     public void getRacunScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.resourceRacun.getURL());

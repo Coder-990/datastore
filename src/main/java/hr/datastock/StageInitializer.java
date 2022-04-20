@@ -1,17 +1,17 @@
 package hr.datastock;
 
 import hr.datastock.services.StageInitializerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import static hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
 
+@RequiredArgsConstructor
 @Component
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
-    @Autowired
-    private StageInitializerService stageInitializerService;
+    private final StageInitializerService stageInitializerService;
 
     @Override
     public void onApplicationEvent(final StageReadyEvent event) {

@@ -10,12 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class LoginController {
 
     @FXML
@@ -30,12 +31,12 @@ public class LoginController {
     private PasswordField textFieldPassword;
     @FXML
     private TextField textFieldUserId;
-    @Autowired
-    StageInitializerService stageInitializerService;
-    @Autowired
-    RacunService racunService;
-    @Autowired
-    PasswordEncryptionService passwordEncryptionService;
+
+    private final StageInitializerService stageInitializerService;
+
+    private final RacunService racunService;
+
+    private final PasswordEncryptionService passwordEncryptionService;
 
     @FXML
     void setButtonClose() {

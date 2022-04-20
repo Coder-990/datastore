@@ -11,8 +11,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-@Component
+@RequiredArgsConstructor
+@Controller
 public class StornoStavkaPrimkeController {
 
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
@@ -55,8 +55,7 @@ public class StornoStavkaPrimkeController {
     @FXML
     private Button buttonClearFields;
 
-    @Autowired
-    private StavkaPrimkeService stavkaPrimkeService;
+    private final StavkaPrimkeService stavkaPrimkeService;
 
     private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
 
@@ -64,7 +63,7 @@ public class StornoStavkaPrimkeController {
     public void initialize() {
         this.stavkaPrimkeObservableList = FXCollections.observableList(this.stavkaPrimkeService.getAll()
                 .stream().filter(StavkaPrimkeEntity::getStorno).toList());
-        this.setComboBoxrimkeEntity();
+        this.setComboBoxPrimkeEntity();
         this.setComboBoxRobaEntity();
         this.setTableColumnProperties();
         this.clearRecords();
@@ -80,7 +79,7 @@ public class StornoStavkaPrimkeController {
         this.clearRecords();
     }
 
-    private void setComboBoxrimkeEntity() {
+    private void setComboBoxPrimkeEntity() {
         final Set<FirmeEntity> listOfFirme = this.stavkaPrimkeObservableList.stream()
                 .map(stornoStavkaPrimke -> stornoStavkaPrimke.getStavkaPrimkePrimka().getPrimkaFirme())
                 .collect(Collectors.toSet());

@@ -3,16 +3,16 @@ package hr.datastock.services.impl;
 import hr.datastock.entities.PrimkaEntity;
 import hr.datastock.repositories.PrimkaRepository;
 import hr.datastock.services.PrimkaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@RequiredArgsConstructor
+@Service
 public class PrimkaServiceImpl implements PrimkaService {
 
-    @Autowired
-    private PrimkaRepository primkaRepository;
+    private final PrimkaRepository primkaRepository;
 
     @Override
     public List<PrimkaEntity> getAll(){

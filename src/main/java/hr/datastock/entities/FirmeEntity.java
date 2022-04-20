@@ -1,6 +1,7 @@
 package hr.datastock.entities;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -27,6 +28,6 @@ public class FirmeEntity {
 
     @Override
     public String toString() {
-        return this.oibFirme + " ["+ this.nazivFirme+"]";
+        return this.oibFirme + " [" + this.nazivFirme + "]";
     }
 }

@@ -4,15 +4,14 @@ import hr.datastock.entities.RacunEntity;
 import hr.datastock.exceptions.RacunEntityRuntimeExcpetion;
 import hr.datastock.repositories.RacunRepository;
 import hr.datastock.services.RacunService;
+import lombok.RequiredArgsConstructor;
 import org.codehaus.plexus.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-@Component
+import org.springframework.stereotype.Service;
+@RequiredArgsConstructor
+@Service
 public class RacunServiceImpl implements RacunService {
 
-    @Autowired
-    private RacunRepository racunRepository;
+    private final RacunRepository racunRepository;
 
     @Override
     public void login(final String userid, final String password) {

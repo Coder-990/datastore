@@ -49,25 +49,51 @@ public class IzdatnicaController {
     @FXML
     private Button buttonDelete;
 
-    @FXML
     public void initialize() {
-        izdatnicaControllerService.init(this);
+        try {
+            izdatnicaControllerService.init(this);
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
+        }
+        log.info("Izdatnica controller initializing successful");
     }
 
     public void setButtonSearch() {
-        izdatnicaControllerService.searchData(this);
+        try {
+            izdatnicaControllerService.searchData(this);
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
+        }
+        log.info("Data records searched successful");
     }
 
     public IzdatnicaEntity setButtonSave() {
-        return izdatnicaControllerService.saveIzdatnica(this);
+        IzdatnicaEntity izdatnica = null;
+        try {
+            izdatnica = this.izdatnicaControllerService.saveIzdatnica(this);
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
+        }
+        log.info("Izdatnica record saved successful");
+        return izdatnica;
     }
 
     public void setButtonDelete() {
-        izdatnicaControllerService.deleteIzdatnica(this);
+        try {
+            this.izdatnicaControllerService.deleteIzdatnica(this);
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
+        }
+        log.info("Izdatnica record deleted successful");
     }
 
     public void setButtonClear() {
-        izdatnicaControllerService.clearRecords(this);
+        try {
+            this.izdatnicaControllerService.clearRecords(this);
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
+        }
+        log.info("Field records cleared successful");
     }
 
 }

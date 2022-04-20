@@ -5,13 +5,15 @@ import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class MainController {
+    private final StageInitializerService stageInitializerService;
 
     @FXML
     private VBox vBoxSideBarFirme;
@@ -36,8 +38,6 @@ public class MainController {
     @FXML
     private VBox vBoxSideBarUserManagment;
 
-    @Autowired
-    private StageInitializerService stageInitializerService;
 
     public void setScreenFirme() throws IOException {
         this.stageInitializerService.getFirmeScreen();

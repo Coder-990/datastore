@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,13 +22,18 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public void createNew(final FirmeEntity firma) {
-        this.firmeRepository.save(firma);
+    public Optional<FirmeEntity> getOneById(final Long id) {
+        return this.firmeRepository.findById(id);
     }
 
     @Override
-    public void updateExisting(final FirmeEntity updateFirma, final Long id) {
-        this.firmeRepository.findById(id)
+    public FirmeEntity createNew(final FirmeEntity firma) {
+        return this.firmeRepository.save(firma);
+    }
+
+    @Override
+    public FirmeEntity updateExisting(final FirmeEntity updateFirma, final Long id) {
+        return this.getOneById(id)
                 .map(existingFirma -> {
                     existingFirma.setOibFirme(updateFirma.getOibFirme());
                     existingFirma.setNazivFirme(updateFirma.getNazivFirme());

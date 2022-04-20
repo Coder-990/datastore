@@ -10,54 +10,55 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.datastock.controllers.FirmeController">
-    <children>
-        <TableView fx:id="tableView" layoutX="338.0" layoutY="87.0" prefHeight="194.0" prefWidth="405.0">
-            <columns>
-                <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID" />
-                <TableColumn fx:id="tableColumnNaziv" prefWidth="190.0" text="Company name" />
-                <TableColumn fx:id="tableColumnOIB" prefWidth="178.0" text="Company identity number" />
-            </columns>
-        </TableView>
-        <Button fx:id="buttonGetDataFromTable" layoutX="172.0" layoutY="87.0" mnemonicParsing="false" onAction="#tableViewData" prefHeight="32.0" prefWidth="143.0" text="Get data from table" />
-          <GridPane layoutX="396.0" layoutY="292.0" prefHeight="64.0" prefWidth="347.0">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="27.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-         <children>
-                <TextField fx:id="textFieldOIB" prefHeight="25.0" prefWidth="376.0" />
-                <TextField fx:id="textFieldNaziv" prefHeight="25.0" prefWidth="347.0" GridPane.rowIndex="2" />
-         </children>
-          </GridPane>
-          <GridPane layoutX="129.0" layoutY="161.0" prefHeight="188.0" prefWidth="186.0">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="89.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="97.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-         <children>
-                  <Button fx:id="buttonUpdate" mnemonicParsing="false" onAction="#setButtonUpdate" prefHeight="50.0" prefWidth="100.0" text="Update" GridPane.columnIndex="1" />
-                  <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClear" prefHeight="33.0" prefWidth="104.0" text="Clear" GridPane.rowIndex="3" />
-                  <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#setButtonSearch" prefHeight="32.0" prefWidth="100.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-              <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#setButtonDelete" prefHeight="50.0" prefWidth="100.0" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="34.0" prefWidth="96.0" text="Save" />
-         </children>
-          </GridPane>
-      <Label layoutX="50.0" layoutY="176.0" text="Create or edit" />
-      <Label layoutX="38.0" layoutY="259.0" text="Clear or remove" />
-            <Label layoutX="356.0" layoutY="333.0" text="Name" />
-            <Label layoutX="362.0" layoutY="300.0" text="CIN" />
-    </children>
+<AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hr.datastock.controllers.FirmeController">
+    <TableView fx:id="tableView" layoutX="338.0" layoutY="87.0" prefHeight="194.0" prefWidth="405.0">
+        <columns>
+            <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID"/>
+            <TableColumn fx:id="tableColumnNaziv" prefWidth="190.0" text="Company name"/>
+            <TableColumn fx:id="tableColumnOIB" prefWidth="178.0" text="Company identity number"/>
+        </columns>
+    </TableView>
+    <Button fx:id="buttonGetDataFromTable" layoutX="172.0" layoutY="87.0" mnemonicParsing="false"
+            onAction="#tableViewData" prefHeight="32.0" prefWidth="143.0" text="Get data from table"/>
+    <GridPane layoutX="396.0" layoutY="292.0" prefHeight="64.0" prefWidth="347.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="27.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <TextField fx:id="textFieldOIB" prefHeight="25.0" prefWidth="376.0"/>
+        <TextField fx:id="textFieldNaziv" prefHeight="25.0" prefWidth="347.0" GridPane.rowIndex="2"/>
+    </GridPane>
+    <GridPane layoutX="129.0" layoutY="161.0" prefHeight="188.0" prefWidth="186.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="89.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="97.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Button fx:id="buttonUpdate" mnemonicParsing="false" onAction="#setButtonUpdate" prefHeight="50.0"
+                prefWidth="100.0" text="Update" GridPane.columnIndex="1"/>
+        <Button fx:id="buttonClearFields" mnemonicParsing="false" onAction="#setButtonClear" prefHeight="33.0"
+                prefWidth="104.0" text="Clear" GridPane.rowIndex="3"/>
+        <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#setButtonSearch" prefHeight="32.0"
+                prefWidth="100.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#setButtonDelete" prefHeight="50.0"
+                prefWidth="100.0" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#setButtonSave" prefHeight="34.0"
+                prefWidth="96.0" text="Save"/>
+    </GridPane>
+    <Label layoutX="50.0" layoutY="176.0" text="Create or edit"/>
+    <Label layoutX="38.0" layoutY="259.0" text="Clear or remove"/>
+    <Label layoutX="356.0" layoutY="333.0" text="Name"/>
+    <Label layoutX="362.0" layoutY="300.0" text="CIN"/>
 </AnchorPane>

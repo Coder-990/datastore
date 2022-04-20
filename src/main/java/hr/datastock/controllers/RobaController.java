@@ -8,14 +8,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class RobaController {
 
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
@@ -55,11 +56,10 @@ public class RobaController {
     @FXML
     private Button buttonUpdate;
 
-    @Autowired
-    private RobaService robaService;
 
-    @Autowired
-    private UtilService utilService;
+    private final RobaService robaService;
+
+    private final UtilService utilService;
 
     private ObservableList<RobaEntity> robaObservableList;
     private TableViewSelectedData tvSelectedData;

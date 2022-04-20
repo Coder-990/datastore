@@ -58,22 +58,24 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
 
     @Override
     public FirmeEntity saveFirma(FirmeController firmeController) {
-        if (!this.getTextFieldDataForDialogCheck(firmeController).isEmpty())
-            this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
-        FirmeEntity firma = this.save(firmeController);
-        this.firmeService.createNew(firma);
-        this.init(firmeController);
-        return firma;
+        if (this.getTextFieldDataForDialogCheck(firmeController).isEmpty()) {
+            final FirmeEntity firma = this.save(firmeController);
+            this.init(firmeController);
+            return this.firmeService.createNew(firma);
+        }
+        this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
+        return null;
     }
 
     @Override
     public FirmeEntity updateFirma(FirmeController firmeController) {
-        if (!this.getTextFieldDataForDialogCheck(firmeController).isEmpty())
-            this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
-        FirmeEntity firma = this.update(firmeController);
-        this.firmeService.updateExisting(firma, firma.getIdFirme());
-        this.init(firmeController);
-        return firma;
+        if (this.getTextFieldDataForDialogCheck(firmeController).isEmpty()) {
+            final FirmeEntity firma = this.update(firmeController);
+            this.init(firmeController);
+            return this.firmeService.updateExisting(firma, firma.getIdFirme());
+        }
+        this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
+        return null;
     }
 
     @Override

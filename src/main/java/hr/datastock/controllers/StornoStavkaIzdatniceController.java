@@ -11,8 +11,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +21,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@RequiredArgsConstructor
+@Controller
 public class StornoStavkaIzdatniceController {
 
     public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
@@ -55,8 +56,7 @@ public class StornoStavkaIzdatniceController {
     @FXML
     private Button buttonClearFields;
 
-    @Autowired
-    private StavkaIzdatniceService stavkaIzdatniceService;
+    private final StavkaIzdatniceService stavkaIzdatniceService;
 
     private ObservableList<StavkaIzdatniceEntity> stavkaIzdatniceObservableList;
 

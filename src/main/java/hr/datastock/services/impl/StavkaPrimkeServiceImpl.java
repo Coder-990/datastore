@@ -3,18 +3,18 @@ package hr.datastock.services.impl;
 import hr.datastock.entities.StavkaPrimkeEntity;
 import hr.datastock.repositories.StavkaPrimkeRepository;
 import hr.datastock.services.StavkaPrimkeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@RequiredArgsConstructor
+@Service
 public class StavkaPrimkeServiceImpl implements StavkaPrimkeService {
 
-    @Autowired
-    StavkaPrimkeRepository stavkaPrimkeRepository;
+    private final StavkaPrimkeRepository stavkaPrimkeRepository;
 
     @Override
     public List<StavkaPrimkeEntity> getAll() {
