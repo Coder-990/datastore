@@ -10,25 +10,23 @@ import hr.datastock.services.PrimkaService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static hr.datastock.controllers.service.impl.Const.DATE_FORMATTER;
+import static hr.datastock.controllers.service.impl.Const.FX_ALIGNMENT_CENTER;
+
 @Service
 @RequiredArgsConstructor
 public class PrimkaControllerServiceImpl implements PrimkaControllerService {
-    public static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
-    public static final String DATE_FORMAT = "dd.MM.yyyy";
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     private final PrimkaService primkaService;
     private final FirmeService firmeService;
@@ -36,7 +34,6 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
     private ObservableList<PrimkaEntity> primkeObservableList;
 
     @Override
-    @FXML
     public void init(final PrimkaController primkaController) {
         this.primkeObservableList = FXCollections.observableList(this.primkaService.getAll());
         this.setComboBoxFirmeOnCreateIzdatnicaEntity(primkaController);
@@ -48,14 +45,13 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
 
     @Override
     public void searchData(final PrimkaController primkaController) {
-        if (primkaController.getComboBoxSearch() != null || primkaController.getDatePickerDatum() != null) {
-            final FilteredList<PrimkaEntity> filteredList = this.primkeObservableList
-                    .filtered(primka -> this.getComboBoxFirmaOibOnSearch(primkaController) == null || primka.getPrimkaFirme()
-                            .getOibFirme().equals(this.getComboBoxFirmaOibOnSearch(primkaController)))
-                    .filtered(primka -> this.getDateFromDatePicker(primkaController) == null ||
-                            primka.getDatum().equals(this.getDateFromDatePicker(primkaController)));
-            primkaController.getTableView().setItems(FXCollections.observableList(filteredList));
-        }
+        final FilteredList<PrimkaEntity> filteredList = this.primkeObservableList
+                .filtered(primka -> this.getComboBoxFirmaOibOnSearch(primkaController) == null || primka.getPrimkaFirme()
+                        .getOibFirme().equals(this.getComboBoxFirmaOibOnSearch(primkaController)))
+                .filtered(primka -> this.getDateFromDatePicker(primkaController) == null ||
+                        primka.getDatum().equals(this.getDateFromDatePicker(primkaController)));
+        primkaController.getTableView().setItems(FXCollections.observableList(filteredList));
+
     }
 
     @Override
@@ -117,18 +113,6 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
     }
 
     private void setCellValueProperties(final PrimkaController primkaController) {
-        primkaController.getTableColumnDatum().setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(final LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(DATE_FORMATTER.format(item));
-                }
-            }
-        });
-
         primkaController.getTableColumnFirmeEntity().setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(final FirmeEntity item, boolean empty) {
@@ -137,6 +121,17 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
                     setText(null);
                 } else {
                     setText(item.toString());
+                }
+            }
+        });
+        primkaController.getTableColumnDatum().setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(final LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(DATE_FORMATTER.format(item));
                 }
             }
         });

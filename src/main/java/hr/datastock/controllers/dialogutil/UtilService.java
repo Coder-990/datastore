@@ -1,5 +1,7 @@
 package hr.datastock.controllers.dialogutil;
 
+import hr.datastock.entities.RacunEntity;
+
 public interface UtilService {
 
     void getWarningAlert(String alert);
@@ -9,4 +11,6 @@ public interface UtilService {
     boolean isEntityRemoved();
 
     boolean isDataPickedFromTableViewAlert();
+
+    boolean isUserRegistered(RacunEntity racun);
 }

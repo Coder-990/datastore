@@ -7,7 +7,7 @@ public interface FirmeControllerService {
 
     void init(FirmeController firmeController);
 
-    void pluckingAllDataFromTableView(FirmeController firmeController);
+    void pluckSelectedDataFromTableViewFirma(FirmeController firmeController);
 
     void searchData(FirmeController firmeController);
 
@@ -18,4 +18,6 @@ public interface FirmeControllerService {
     void deleteFirma(FirmeController firmeController);
 
     void clearRecords(FirmeController firmeController);
+
+    String getInputDataForDialogCheck(FirmeController firmeController);
 }

@@ -1,5 +1,6 @@
 package hr.datastock.controllers;
 
+import hr.datastock.controllers.dialogutil.UtilService;
 import hr.datastock.controllers.service.IzdatnicaControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
@@ -16,9 +17,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Controller
 public class IzdatnicaController {
-
     private final IzdatnicaControllerService izdatnicaControllerService;
-
+    private final UtilService utilService;
     @Getter
     @FXML
     private ComboBox<FirmeEntity> comboBoxCreate;
@@ -81,10 +81,11 @@ public class IzdatnicaController {
     public void setButtonDelete() {
         try {
             this.izdatnicaControllerService.deleteIzdatnica(this);
+            log.info("Izdatnica record deleted successful");
         } catch (RuntimeException ex) {
+            this.utilService.isEntityUnableToRemove();
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        log.info("Izdatnica record deleted successful");
     }
 
     public void setButtonClear() {

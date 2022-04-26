@@ -8,19 +8,20 @@ import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static hr.datastock.controllers.service.impl.Const.FX_ALIGNMENT_CENTER;
+
 @RequiredArgsConstructor
 @Service
 public class FirmeControllerServiceImpl implements FirmeControllerService {
-
-    private static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER";
 
     private final FirmeService firmeService;
     private final UtilService utilService;
@@ -28,7 +29,6 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     private ObservableList<FirmeEntity> firmeObservableList;
 
     @Override
-    @FXML
     public void init(FirmeController firmeController) {
         this.firmeObservableList = FXCollections.observableList(this.firmeService.getAll());
         this.setValuesToTableColumns(firmeController);
@@ -37,56 +37,56 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     }
 
     @Override
-    public void pluckingAllDataFromTableView(FirmeController firmeController) {
-        if (this.getTableViewFirma(firmeController) != null) {
-            firmeController.getTextFieldOIB().setText(this.getTableViewFirma(firmeController).getOibFirme());
-            firmeController.getTextFieldNaziv().setText(this.getTableViewFirma(firmeController).getNazivFirme());
-        } else if (this.getTableViewFirma(firmeController) == null) {
+    public void pluckSelectedDataFromTableViewFirma(FirmeController firmeController) {
+        FirmeEntity selectedFirma = this.getSelectedDataFromTableViewFirma(firmeController);
+        if (selectedFirma != null) {
+            firmeController.getTextFieldOIB().setText(selectedFirma.getOibFirme());
+            firmeController.getTextFieldNaziv().setText(selectedFirma.getNazivFirme());
+        } else {
             this.utilService.isDataPickedFromTableViewAlert();
         }
     }
 
     @Override
     public void searchData(FirmeController firmeController) {
-        if (firmeController.getTextFieldNaziv() != null || firmeController.getTextFieldOIB() != null) {
-            final FilteredList<FirmeEntity> filteredList = this.firmeObservableList
-                    .filtered(company -> company.getNazivFirme().toLowerCase().contains(firmeController.getTextFieldNaziv().getText()))
-                    .filtered(company -> company.getOibFirme().toLowerCase().contains(firmeController.getTextFieldOIB().getText()));
-            firmeController.getTableView().setItems(FXCollections.observableList(filteredList));
-        }
+        final FilteredList<FirmeEntity> filteredList = this.firmeObservableList
+                .filtered(company -> isTextFieldNazivContainingSomeData(firmeController, company))
+                .filtered(company -> isTextFieldOIBContainingSomeData(firmeController, company));
+        firmeController.getTableView().setItems(FXCollections.observableList(filteredList));
     }
 
     @Override
     public FirmeEntity saveFirma(FirmeController firmeController) {
-        if (this.getTextFieldDataForDialogCheck(firmeController).isEmpty()) {
+        final String dataCheck = this.getInputDataForDialogCheck(firmeController);
+        if (StringUtils.isEmpty(dataCheck)) {
             final FirmeEntity firma = this.save(firmeController);
             this.init(firmeController);
             return this.firmeService.createNew(firma);
         }
-        this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
+        this.utilService.getWarningAlert(dataCheck);
         return null;
     }
 
     @Override
     public FirmeEntity updateFirma(FirmeController firmeController) {
-        if (this.getTextFieldDataForDialogCheck(firmeController).isEmpty()) {
+        String checkData = this.getInputDataForDialogCheck(firmeController);
+        if (StringUtils.isEmpty(checkData)) {
             final FirmeEntity firma = this.update(firmeController);
             this.init(firmeController);
             return this.firmeService.updateExisting(firma, firma.getIdFirme());
         }
-        this.utilService.getWarningAlert(this.getTextFieldDataForDialogCheck(firmeController));
+        this.utilService.getWarningAlert(checkData);
         return null;
     }
 
     @Override
     public void deleteFirma(FirmeController firmeController) {
-        if (this.getTableViewFirma(firmeController) != null && this.utilService.isEntityRemoved()) {
-            this.firmeService.deleteFirma(this.getTableViewFirma(firmeController).getIdFirme());
+        FirmeEntity selectedFirma = this.getSelectedDataFromTableViewFirma(firmeController);
+        if (selectedFirma != null && this.utilService.isEntityRemoved()) {
+            this.firmeService.deleteFirma(selectedFirma.getIdFirme());
             this.init(firmeController);
-        } else if (this.getTableViewFirma(firmeController) == null) {
+        } else if (selectedFirma == null) {
             this.utilService.isDataPickedFromTableViewAlert();
-        } else {
-            this.utilService.isEntityUnableToRemove();
         }
     }
 
@@ -106,9 +106,22 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
 
     private FirmeEntity update(FirmeController firmeController) {
         return FirmeEntity.builder()
-                .idFirme(this.getTableViewFirma(firmeController).getIdFirme())
+                .idFirme(this.getSelectedDataFromTableViewFirma(firmeController).getIdFirme())
                 .oibFirme(firmeController.getTextFieldOIB().getText())
-                .nazivFirme(firmeController.getTextFieldNaziv().getText()).build();
+                .nazivFirme(firmeController.getTextFieldNaziv().getText())
+                .build();
+    }
+
+    private boolean isTextFieldNazivContainingSomeData(FirmeController firmeController, FirmeEntity company) {
+        String textFieldNaziv = firmeController.getTextFieldNaziv().getText();
+        return StringUtils.equals(textFieldNaziv, StringUtils.EMPTY) || textFieldNaziv == null ||
+                company.getNazivFirme().toLowerCase().contains(textFieldNaziv);
+    }
+
+    private boolean isTextFieldOIBContainingSomeData(FirmeController firmeController, FirmeEntity company) {
+        String textFieldOIB = firmeController.getTextFieldOIB().getText();
+        return StringUtils.equals(textFieldOIB, StringUtils.EMPTY) || textFieldOIB == null ||
+                company.getOibFirme().toLowerCase().contains(textFieldOIB);
     }
 
     private void setValuesToTableColumns(FirmeController firmeController) {
@@ -133,14 +146,15 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
                 this.firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
     }
 
-    private String getTextFieldDataForDialogCheck(FirmeController firmeController) {
+    @Override
+    public String getInputDataForDialogCheck(FirmeController firmeController) {
         final List<String> checkList = new ArrayList<>();
         if (firmeController.getTextFieldOIB().getText().trim().isEmpty()) checkList.add("Company name!");
         if (firmeController.getTextFieldNaziv().getText().trim().isEmpty()) checkList.add("Company identity number!");
         return String.join("\n", checkList);
     }
 
-    private FirmeEntity getTableViewFirma(FirmeController firmeController) {
+    private FirmeEntity getSelectedDataFromTableViewFirma(FirmeController firmeController) {
         return firmeController.getTableColumnId().getTableView().getSelectionModel().getSelectedItem();
     }
 }

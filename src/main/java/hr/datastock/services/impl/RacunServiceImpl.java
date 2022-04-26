@@ -32,7 +32,7 @@ public class RacunServiceImpl implements RacunService {
     }
 
     @Override
-    public void createAccount(final RacunEntity racun){
-        this.racunRepository.save(racun);
+    public RacunEntity createAccount(final RacunEntity racun){
+        return this.racunRepository.save(racun);
     }
 }

@@ -1,6 +1,7 @@
 package hr.datastock.controllers.dialogutil.impl;
 
 import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.entities.RacunEntity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,7 @@ public class UtilDialogsServiceImpl implements UtilService {
         final AtomicBoolean isRemoved = new AtomicBoolean(false);
         alertWindow.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK)
-               isRemoved.set(true);
+                isRemoved.set(true);
         });
         alertWindow.getAlertType();
         return isRemoved.get();
@@ -61,5 +62,21 @@ public class UtilDialogsServiceImpl implements UtilService {
         });
         alertWindow.getAlertType();
         return isPicked.get();
+    }
+
+    @Override
+    public boolean isUserRegistered(final RacunEntity racun) {
+        final Alert alertWindow = new Alert(Alert.AlertType.INFORMATION);
+        alertWindow.setTitle("User registration");
+        alertWindow.setHeaderText("User successfully created");
+        alertWindow.setContentText("User password of UserID: '" + racun.getUserId() + "' was successfully encrypted" +
+                "\nEncrypted password: " + racun.getPassword());
+        final AtomicBoolean isCreated = new AtomicBoolean(false);
+        alertWindow.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK)
+                isCreated.set(true);
+        });
+        alertWindow.getAlertType();
+        return isCreated.get();
     }
 }

@@ -44,9 +44,6 @@
                         <String fx:value="al-center-letf"/>
                         <String fx:value="sp-5"/>
                     </styleClass>
-                    <Label fx:id="labelMessage" GridPane.columnIndex="1"/>
-                    <Label text="Username" GridPane.rowIndex="1"/>
-                    <Label text="Password" GridPane.rowIndex="2"/>
                     <TextField fx:id="textFieldUserId" promptText="Enter user ID" GridPane.columnIndex="1"
                                GridPane.rowIndex="1"/>
                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"/>
@@ -55,7 +52,7 @@
                     <HBox styleClass="sp-5" GridPane.columnIndex="1" GridPane.rowIndex="3">
                         <Button fx:id="buttonClose" mnemonicParsing="false" onAction="#setButtonClose" styleClass="wd-120"
                                 text="Close"/>
-                        <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#setButtonLogin"
+                        <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#setButtonRedirectToMainMenuScreen"
                                 prefHeight="25.0" prefWidth="48.0" styleClass="wd-120" text="Login"/>
                     </HBox>
                     <Button fx:id="buttonRegister" mnemonicParsing="false" onAction="#setButtonRegister"

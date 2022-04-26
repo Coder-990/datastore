@@ -1,5 +1,6 @@
 package hr.datastock.controllers;
 
+import hr.datastock.controllers.dialogutil.UtilService;
 import hr.datastock.controllers.service.FirmeControllerService;
 import hr.datastock.entities.FirmeEntity;
 import javafx.fxml.FXML;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 @Controller
 public class FirmeController {
-
     private final FirmeControllerService firmeControllerService;
+    private final UtilService utilService;
 
     @Getter
     @FXML
@@ -51,72 +52,72 @@ public class FirmeController {
     @FXML
     private Button buttonUpdate;
 
-    @FXML
     public void initialize() {
         try {
             this.firmeControllerService.init(this);
-            log.info("Firme controller initializing successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
+        log.info("Firme controller initializing successful");
     }
 
-    public void tableViewData() {
+    public void getValuesFromTables() {
         try {
-            this.firmeControllerService.pluckingAllDataFromTableView(this);
-            log.info("Data fetched successful from table view");
+            this.firmeControllerService.pluckSelectedDataFromTableViewFirma(this);
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
+        log.info("Data fetched successful");
     }
 
     public void setButtonSearch() {
         try {
             this.firmeControllerService.searchData(this);
-            log.info("Data records searched successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
+        log.info("Record searched successful");
     }
 
     public FirmeEntity setButtonSave() {
-        FirmeEntity firmeEntity = null;
+        FirmeEntity firma = null;
         try {
-            firmeEntity = this.firmeControllerService.saveFirma(this);
-            log.info("Firma record saved successful");
+            firma = this.firmeControllerService.saveFirma(this);
+            if (firma != null) log.info("Record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return firmeEntity;
+        return firma;
     }
 
     public FirmeEntity setButtonUpdate() {
-        FirmeEntity firmeEntity = null;
+        FirmeEntity firma = null;
         try {
-            firmeEntity = this.firmeControllerService.updateFirma(this);
-            log.info("Firma record update successful");
+            firma = this.firmeControllerService.updateFirma(this);
+            if (firma != null) log.info("Record update successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return firmeEntity;
+        return firma;
     }
 
     public void setButtonDelete() {
         try {
             this.firmeControllerService.deleteFirma(this);
-            log.info("Firma record deleted successful");
         } catch (RuntimeException ex) {
+            this.utilService.isEntityUnableToRemove();
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
+        log.info("Record deleted successful");
     }
 
     public void setButtonClear() {
         try {
             this.firmeControllerService.clearRecords(this);
-            log.info("Field records cleared successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
+        log.info("Field records cleared successful");
     }
 
 }

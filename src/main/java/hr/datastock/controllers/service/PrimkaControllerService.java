@@ -5,7 +5,6 @@ import hr.datastock.entities.PrimkaEntity;
 
 public interface PrimkaControllerService {
 
-
     void init(PrimkaController primkaController);
 
     void searchData(PrimkaController primkaController);

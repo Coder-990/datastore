@@ -14,7 +14,6 @@ import java.io.IOException;
 @Controller
 public class MainController {
     private final StageInitializerService stageInitializerService;
-
     @FXML
     private VBox vBoxSideBarFirme;
     @FXML
@@ -37,7 +36,6 @@ public class MainController {
     private VBox vBoxSideBarLogout;
     @FXML
     private VBox vBoxSideBarUserManagment;
-
 
     public void setScreenFirme() throws IOException {
         this.stageInitializerService.getFirmeScreen();

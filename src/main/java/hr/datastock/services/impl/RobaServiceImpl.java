@@ -24,18 +24,18 @@ public class RobaServiceImpl implements RobaService {
         return this.robaRepository.findById(id);
     }
     @Override
-    public RobaEntity createRoba(final RobaEntity roba) {
+    public RobaEntity createNew(final RobaEntity roba) {
         return this.robaRepository.save(roba);
     }
     @Override
-    public RobaEntity updateRoba(final RobaEntity roba, final Long id) {
+    public RobaEntity updateExisting(final RobaEntity newArticleValue, final Long id) {
         return this.getOneById(id)
                 .map(existingRoba -> {
-                    existingRoba.setNazivArtikla(roba.getNazivArtikla());
-                    existingRoba.setKolicina(roba.getKolicina());
-                    existingRoba.setCijena(roba.getCijena());
-                    existingRoba.setOpis(roba.getOpis());
-                    existingRoba.setJmj(roba.getJmj());
+                    existingRoba.setNazivArtikla(newArticleValue.getNazivArtikla());
+                    existingRoba.setKolicina(newArticleValue.getKolicina());
+                    existingRoba.setCijena(newArticleValue.getCijena());
+                    existingRoba.setOpis(newArticleValue.getOpis());
+                    existingRoba.setJmj(newArticleValue.getJmj());
                     return this.robaRepository.saveAndFlush(existingRoba);
                 }).orElseThrow(() -> new RobaEntityExistsRuntimeException(id));
     }

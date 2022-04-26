@@ -7,23 +7,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.datastock.controllers.RacunController">
-   <children>
-      <BorderPane prefHeight="399.0" prefWidth="600.0">
-         <center>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hr.datastock.controllers.RacunController">
+    <BorderPane prefHeight="399.0" prefWidth="600.0">
+        <center>
             <Group BorderPane.alignment="CENTER">
-               <children>
-                  <TextField fx:id="textfieldUserID" alignment="TOP_LEFT" layoutX="204.0" layoutY="83.0" prefHeight="25.0" prefWidth="169.0" />
-                  <TextField fx:id="textfieldPassword" layoutX="204.0" layoutY="154.0" prefHeight="25.0" prefWidth="169.0" />
-                  <Label layoutX="136.0" layoutY="87.0" text="UserId" />
-                  <Label layoutX="128.0" layoutY="158.0" text="Password" />
-                  <Button fx:id="buttonCreateUser" layoutX="237.0" layoutY="229.0" mnemonicParsing="false" onAction="#setButtonCreateUser" text="Save user" />
-                  <Button fx:id="buttonLogin" layoutX="462.0" layoutY="282.0" mnemonicParsing="false" onAction="#setButtonBackToLogin" text="Back to login" />
-                  <Label fx:id="labelMessageGetCredidentials" layoutX="128.0" prefHeight="25.0" prefWidth="267.0" />
-                  <Button fx:id="buttonClearFields" layoutY="282.0" mnemonicParsing="false" onAction="#setButtonClearFields" text="Clear" />
-               </children>
+                <TextField fx:id="textFieldUserID" alignment="TOP_LEFT" layoutX="204.0" layoutY="83.0" prefHeight="25.0"
+                           prefWidth="169.0"/>
+                <TextField fx:id="textFieldPassword" layoutX="204.0" layoutY="154.0" prefHeight="25.0"
+                           prefWidth="169.0"/>
+                <Label layoutX="136.0" layoutY="87.0" text="UserId"/>
+                <Label layoutX="128.0" layoutY="158.0" text="Password"/>
+                <Button fx:id="buttonCreateUser" layoutX="237.0" layoutY="229.0" mnemonicParsing="false"
+                        onAction="#setButtonSave" text="Save user"/>
+                <Button fx:id="buttonLogin" layoutX="462.0" layoutY="282.0" mnemonicParsing="false"
+                        onAction="#setButtonBackToLogin"
+                        text="Back to login"/>
+                <Button fx:id="buttonClearFields" layoutY="282.0" mnemonicParsing="false" onAction="#setButtonClear"
+                        text="Clear"/>
             </Group>
-         </center>
-      </BorderPane>
-   </children>
+        </center>
+    </BorderPane>
 </AnchorPane>

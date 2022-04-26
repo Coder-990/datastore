@@ -32,11 +32,11 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public FirmeEntity updateExisting(final FirmeEntity updateFirma, final Long id) {
+    public FirmeEntity updateExisting(final FirmeEntity newFirmaValue, final Long id) {
         return this.getOneById(id)
                 .map(existingFirma -> {
-                    existingFirma.setOibFirme(updateFirma.getOibFirme());
-                    existingFirma.setNazivFirme(updateFirma.getNazivFirme());
+                    existingFirma.setOibFirme(newFirmaValue.getOibFirme());
+                    existingFirma.setNazivFirme(newFirmaValue.getNazivFirme());
                     return this.firmeRepository.saveAndFlush(existingFirma);
                 }).orElseThrow(() -> new FirmeEntityExistsRuntimeException(id));
     }
