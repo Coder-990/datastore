@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.RobaControllerService;
 import hr.datastock.entities.RobaEntity;
 import javafx.fxml.FXML;
@@ -73,6 +73,7 @@ public class RobaController {
         }
         log.info("Roba controller initializing successful");
     }
+
     public void getValuesFromTables() {
         try {
             this.robaControllerService.pluckSelectedDataFromTableViewRoba(this);
@@ -81,6 +82,7 @@ public class RobaController {
         }
         log.info("Data fetched successful from table view");
     }
+
     public void setButtonSearch() {
         try {
             this.robaControllerService.searchData(this);
@@ -89,6 +91,7 @@ public class RobaController {
         }
         log.info("Roba records searched successful");
     }
+
     public void setButtonSave() {
         try {
             if (this.robaControllerService.saveArtikl(this) != null) log.info("Roba record saved successful");
@@ -96,6 +99,7 @@ public class RobaController {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
     }
+
     public void setButtonUpdate() {
         try {
             if (this.robaControllerService.updateArtikl(this) != null)
@@ -104,13 +108,13 @@ public class RobaController {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
     }
+
     public void setButtonDelete() {
         try {
             this.robaControllerService.deleteArtikl(this);
             log.info("Roba record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
-            log.error(ex.getMessage(), ex.fillInStackTrace());
         }
     }
 

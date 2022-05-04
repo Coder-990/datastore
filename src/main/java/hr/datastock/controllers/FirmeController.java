@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.FirmeControllerService;
 import hr.datastock.entities.FirmeEntity;
 import javafx.fxml.FXML;
@@ -81,8 +81,7 @@ public class FirmeController {
 
     public void setButtonSave() {
         try {
-            FirmeEntity firmeEntity = this.firmeControllerService.saveFirma(this);
-            if (firmeEntity != null) log.info("Record saved successful");
+            if (this.firmeControllerService.saveFirma(this) != null) log.info("Record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
@@ -90,8 +89,7 @@ public class FirmeController {
 
     public void setButtonUpdate() {
         try {
-            FirmeEntity firma = this.firmeControllerService.updateFirma(this);
-            if (firma != null) log.info("Record update successful");
+            if (this.firmeControllerService.updateFirma(this) != null) log.info("Record update successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
@@ -100,11 +98,10 @@ public class FirmeController {
     public void setButtonDelete() {
         try {
             this.firmeControllerService.deleteFirma(this);
+            log.info("Record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
-            log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        log.info("Record deleted successful");
     }
 
     public void setButtonClear() {

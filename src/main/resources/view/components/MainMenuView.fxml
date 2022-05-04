@@ -12,8 +12,8 @@
     <BorderPane layoutX="-2.0" layoutY="-2.0" prefHeight="568.0" prefWidth="699.0">
         <left>
             <HBox fx:id="vBoxSideBar" prefHeight="100.0" prefWidth="200.0" styleClass="main-view"
-                  stylesheets="@style/application.css" BorderPane.alignment="CENTER">
-                <VBox prefWidth="134.0" styleClass="side-bar" stylesheets="@style/application.css">
+                  stylesheets="@../style/application.css" BorderPane.alignment="CENTER">
+                <VBox prefWidth="134.0" styleClass="side-bar" stylesheets="@../style/application.css">
                     <VBox id="Firme" fx:id="vBoxSideBarFirme" onMouseClicked="#setScreenFirme"
                           styleClass="side-bar-menu">
                         <SVGPath
@@ -66,7 +66,7 @@
             </HBox>
         </left>
         <right>
-            <VBox prefWidth="134.0" styleClass="side-bar" stylesheets="@style/application.css"
+            <VBox prefWidth="134.0" styleClass="side-bar" stylesheets="@../style/application.css"
                   BorderPane.alignment="CENTER">
                 <VBox styleClass="side-bar-menu"/>
                 <VBox layoutX="10.0" layoutY="10.0" styleClass="side-bar-menu">

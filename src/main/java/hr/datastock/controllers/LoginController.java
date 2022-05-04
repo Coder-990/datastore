@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.LoginControllerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

@@ -1,27 +1,13 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.dialogutil.UtilService;
 import hr.datastock.controllers.service.StavkaPrimkeControllerService;
 import hr.datastock.entities.*;
-import hr.datastock.services.PrimkaService;
-import hr.datastock.services.RobaService;
-import hr.datastock.services.StavkaPrimkeService;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static hr.datastock.controllers.service.impl.Const.FX_ALIGNMENT_CENTER;
 
 @Slf4j
 @RequiredArgsConstructor

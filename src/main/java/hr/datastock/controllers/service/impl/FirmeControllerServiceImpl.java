@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.FirmeController;
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.FirmeControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.services.FirmeService;
@@ -70,8 +70,8 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     @Override
     public FirmeEntity updateFirma(FirmeController firmeController) {
         String checkData = this.getInputDataForDialogCheck(firmeController);
-        FirmeEntity entity = this.update(firmeController);
         if (StringUtils.isEmpty(checkData)) {
+            FirmeEntity entity = this.update(firmeController);
             FirmeEntity firma = this.firmeService.updateExisting(entity, entity.getIdFirme());
             this.init(firmeController);
             return firma;
@@ -98,6 +98,13 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
         firmeController.getTableView().getSelectionModel().clearSelection();
     }
 
+    @Override
+    public String getInputDataForDialogCheck(FirmeController firmeController) {
+        final List<String> checkList = new ArrayList<>();
+        if (firmeController.getTextFieldOIB().getText().trim().isEmpty()) checkList.add("Company name!");
+        if (firmeController.getTextFieldNaziv().getText().trim().isEmpty()) checkList.add("Company identity number!");
+        return String.join("\n", checkList);
+    }
     private FirmeEntity save(FirmeController firmeController) {
         return FirmeEntity.builder()
                 .idFirme(this.nextId())
@@ -145,14 +152,6 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     private Long nextId() {
         return !this.firmeObservableList.isEmpty() ?
                 this.firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
-    }
-
-    @Override
-    public String getInputDataForDialogCheck(FirmeController firmeController) {
-        final List<String> checkList = new ArrayList<>();
-        if (firmeController.getTextFieldOIB().getText().trim().isEmpty()) checkList.add("Company name!");
-        if (firmeController.getTextFieldNaziv().getText().trim().isEmpty()) checkList.add("Company identity number!");
-        return String.join("\n", checkList);
     }
 
     private FirmeEntity getSelectedDataFromTableViewFirma(FirmeController firmeController) {

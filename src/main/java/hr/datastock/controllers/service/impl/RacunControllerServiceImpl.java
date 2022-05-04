@@ -2,7 +2,7 @@ package hr.datastock.controllers.service.impl;
 
 import hr.datastock.DatastockJavaFXAplication;
 import hr.datastock.controllers.RacunController;
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.RacunControllerService;
 import hr.datastock.entities.RacunEntity;
 import hr.datastock.security.PasswordEncryptionService;

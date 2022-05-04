@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -14,8 +16,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+import static hr.datastock.controllers.service.impl.Const.CLASSPATH_VIEW;
+import static hr.datastock.controllers.service.impl.Const.FXML;
+
+@Slf4j
 @Service
 public class StageInitializerServiceImpl implements StageInitializerService {
+
+
 
     private final String applicationTitle;
     private final ApplicationContext applicationContext;
@@ -26,37 +34,37 @@ public class StageInitializerServiceImpl implements StageInitializerService {
         this.applicationContext = applicationContext;
     }
 
-    @Value("classpath:/view/StornoStavkaPrimkeView.fxml")
+    @Value(CLASSPATH_VIEW + "StornoStavkaPrimkeView" + FXML)
     private Resource resourceStornoStavkaPrimke;
 
-    @Value("classpath:/view/StavkaPrimkeView.fxml")
+    @Value(CLASSPATH_VIEW + "StavkaPrimkeView" + FXML)
     private Resource resourceStavkaPrimke;
 
-    @Value("classpath:/view/PrimkaView.fxml")
+    @Value(CLASSPATH_VIEW + "PrimkaView" + FXML)
     private Resource resourcePrimka;
 
-    @Value("classpath:/view/StornoStavkaIzdatnicaView.fxml")
+    @Value(CLASSPATH_VIEW + "StornoStavkaIzdatnicaView" + FXML)
     private Resource resourceStornoStavkaIzdatnica;
 
-    @Value("classpath:/view/StavkaIzdatnicaView.fxml")
+    @Value(CLASSPATH_VIEW + "StavkaIzdatnicaView" + FXML)
     private Resource resourceStavkaIzdatnica;
 
-    @Value("classpath:/view/IzdatnicaView.fxml")
+    @Value(CLASSPATH_VIEW + "IzdatnicaView" + FXML)
     private Resource resourceIzdatnica;
 
-    @Value("classpath:/view/RobaView.fxml")
+    @Value(CLASSPATH_VIEW + "RobaView" + FXML)
     private Resource resourceRoba;
 
-    @Value("classpath:/view/FirmeView.fxml")
+    @Value(CLASSPATH_VIEW + "FirmeView" + FXML)
     private Resource resourceFirme;
 
-    @Value("classpath:/view/MainMenuView.fxml")
+    @Value(CLASSPATH_VIEW + "MainMenuView" + FXML)
     private Resource resourceMain;
 
-    @Value("classpath:/view/RacunView.fxml")
+    @Value(CLASSPATH_VIEW + "RacunView" + FXML)
     private Resource resourceRacun;
 
-    @Value("classpath:/view/LoginView.fxml")
+    @Value(CLASSPATH_VIEW + "LoginView" + FXML)
     private Resource resourceLogin;
 
     @Override
@@ -77,9 +85,8 @@ public class StageInitializerServiceImpl implements StageInitializerService {
             FXMLLoader fxmlLoader = new FXMLLoader(this.resourceMain.getURL());
             fxmlLoader.setControllerFactory(this.applicationContext::getBean);
             this.setStage(event, fxmlLoader.load());
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            throw new StageInitializerRuntimeException(exception);
+        } catch (IOException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
         }
     }
 

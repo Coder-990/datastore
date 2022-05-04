@@ -1,6 +1,5 @@
-package hr.datastock;
+package hr.datastock.services;
 
-import hr.datastock.services.StageInitializerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

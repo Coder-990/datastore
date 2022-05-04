@@ -1,11 +1,9 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.PrimkaControllerService;
 import hr.datastock.entities.FirmeEntity;
-import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.entities.PrimkaEntity;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import lombok.Getter;
@@ -84,7 +82,6 @@ public class PrimkaController {
             log.info("Primka record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
-            log.error(ex.getMessage(), ex.fillInStackTrace());
         }
     }
 

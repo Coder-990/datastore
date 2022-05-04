@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.RobaController;
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.RobaControllerService;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.services.RobaService;

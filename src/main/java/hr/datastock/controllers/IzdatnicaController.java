@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.IzdatnicaControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
@@ -82,7 +82,6 @@ public class IzdatnicaController {
             log.info("Izdatnica record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
-            log.error(ex.getMessage(), ex.fillInStackTrace());
         }
     }
 

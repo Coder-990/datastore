@@ -1,6 +1,6 @@
-package hr.datastock.controllers.dialogutil.impl;
+package hr.datastock.dialogutil.impl;
 
-import hr.datastock.controllers.dialogutil.UtilService;
+import hr.datastock.dialogutil.UtilService;
 import hr.datastock.entities.RacunEntity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

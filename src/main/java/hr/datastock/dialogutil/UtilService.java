@@ -1,4 +1,4 @@
-package hr.datastock.controllers.dialogutil;
+package hr.datastock.dialogutil;
 
 import hr.datastock.entities.RacunEntity;
 
