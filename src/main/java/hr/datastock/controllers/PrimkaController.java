@@ -69,15 +69,13 @@ public class PrimkaController {
         log.info("Data records searched successful");
     }
 
-    public PrimkaEntity setButtonSave() {
-        PrimkaEntity primka = null;
+    public void setButtonSave() {
         try {
-            primka = this.primkaControllerService.savePrimka(this);
+            if (this.primkaControllerService.savePrimka(this) != null)
+                log.info("Primka record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        log.info("Primka record saved successful");
-        return primka;
     }
 
     public void setButtonDelete() {

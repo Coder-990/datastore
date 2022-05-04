@@ -151,6 +151,19 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
         });
     }
 
+    private Long nextId() {
+        return !this.stavkaIzdatniceObservableList.isEmpty() ?
+                this.stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1 : 1;
+    }
+
+    private String getInputDataForDialogCheck(StavkaIzdatniceController sic) {
+        final List<String> checkList = new ArrayList<>();
+        if (this.getComboBoxIzdatnicaOnCheck(sic) == null) checkList.add("Company!");
+        if (this.getComboBoxRobaOnCheck(sic) == null) checkList.add("Article!");
+        if (sic.getTextFieldKolicina().getText().trim().isEmpty()) checkList.add("Amount!");
+        return String.join("\n", checkList);
+    }
+
     private boolean isTextFieldAmountContainingSomeData(StavkaIzdatniceController sic, StavkaIzdatniceEntity stavkaIzdatnice) {
         String textFieldAmount = sic.getTextFieldKolicina().getText();
         return StringUtils.equals(textFieldAmount, StringUtils.EMPTY) || textFieldAmount == null || stavkaIzdatnice
@@ -160,27 +173,14 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     private boolean isTextFieldArticleContainingSomeData(StavkaIzdatniceController sic, StavkaIzdatniceEntity stavkaIzdatnice) {
         String textFieldArticle = sic.getTextFieldArticle().getText();
         return StringUtils.equals(textFieldArticle, StringUtils.EMPTY) || textFieldArticle == null || stavkaIzdatnice
-                .getStavkaIzdatniceRobe().getNazivArtikla().toLowerCase().contains(textFieldArticle);
+                .getStavkaIzdatniceRobe().toString().toLowerCase().contains(textFieldArticle);
     }
 
     private boolean isTextFieldFirmaContainingSomeData(StavkaIzdatniceController sic, StavkaIzdatniceEntity stavkaIzdatnice) {
         String textFieldFirma = sic.getTextFieldFirma().getText();
         return StringUtils.equals(textFieldFirma, StringUtils.EMPTY) || textFieldFirma == null || stavkaIzdatnice
-                .getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().getNazivFirme()
+                .getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().toString()
                 .toLowerCase().trim().contains(textFieldFirma);
-    }
-
-    private Long nextId() {
-        return !this.stavkaIzdatniceObservableList.isEmpty() ?
-                this.stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1 : 1;
-    }
-
-    private String getInputDataForDialogCheck(StavkaIzdatniceController sic) {
-        final List<String> listaProvjere = new ArrayList<>();
-        if (this.getComboBoxIzdatnicaOnCheck(sic) == null) listaProvjere.add("Company!");
-        if (this.getComboBoxRobaOnCheck(sic) == null) listaProvjere.add("Article!");
-        if (sic.getTextFieldKolicina().getText().trim().isEmpty()) listaProvjere.add("Amount!");
-        return String.join("\n", listaProvjere);
     }
 
     private void setComboBoxIzdatnicaEntity(StavkaIzdatniceController sic) {

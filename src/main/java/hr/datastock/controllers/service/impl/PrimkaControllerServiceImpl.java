@@ -57,9 +57,9 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
     @Override
     public PrimkaEntity savePrimka(final PrimkaController primkaController) {
         if (this.getTextFieldAndDateDataForDialogCheck(primkaController).isEmpty()) {
-            final PrimkaEntity primka = this.save(primkaController);
+            final PrimkaEntity primka = this.primkaService.createPrimka(this.save(primkaController));
             this.init(primkaController);
-            return this.primkaService.createPrimka(primka);
+            return primka;
         }
         this.utilService.getWarningAlert(this.getTextFieldAndDateDataForDialogCheck(primkaController));
         return null;

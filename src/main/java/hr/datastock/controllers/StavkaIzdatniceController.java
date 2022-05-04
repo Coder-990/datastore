@@ -65,15 +65,13 @@ public class StavkaIzdatniceController {
         log.info("Record searched successful");
     }
 
-    public StavkaIzdatniceEntity setButtonSave() {
-        StavkaIzdatniceEntity stavkaIzdatnice = null;
+    public void setButtonSave() {
         try {
-            stavkaIzdatnice = this.stavkaIzdatniceControllerService.saveStavkaIzdatnice(this);
-            if (stavkaIzdatnice != null) log.info("Record saved successful");
+            if (this.stavkaIzdatniceControllerService.saveStavkaIzdatnice(this) != null)
+                log.info("Record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return stavkaIzdatnice;
     }
 
     public void setButtonStorno() {

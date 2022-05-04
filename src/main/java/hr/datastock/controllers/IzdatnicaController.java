@@ -67,15 +67,13 @@ public class IzdatnicaController {
         log.info("Data records searched successful");
     }
 
-    public IzdatnicaEntity setButtonSave() {
-        IzdatnicaEntity izdatnica = null;
+    public void setButtonSave() {
         try {
-            izdatnica = this.izdatnicaControllerService.saveIzdatnica(this);
+           if (this.izdatnicaControllerService.saveIzdatnica(this) != null)
+               log.info("Izdatnica record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        log.info("Izdatnica record saved successful");
-        return izdatnica;
     }
 
     public void setButtonDelete() {

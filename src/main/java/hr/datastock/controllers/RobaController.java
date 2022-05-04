@@ -89,25 +89,20 @@ public class RobaController {
         }
         log.info("Roba records searched successful");
     }
-    public RobaEntity setButtonSave() {
-        RobaEntity artikl = null;
+    public void setButtonSave() {
         try {
-            artikl = this.robaControllerService.saveArtikl(this);
-            if (artikl != null) log.info("Roba record saved successful");
+            if (this.robaControllerService.saveArtikl(this) != null) log.info("Roba record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return artikl;
     }
-    public RobaEntity setButtonUpdate() {
-        RobaEntity artikl = null;
+    public void setButtonUpdate() {
         try {
-            artikl = this.robaControllerService.updateArtikl(this);
-            if (artikl != null) log.info("Roba record update successful");
+            if (this.robaControllerService.updateArtikl(this) != null)
+                log.info("Roba record update successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return artikl;
     }
     public void setButtonDelete() {
         try {

@@ -59,9 +59,9 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     public FirmeEntity saveFirma(FirmeController firmeController) {
         final String dataCheck = this.getInputDataForDialogCheck(firmeController);
         if (StringUtils.isEmpty(dataCheck)) {
-            final FirmeEntity firma = this.save(firmeController);
+            FirmeEntity firma = firmeService.createNew(this.save(firmeController));
             this.init(firmeController);
-            return this.firmeService.createNew(firma);
+            return firma;
         }
         this.utilService.getWarningAlert(dataCheck);
         return null;
@@ -70,10 +70,11 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
     @Override
     public FirmeEntity updateFirma(FirmeController firmeController) {
         String checkData = this.getInputDataForDialogCheck(firmeController);
+        FirmeEntity entity = this.update(firmeController);
         if (StringUtils.isEmpty(checkData)) {
-            final FirmeEntity firma = this.update(firmeController);
+            FirmeEntity firma = this.firmeService.updateExisting(entity, entity.getIdFirme());
             this.init(firmeController);
-            return this.firmeService.updateExisting(firma, firma.getIdFirme());
+            return firma;
         }
         this.utilService.getWarningAlert(checkData);
         return null;

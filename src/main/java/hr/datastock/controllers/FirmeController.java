@@ -79,26 +79,22 @@ public class FirmeController {
         log.info("Record searched successful");
     }
 
-    public FirmeEntity setButtonSave() {
-        FirmeEntity firma = null;
+    public void setButtonSave() {
         try {
-            firma = this.firmeControllerService.saveFirma(this);
-            if (firma != null) log.info("Record saved successful");
+            FirmeEntity firmeEntity = this.firmeControllerService.saveFirma(this);
+            if (firmeEntity != null) log.info("Record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return firma;
     }
 
-    public FirmeEntity setButtonUpdate() {
-        FirmeEntity firma = null;
+    public void setButtonUpdate() {
         try {
-            firma = this.firmeControllerService.updateFirma(this);
+            FirmeEntity firma = this.firmeControllerService.updateFirma(this);
             if (firma != null) log.info("Record update successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
-        return firma;
     }
 
     public void setButtonDelete() {
