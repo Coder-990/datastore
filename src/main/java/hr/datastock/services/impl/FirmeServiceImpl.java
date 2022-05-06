@@ -28,7 +28,7 @@ public class FirmeServiceImpl implements FirmeService {
 
     @Override
     public FirmeEntity createNew(final FirmeEntity firma) {
-        return this.firmeRepository.save(firma);
+        return this.saveFirma(firma);
     }
 
     @Override
@@ -37,12 +37,23 @@ public class FirmeServiceImpl implements FirmeService {
                 .map(existingFirma -> {
                     existingFirma.setOibFirme(newFirmaValue.getOibFirme());
                     existingFirma.setNazivFirme(newFirmaValue.getNazivFirme());
-                    return this.firmeRepository.saveAndFlush(existingFirma);
-                }).orElseThrow(() -> new FirmeEntityExistsRuntimeException(id));
+                    return this.saveFirma(existingFirma);
+                }).orElseThrow(() -> new FirmeEntityExistsRuntimeException(newFirmaValue));
     }
 
     @Override
     public void deleteFirma(Long id) {
         this.firmeRepository.deleteById(id);
     }
+
+    private FirmeEntity saveFirma(FirmeEntity firmeEntity){
+        if (firmeEntity.getIdFirme() != null){
+            List<FirmeEntity> firmeOibOverlap = firmeRepository.checkIfExistingOibIsInTableFirme(firmeEntity);
+            if (!firmeOibOverlap.isEmpty()){
+                throw new FirmeEntityExistsRuntimeException(firmeOibOverlap.get(0));
+            }
+        }
+        return firmeRepository.save(firmeEntity);
+    }
+
 }

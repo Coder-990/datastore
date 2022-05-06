@@ -6,6 +6,7 @@ import hr.datastock.services.StavkaIzdatniceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import java.util.Optional;
 public class StavkaIzdatniceServiceImpl implements StavkaIzdatniceService {
 
     private final StavkaIzdatniceRepository stavkaIzdatniceRepository;
-
     @Override
     public List<StavkaIzdatniceEntity> getAll() {
         return this.stavkaIzdatniceRepository.findAll();

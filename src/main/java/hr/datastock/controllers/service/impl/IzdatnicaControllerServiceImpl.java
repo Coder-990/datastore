@@ -53,7 +53,6 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
     }
 
 
-
     @Override
     public IzdatnicaEntity saveIzdatnica(IzdatnicaController izdatnicaController) {
         if (this.getTextFieldAndDateDataForDialogCheck(izdatnicaController).isEmpty()) {

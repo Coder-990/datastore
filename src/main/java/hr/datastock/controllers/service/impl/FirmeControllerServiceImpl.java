@@ -105,6 +105,7 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
         if (firmeController.getTextFieldNaziv().getText().trim().isEmpty()) checkList.add("Company identity number!");
         return String.join("\n", checkList);
     }
+
     private FirmeEntity save(FirmeController firmeController) {
         return FirmeEntity.builder()
                 .idFirme(this.nextId())

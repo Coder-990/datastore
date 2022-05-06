@@ -23,8 +23,6 @@ import static hr.datastock.controllers.service.impl.Const.FXML;
 @Service
 public class StageInitializerServiceImpl implements StageInitializerService {
 
-
-
     private final String applicationTitle;
     private final ApplicationContext applicationContext;
 
