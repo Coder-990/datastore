@@ -1,5 +1,6 @@
 package hr.datastock.services;
 
+import hr.datastock.HardcodedDataValues;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.exceptions.FirmeEntityExistsRuntimeException;
 import hr.datastock.exceptions.FirmeEntityNotFoundRuntimeException;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,17 +34,6 @@ class FirmeServiceTest {
     @InjectMocks
     private FirmeServiceImpl firmeService;
 
-    private static List<FirmeEntity> givenDataRecords() {
-        return Arrays.asList(
-                new FirmeEntity(1L, "45485474525", "Prime Software"),
-                new FirmeEntity(11L, "586510002144", "TechFoot"),
-                new FirmeEntity(13L, "02013025652", "KiloByte"),
-                new FirmeEntity(14L, "47459652365", "CyberTech"),
-                new FirmeEntity(24L, "54526589110", "Luminum"),
-                new FirmeEntity(95L, "02013025652", "KiloBytetest")
-        );
-    }
-
     @Nested
     @DisplayName("FirmeService get all companies")
     class FirmeServiceTestAllCompanies {
@@ -50,11 +41,10 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma records exists in database, WHEN all firma records are requested, THEN all firma records from database are returned.")
         void getAll() {
-            when(firmeRepository.findAll())
-                    .thenReturn(FirmeServiceTest.givenDataRecords());
-
-            final List<FirmeEntity> expectedList = FirmeServiceTest.givenDataRecords();
+            final List<FirmeEntity> expectedList = HardcodedDataValues.givenFirmeDataRecords();
             final List<FirmeEntity> actualList = firmeService.getAll();
+
+            when(firmeRepository.findAll()).thenReturn(HardcodedDataValues.givenFirmeDataRecords());
 
             assertAll(
                     () -> assertNotNull(actualList),
@@ -64,15 +54,14 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN there are no firma records in database, WHEN all firma records are requested, THEN empty list is returned.")
         void getAllEmpty() {
-            when(firmeRepository.findAll())
-                    .thenReturn(Collections.emptyList());
+            final List<FirmeEntity> expectedListOfFirma = Collections.emptyList();
+            final List<FirmeEntity> actualListOfFirma = firmeService.getAll();
 
-            final List<FirmeEntity> expectedList = Collections.emptyList();
-            final List<FirmeEntity> actualList = firmeService.getAll();
+            when(firmeRepository.findAll()).thenReturn(Collections.emptyList());
 
             assertAll(
-                    () -> assertNotNull(actualList),
-                    () -> assertEquals(expectedList, actualList)
+                    () -> assertNotNull(actualListOfFirma),
+                    () -> assertEquals(expectedListOfFirma, actualListOfFirma)
             );
         }
     }
@@ -84,44 +73,45 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN a single firma record is fetched, THEN the firma with requested ID is returned.")
         void getOneById() {
-            when(firmeRepository.findById(1L))
-                    .thenReturn(FirmeServiceTest.givenDataRecords().stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
+            final Optional<FirmeEntity> expectedFirma = HardcodedDataValues.givenFirmeDataRecords().stream().findFirst();
+            final Optional<FirmeEntity> actualFirma = firmeService.getOneById(1L);
 
-            final Optional<FirmeEntity> expectedFE = FirmeServiceTest.givenDataRecords().stream().findFirst();
-            final Optional<FirmeEntity> actualFE = firmeService.getOneById(1L);
+            when(firmeRepository.findById(1L))
+                    .thenReturn(HardcodedDataValues.givenFirmeDataRecords()
+                            .stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
 
             assertAll(
-                    () -> assertNotNull(actualFE),
-                    () -> assertEquals(expectedFE, actualFE)
+                    () -> assertNotNull(actualFirma),
+                    () -> assertEquals(expectedFirma, actualFirma)
             );
         }
 
         @Test
         @DisplayName("GIVEN firma record does not exists in database, WHEN a single firma record is fetched, THEN error is thrown.")
         void getOneByIdNonExistingId() {
-            when(firmeRepository.findById(150L))
-                    .thenThrow(new FirmeEntityNotFoundRuntimeException(150L));
+            Class<FirmeEntityNotFoundRuntimeException> expectedExceptionClass = FirmeEntityNotFoundRuntimeException.class;
+            Executable executable = () -> firmeService.getOneById(150L);
 
-            assertThrows(FirmeEntityNotFoundRuntimeException.class, () -> firmeService.getOneById(150L));
+            when(firmeRepository.findById(150L)).thenThrow(new FirmeEntityNotFoundRuntimeException(150L));
+
+            assertThrows(expectedExceptionClass, executable);
         }
     }
 
     @Nested
-    @DisplayName("FirmeService get company by id")
+    @DisplayName("FirmeService create firma")
     class FirmeServiceTestCreateFirma {
 
         @Test
         @DisplayName("GIVEN firma record does not exist in database, WHEN new firma record is created, THEN new record is created and returned.")
         void createNew() {
-            final FirmeEntity expectedFirma = FirmeServiceTest.givenDataRecords().get(5);
+            final FirmeEntity expectedFirma = HardcodedDataValues.givenFirmeDataRecords().get(5);
+            final FirmeEntity actualFirma = firmeService.createNew(expectedFirma);
 
             when(firmeRepository.save(any(FirmeEntity.class)))
                     .thenReturn(expectedFirma);
-
             when(firmeRepository.checkIfExistingOibIsInTableFirme(expectedFirma))
                     .thenReturn(Collections.emptyList());
-
-            final FirmeEntity actualFirma = firmeService.createNew(expectedFirma);
 
             assertAll(
                     () -> assertNotNull(actualFirma),
@@ -132,33 +122,32 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN new firma record is created, THEN error is thrown.")
         void createNewExistingRecord() {
-            final FirmeEntity expectedFirma =  FirmeServiceTest.givenDataRecords().get(3);
+            final FirmeEntity expectedFirma =  HardcodedDataValues.givenFirmeDataRecords().get(3);
+            Class<FirmeEntityExistsRuntimeException> expectedExceptionClass = FirmeEntityExistsRuntimeException.class;
+            Executable executable = () -> firmeService.createNew(expectedFirma);
 
             when(firmeRepository.checkIfExistingOibIsInTableFirme(expectedFirma))
-                    .thenReturn(FirmeServiceTest.givenDataRecords().subList(0,1));
+                    .thenReturn(HardcodedDataValues.givenFirmeDataRecords().subList(0,1));
 
-            assertThrows(FirmeEntityExistsRuntimeException.class, () -> firmeService.createNew(expectedFirma));
+            assertThrows(expectedExceptionClass, executable);
         }
     }
 
     @Nested
-    @DisplayName("CarBookingService update booking")
+    @DisplayName("FirmeService update firma")
     class FirmeServiceTestUpdateExistingFirma {
 
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN a firma record is updated, THEN firma record is updated and returned.")
         void updateExisting() {
-            final FirmeEntity existingFirmaWithUpdates = FirmeServiceTest.givenDataRecords().get(2);
+            final FirmeEntity existingFirmaWithUpdates = HardcodedDataValues.givenFirmeDataRecords().get(2);
+            final FirmeEntity updatedFirmaEntity = firmeService.updateExisting(existingFirmaWithUpdates, 1L);
 
             when(firmeRepository.findById(1L))
-                    .thenReturn(FirmeServiceTest.givenDataRecords().stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
-
+                    .thenReturn(HardcodedDataValues.givenFirmeDataRecords().stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
             when(firmeRepository.save(any(FirmeEntity.class))).thenReturn(existingFirmaWithUpdates);
-
             when(firmeRepository.checkIfExistingOibIsInTableFirme(new FirmeEntity(1L, "02013025652", "KiloByte")))
                     .thenReturn(Collections.emptyList());
-
-            final FirmeEntity updatedFirmaEntity = firmeService.updateExisting(existingFirmaWithUpdates, 1L);
 
             assertAll(
                     ()-> assertNotNull(updatedFirmaEntity),
@@ -169,19 +158,21 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record does not exist in database, WHEN a firma record is updated, THEN error is thrown.")
         void testUpdateNonExistingFirma() {
-            final FirmeEntity existingFirmaWithUpdates = FirmeServiceTest.givenDataRecords().get(4);
+            final FirmeEntity existingFirmaWithUpdates = HardcodedDataValues.givenFirmeDataRecords().get(4);
+            Class<FirmeEntityNotFoundRuntimeException> expectedExceptionClass = FirmeEntityNotFoundRuntimeException.class;
+            Executable executable = () -> firmeService.updateExisting(existingFirmaWithUpdates, 1L);
 
             when(firmeRepository.findById(1L))
-                    .thenThrow(FirmeEntityNotFoundRuntimeException.class);
+                    .thenThrow(expectedExceptionClass);
 
-            assertThrows(FirmeEntityNotFoundRuntimeException.class, () -> firmeService.updateExisting(existingFirmaWithUpdates, 1L));
+            assertThrows(expectedExceptionClass, executable);
         }
     }
 
     @Test
     @DisplayName("GIVEN firma record either exist or not, WHEN a single firma record is deleted, THEN repository delete method should be called once.")
     void deleteFirma() {
-        final FirmeEntity firma = FirmeServiceTest.givenDataRecords().get(0);
+        final FirmeEntity firma = HardcodedDataValues.givenFirmeDataRecords().get(0);
 
         firmeRepository.delete(firma);
 
