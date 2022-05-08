@@ -11,9 +11,9 @@ public interface FirmeService {
 
     Optional<FirmeEntity> getOneById(Long id);
 
-    FirmeEntity createNew(final FirmeEntity company);
+    FirmeEntity createFirma(final FirmeEntity company);
 
-    FirmeEntity updateExisting(final FirmeEntity company, final Long id);
+    FirmeEntity updateExistingFirma(final FirmeEntity company, final Long id);
 
     void deleteFirma(final Long id);
 }

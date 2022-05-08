@@ -27,12 +27,12 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public FirmeEntity createNew(final FirmeEntity firma) {
+    public FirmeEntity createFirma(final FirmeEntity firma) {
         return this.saveFirma(firma);
     }
 
     @Override
-    public FirmeEntity updateExisting(final FirmeEntity newFirmaValue, final Long id) {
+    public FirmeEntity updateExistingFirma(final FirmeEntity newFirmaValue, final Long id) {
         return this.getOneById(id)
                 .map(existingFirma -> {
                     existingFirma.setOibFirme(newFirmaValue.getOibFirme());
