@@ -15,7 +15,6 @@ import java.util.Optional;
 public class StavkaPrimkeServiceImpl implements StavkaPrimkeService {
 
     private final StavkaPrimkeRepository stavkaPrimkeRepository;
-
     @Override
     public List<StavkaPrimkeEntity> getAll() {
         return this.stavkaPrimkeRepository.findAll();
@@ -36,7 +35,7 @@ public class StavkaPrimkeServiceImpl implements StavkaPrimkeService {
                     existingStavka.setKolicina(stornoStavke.getKolicina());
                     existingStavka.setStorno(true);
                     existingStavka.setDatumStorno(LocalDate.now());
-                    return this.stavkaPrimkeRepository.saveAndFlush(existingStavka);
+                    return this.stavkaPrimkeRepository.save(existingStavka);
                 });
     }
 

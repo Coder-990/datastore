@@ -1,6 +1,6 @@
 package hr.datastock.services;
 
-import hr.datastock.HardcodedDataValues;
+import hr.datastock.MockEntityDataValues;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.exceptions.FirmeEntityExistsRuntimeException;
 import hr.datastock.exceptions.FirmeEntityNotFoundRuntimeException;
@@ -39,9 +39,9 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma records exists in database, WHEN all firma records are requested, THEN all firma records from database are returned.")
         void testGetAll() {
-            final List<FirmeEntity> expectedList = HardcodedDataValues.givenFirmeDataRecords();
+            final List<FirmeEntity> expectedList = MockEntityDataValues.givenFirmeDataRecords();
 
-            when(firmeRepository.findAll()).thenReturn(HardcodedDataValues.givenFirmeDataRecords());
+            when(firmeRepository.findAll()).thenReturn(MockEntityDataValues.givenFirmeDataRecords());
             final List<FirmeEntity> actualList = firmeService.getAll();
 
             assertAll(
@@ -71,10 +71,10 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN a single firma record is fetched, THEN the firma with requested ID is returned.")
         void testGetOneById() {
-            final Optional<FirmeEntity> expectedFirma = HardcodedDataValues.givenFirmeDataRecords().stream().findFirst();
+            final Optional<FirmeEntity> expectedFirma = MockEntityDataValues.givenFirmeDataRecords().stream().findFirst();
 
             when(firmeRepository.findById(1L))
-                    .thenReturn(HardcodedDataValues.givenFirmeDataRecords()
+                    .thenReturn(MockEntityDataValues.givenFirmeDataRecords()
                             .stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
             final Optional<FirmeEntity> actualFirma = firmeService.getOneById(1L);
 
@@ -103,7 +103,7 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record does not exist in database, WHEN new firma record is created, THEN new record is created and returned.")
         void testCreateFirma() {
-            final FirmeEntity expectedFirma = HardcodedDataValues.givenFirmeDataRecords().get(5);
+            final FirmeEntity expectedFirma = MockEntityDataValues.givenFirmeDataRecords().get(5);
 
             when(firmeRepository.save(any(FirmeEntity.class)))
                     .thenReturn(expectedFirma);
@@ -121,11 +121,11 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN new firma record is created, THEN error is thrown.")
         void testCreateFirmaExistingRecord() {
-            final FirmeEntity expectedFirma = HardcodedDataValues.givenFirmeDataRecords().get(3);
+            final FirmeEntity expectedFirma = MockEntityDataValues.givenFirmeDataRecords().get(3);
             Class<FirmeEntityExistsRuntimeException> expectedExceptionClass = FirmeEntityExistsRuntimeException.class;
 
             when(firmeRepository.checkIfExistingOibIsInTableFirme(expectedFirma))
-                    .thenReturn(HardcodedDataValues.givenFirmeDataRecords().subList(0, 1));
+                    .thenReturn(MockEntityDataValues.givenFirmeDataRecords().subList(0, 1));
 
             Executable executable = () -> firmeService.createFirma(expectedFirma);
 
@@ -140,26 +140,26 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN a firma record is updated, THEN firma record is updated and returned.")
         void testUpdateExistingFirma() {
-            final FirmeEntity existingFirmaWithUpdates = HardcodedDataValues.givenFirmeDataRecords().get(2);
+            final FirmeEntity expectedFirmaWithUpdates = MockEntityDataValues.givenFirmeDataRecords().get(2);
 
             when(firmeRepository.findById(1L))
-                    .thenReturn(HardcodedDataValues.givenFirmeDataRecords().stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
-            when(firmeRepository.save(any(FirmeEntity.class))).thenReturn(existingFirmaWithUpdates);
+                    .thenReturn(MockEntityDataValues.givenFirmeDataRecords().stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
+            when(firmeRepository.save(any(FirmeEntity.class))).thenReturn(expectedFirmaWithUpdates);
             when(firmeRepository.checkIfExistingOibIsInTableFirme(new FirmeEntity(1L, "02013025652", "KiloByte")))
                     .thenReturn(Collections.emptyList());
 
-            final FirmeEntity updatedFirmaEntity = firmeService.updateExistingFirma(existingFirmaWithUpdates, 1L);
+            final FirmeEntity updatedFirmaEntity = firmeService.updateExistingFirma(expectedFirmaWithUpdates, 1L);
 
             assertAll(
                     () -> assertNotNull(updatedFirmaEntity),
-                    () -> assertEquals(existingFirmaWithUpdates, updatedFirmaEntity)
+                    () -> assertEquals(expectedFirmaWithUpdates, updatedFirmaEntity)
             );
         }
 
         @Test
         @DisplayName("GIVEN firma record does not exist in database, WHEN a firma record is updated, THEN error is thrown.")
         void testUpdateNonExistingFirma() {
-            final FirmeEntity existingFirmaWithUpdates = HardcodedDataValues.givenFirmeDataRecords().get(4);
+            final FirmeEntity existingFirmaWithUpdates = MockEntityDataValues.givenFirmeDataRecords().get(4);
             Class<FirmeEntityNotFoundRuntimeException> expectedExceptionClass = FirmeEntityNotFoundRuntimeException.class;
 
             when(firmeRepository.findById(1L))
@@ -177,7 +177,7 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record either exist or not, WHEN a single firma record is deleted, THEN repository delete method should be called once.")
         void testDeleteFirma() {
-            final FirmeEntity firma = HardcodedDataValues.givenFirmeDataRecords().get(0);
+            final FirmeEntity firma = MockEntityDataValues.givenFirmeDataRecords().get(0);
 
             firmeRepository.delete(firma);
 

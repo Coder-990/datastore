@@ -82,6 +82,7 @@ public class PrimkaController {
             log.info("Primka record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
+            log.error(ex.getMessage());
         }
     }
 

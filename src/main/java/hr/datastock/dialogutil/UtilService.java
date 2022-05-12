@@ -6,6 +6,8 @@ public interface UtilService {
 
     void getWarningAlert(String alert);
 
+    boolean isCredentialsValid();
+
     boolean isEntityUnableToRemove();
 
     boolean isEntityRemoved();

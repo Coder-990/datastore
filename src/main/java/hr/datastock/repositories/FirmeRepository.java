@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface FirmeRepository extends JpaRepository<FirmeEntity, Long> {
 
-    @Query("SELECT fe FROM FirmeEntity fe WHERE fe.oibFirme = :#{#current.oibFirme} AND  fe.idFirme <> :#{#current.idFirme}")
+    @Query("SELECT fe " +
+            "FROM FirmeEntity fe " +
+            "WHERE fe.oibFirme = :#{#current.oibFirme} " +
+            "AND  fe.idFirme <> :#{#current.idFirme}")
     List<FirmeEntity> checkIfExistingOibIsInTableFirme(@Param("current") FirmeEntity current);
 }

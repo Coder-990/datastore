@@ -101,6 +101,7 @@ public class FirmeController {
             log.info("Record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
+            log.error(ex.getMessage());
         }
     }
 

@@ -34,7 +34,7 @@ public class LoginControllerServiceImpl implements LoginControllerService {
     }
 
     @Override
-    public void redirectToMainMenu(LoginController loginController) {
+    public void userLogin(LoginController loginController) {
         this.racunService.login(loginController.getTextFieldUserId().getText(),
                 this.passwordEncryptionService.createMD5(loginController.getTextFieldPassword().getText()));
         this.stageInitializerService.getMainMenuScreen(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));

@@ -21,6 +21,21 @@ public class UtilDialogsServiceImpl implements UtilService {
     }
 
     @Override
+    public boolean isCredentialsValid() {
+        final Alert alertWindow = new Alert(Alert.AlertType.ERROR);
+        alertWindow.setTitle("User credentials error");
+        alertWindow.setHeaderText("Unable to login user");
+        alertWindow.setContentText("You are unable to login with this credentials, enter valid credentials");
+        final AtomicBoolean isUserIdValid = new AtomicBoolean(false);
+        alertWindow.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK)
+                isUserIdValid.set(true);
+        });
+        alertWindow.getAlertType();
+        return isUserIdValid.get();
+    }
+
+    @Override
     public boolean isEntityUnableToRemove() {
         final Alert alertWindow = new Alert(Alert.AlertType.ERROR);
         alertWindow.setTitle("Error");

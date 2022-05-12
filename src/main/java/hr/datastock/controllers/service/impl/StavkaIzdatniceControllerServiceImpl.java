@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static hr.datastock.controllers.service.impl.Const.FX_ALIGNMENT_CENTER;
 
@@ -72,14 +73,16 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     }
 
     @Override
-    public void stornoStavkaIzdatnice(StavkaIzdatniceController sic) {
+    public Optional<StavkaIzdatniceEntity> stornoStavkaIzdatnice(StavkaIzdatniceController sic) {
         final StavkaIzdatniceEntity selectedStavka = this.getSelectedDataFromTableViewStavkaIzdatnice(sic);
         if (selectedStavka != null && this.utilService.isEntityRemoved()) {
-            this.stavkaIzdatniceService.createStornoStavkeIzdatnice(selectedStavka);
+            Optional<StavkaIzdatniceEntity> stornoStavkeIzdatnice = this.stavkaIzdatniceService.createStornoStavkeIzdatnice(selectedStavka);
             this.init(sic);
+            return stornoStavkeIzdatnice;
         } else if (selectedStavka == null) {
             this.utilService.isDataPickedFromTableViewAlert();
         }
+        return Optional.empty();
     }
 
     @Override

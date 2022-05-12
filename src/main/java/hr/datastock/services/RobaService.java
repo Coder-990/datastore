@@ -10,9 +10,9 @@ public interface RobaService {
 
     Optional<RobaEntity> getOneById(Long id);
 
-    RobaEntity createNew(final RobaEntity roba);
+    RobaEntity createArticle(final RobaEntity roba);
 
-    RobaEntity updateExisting(final RobaEntity roba, final Long id);
+    RobaEntity updateExistingArticle(final RobaEntity roba, final Long id);
 
     void deleteRoba(Long id);
 }

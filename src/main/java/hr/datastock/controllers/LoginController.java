@@ -49,18 +49,20 @@ public class LoginController {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
         log.info("Redirected to registration screen successful");
-
     }
-    public void setButtonRedirectToMainMenuScreen() {
+
+    public void setButtonLogin() {
         try {
-            if (this.loginControllerService.getInputDataForDialogCheck(this).isEmpty()) {
-                this.loginControllerService.redirectToMainMenu(this);
+            String dialogCheck = this.loginControllerService.getInputDataForDialogCheck(this);
+            if (dialogCheck.isEmpty()) {
+                this.loginControllerService.userLogin(this);
                 log.info("Login and redirection to main menu screen successful");
             } else {
-                this.utilService.getWarningAlert(this.loginControllerService.getInputDataForDialogCheck(this));
+                this.utilService.getWarningAlert(dialogCheck);
             }
         } catch (RuntimeException ex) {
-            log.error(ex.getMessage(), ex.fillInStackTrace());
+            this.utilService.isCredentialsValid();
+            log.error(ex.getMessage());
         }
     }
 }

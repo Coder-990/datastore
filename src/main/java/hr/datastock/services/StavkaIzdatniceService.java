@@ -11,7 +11,5 @@ public interface StavkaIzdatniceService {
 
     StavkaIzdatniceEntity createStavkaIzdatnice(final StavkaIzdatniceEntity izdatnica);
 
-    StavkaIzdatniceEntity createEqualityBetweenAmount(final StavkaIzdatniceEntity stavkaIzdatnicaEquality);
-
     Optional<StavkaIzdatniceEntity> createStornoStavkeIzdatnice(final StavkaIzdatniceEntity updateStavke);
 }

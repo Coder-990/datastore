@@ -1,6 +1,6 @@
 package hr.datastock.services;
 
-import hr.datastock.HardcodedDataValues;
+import hr.datastock.MockEntityDataValues;
 import hr.datastock.entities.PrimkaEntity;
 import hr.datastock.repositories.PrimkaRepository;
 import hr.datastock.services.impl.PrimkaServiceImpl;
@@ -35,9 +35,9 @@ class PrimkaServiceTest {
         @Test
         @DisplayName("GIVEN primka records exists in database, WHEN all primka records are requested, THEN all primka records from database are returned.")
         void testGetAll() {
-            final List<PrimkaEntity> expectedListOfPrimka = HardcodedDataValues.givenPrimkaDataRecords();
+            final List<PrimkaEntity> expectedListOfPrimka = MockEntityDataValues.givenPrimkaDataRecords();
 
-            when(primkaRepository.findAll()).thenReturn(HardcodedDataValues.givenPrimkaDataRecords());
+            when(primkaRepository.findAll()).thenReturn(MockEntityDataValues.givenPrimkaDataRecords());
             final List<PrimkaEntity> actualListOfPrimka = primkaService.getAll();
 
             assertAll(
@@ -69,7 +69,7 @@ class PrimkaServiceTest {
         @Test
         @DisplayName("GIVEN primka record exists in database, WHEN a primka record is updated, THEN primka record is updated and returned.")
         void testCreatePrimka() {
-            final PrimkaEntity expectedListOfPrimka = HardcodedDataValues.givenPrimkaDataRecords().get(0);
+            final PrimkaEntity expectedListOfPrimka = MockEntityDataValues.givenPrimkaDataRecords().get(0);
 
             when(primkaRepository.save(any(PrimkaEntity.class))).thenReturn(expectedListOfPrimka);
             final PrimkaEntity actualListOfPrimka = primkaService.createPrimka(expectedListOfPrimka);
@@ -87,7 +87,7 @@ class PrimkaServiceTest {
         @Test
         @DisplayName("GIVEN primka record either exist or not, WHEN a single primka record is deleted, THEN repository delete method should be called once.")
         void testDeletePrimka() {
-            final PrimkaEntity primka = HardcodedDataValues.givenPrimkaDataRecords().get(1);
+            final PrimkaEntity primka = MockEntityDataValues.givenPrimkaDataRecords().get(1);
 
             primkaRepository.delete(primka);
 

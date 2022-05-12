@@ -115,6 +115,7 @@ public class RobaController {
             log.info("Roba record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
+            log.error(ex.getMessage());
         }
     }
 

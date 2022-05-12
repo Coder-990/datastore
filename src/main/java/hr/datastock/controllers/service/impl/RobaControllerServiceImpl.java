@@ -64,7 +64,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     @Override
     public RobaEntity saveArtikl(RobaController robaController) {
         if (this.getInputDataForDialogCheck(robaController).isEmpty()) {
-            final RobaEntity artikl = this.robaService.createNew(this.save(robaController));
+            final RobaEntity artikl = this.robaService.createArticle(this.save(robaController));
             this.init(robaController);
             return artikl;
         }
@@ -76,7 +76,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     public RobaEntity updateArtikl(RobaController robaController) {
         if (this.getInputDataForDialogCheck(robaController).isEmpty()) {
             RobaEntity updateEntity = this.update(robaController);
-            final RobaEntity artikl = this.robaService.updateExisting(updateEntity, updateEntity.getIdRobe());
+            final RobaEntity artikl = this.robaService.updateExistingArticle(updateEntity, updateEntity.getIdRobe());
             this.init(robaController);
             return artikl;
         }

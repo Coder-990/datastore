@@ -1,6 +1,6 @@
 package hr.datastock.services;
 
-import hr.datastock.HardcodedDataValues;
+import hr.datastock.MockEntityDataValues;
 import hr.datastock.entities.IzdatnicaEntity;
 import hr.datastock.repositories.IzdatnicaRepository;
 import hr.datastock.services.impl.IzdatnicaServiceImpl;
@@ -36,14 +36,14 @@ class IzdatnicaServiceTest {
         @Test
         @DisplayName("GIVEN izdatnica records exists in database, WHEN all izdatnica records are requested, THEN all izdatnica records from database are returned.")
         void testGetAll() {
-            final List<IzdatnicaEntity> expectedList = HardcodedDataValues.givenIzdatnicaDataRecords();
+            final List<IzdatnicaEntity> expectedListOfIzdatnica = MockEntityDataValues.givenIzdatnicaDataRecords();
 
-            when(izdatnicaRepository.findAll()).thenReturn(HardcodedDataValues.givenIzdatnicaDataRecords());
-            final List<IzdatnicaEntity> actualList = izdatnicaService.getAll();
+            when(izdatnicaRepository.findAll()).thenReturn(MockEntityDataValues.givenIzdatnicaDataRecords());
+            final List<IzdatnicaEntity> actualListOfIzdatnica = izdatnicaService.getAll();
 
             assertAll(
-                    () -> assertNotNull(actualList),
-                    () -> assertEquals(expectedList, actualList)
+                    () -> assertNotNull(actualListOfIzdatnica),
+                    () -> assertEquals(expectedListOfIzdatnica, actualListOfIzdatnica)
             );
         }
 
@@ -52,7 +52,7 @@ class IzdatnicaServiceTest {
         void testGetAllEmpty() {
             final List<IzdatnicaEntity> expectedListOfIzdatnica = Collections.emptyList();
 
-            when(izdatnicaRepository.findAll()).thenReturn(Collections.emptyList());
+            when(izdatnicaRepository.findAll()).thenReturn(expectedListOfIzdatnica);
             final List<IzdatnicaEntity> actualListOfIzdatnica = izdatnicaService.getAll();
 
             assertAll(
@@ -67,9 +67,9 @@ class IzdatnicaServiceTest {
     @DisplayName("IzdatnicaService create")
     class IzdatnicaServiceTestCreateIzdatnica {
         @Test
-        @DisplayName("GIVEN izdatnica record exists in database, WHEN a izdatnica record is updated, THEN izdatnica record is updated and returned.")
+        @DisplayName("GIVEN izdatnica record exists in database, WHEN a izdatnica record is updated, THEN izdatnica record is returned.")
         void testCreateIzdatnica() {
-            final IzdatnicaEntity expectedIzdatnica = HardcodedDataValues.givenIzdatnicaDataRecords().get(0);
+            final IzdatnicaEntity expectedIzdatnica = MockEntityDataValues.givenIzdatnicaDataRecords().get(0);
 
             when(izdatnicaRepository.save(any(IzdatnicaEntity.class))).thenReturn(expectedIzdatnica);
             final IzdatnicaEntity actualIzdatnica = izdatnicaService.createIzdatnica(expectedIzdatnica);
@@ -87,7 +87,7 @@ class IzdatnicaServiceTest {
         @Test
         @DisplayName("GIVEN izdatnica record either exist or not, WHEN a single izdatnica record is deleted, THEN repository delete method should be called once.")
         void testDeleteIzdatnica() {
-            final IzdatnicaEntity izdatnica = HardcodedDataValues.givenIzdatnicaDataRecords().get(1);
+            final IzdatnicaEntity izdatnica = MockEntityDataValues.givenIzdatnicaDataRecords().get(1);
 
             izdatnicaRepository.delete(izdatnica);
 

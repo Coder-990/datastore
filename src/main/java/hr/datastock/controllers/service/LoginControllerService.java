@@ -9,7 +9,7 @@ public interface LoginControllerService {
 
     void register(LoginController loginController) throws IOException;
 
-    void redirectToMainMenu(LoginController loginController);
+    void userLogin(LoginController loginController);
 
     String getInputDataForDialogCheck(LoginController loginController);
 }

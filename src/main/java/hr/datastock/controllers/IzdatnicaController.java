@@ -82,6 +82,7 @@ public class IzdatnicaController {
             log.info("Izdatnica record deleted successful");
         } catch (RuntimeException ex) {
             this.utilService.isEntityUnableToRemove();
+            log.error(ex.getMessage());
         }
     }
 

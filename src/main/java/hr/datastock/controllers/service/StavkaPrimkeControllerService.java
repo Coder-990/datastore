@@ -3,6 +3,8 @@ package hr.datastock.controllers.service;
 import hr.datastock.controllers.StavkaPrimkeController;
 import hr.datastock.entities.StavkaPrimkeEntity;
 
+import java.util.Optional;
+
 public interface StavkaPrimkeControllerService {
     void init(StavkaPrimkeController spc);
 
@@ -10,7 +12,7 @@ public interface StavkaPrimkeControllerService {
 
     StavkaPrimkeEntity saveStavkaPrimke(StavkaPrimkeController spc);
 
-    void stornoStavkaPrimke(StavkaPrimkeController spc);
+    Optional<StavkaPrimkeEntity> stornoStavkaPrimke(StavkaPrimkeController spc);
 
     void clearRecords(StavkaPrimkeController spc);
 }
