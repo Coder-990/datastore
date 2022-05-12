@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.PrimkaController;
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.PrimkaControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.PrimkaEntity;
@@ -30,7 +30,7 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
 
     private final PrimkaService primkaService;
     private final FirmeService firmeService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
     private ObservableList<PrimkaEntity> primkeObservableList;
 
     @Override
@@ -61,19 +61,19 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
             this.init(primkaController);
             return primka;
         }
-        this.utilService.getWarningAlert(this.getTextFieldAndDateDataForDialogCheck(primkaController));
+        this.dialogService.getWarningAlert(this.getTextFieldAndDateDataForDialogCheck(primkaController));
         return null;
     }
 
     @Override
     public void deletePrimka(final PrimkaController primkaController) {
-        if (this.getTableViewPrimka(primkaController) != null && this.utilService.isEntityRemoved()) {
+        if (this.getTableViewPrimka(primkaController) != null && this.dialogService.isEntityRemoved()) {
             this.primkaService.deletePrimka(this.getTableViewPrimka(primkaController).getIdPrimke());
             this.init(primkaController);
         } else if (this.getTableViewPrimka(primkaController) == null) {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         } else {
-            this.utilService.isEntityUnableToRemove();
+            this.dialogService.isEntityUnableToRemove();
         }
     }
 

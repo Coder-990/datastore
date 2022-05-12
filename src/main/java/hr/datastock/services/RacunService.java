@@ -2,9 +2,11 @@ package hr.datastock.services;
 
 import hr.datastock.entities.RacunEntity;
 
+import java.util.Optional;
+
 public interface RacunService {
 
-    void login(final String userId, final String password);
+    Optional<RacunEntity> login(final String userId, final String password);
 
     RacunEntity createAccount(RacunEntity racun);
 }

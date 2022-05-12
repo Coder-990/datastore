@@ -2,7 +2,7 @@ package hr.datastock.controllers.service.impl;
 
 import hr.datastock.DatastockJavaFXAplication;
 import hr.datastock.controllers.RacunController;
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.RacunControllerService;
 import hr.datastock.entities.RacunEntity;
 import hr.datastock.security.PasswordEncryptionService;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class RacunControllerServiceImpl implements RacunControllerService {
 
-    private final UtilService utilService;
+    private final DialogService dialogService;
     private final RacunService racunService;
     private final StageInitializerService stageInitializerService;
     private final PasswordEncryptionService passwordEncryptionService;
@@ -28,11 +28,11 @@ public class RacunControllerServiceImpl implements RacunControllerService {
     public RacunEntity saveUser(final RacunController racunController) {
         if (this.getInputDataForDialogCheck(racunController).isEmpty()) {
             final RacunEntity racun = this.registerNewUser(racunController);
-            if (racun != null) this.utilService.isUserRegistered(racun);
+            if (racun != null) this.dialogService.isUserRegistered(racun);
             this.clearRecords(racunController);
             return this.racunService.createAccount(racun);
         }
-        this.utilService.getWarningAlert(this.getInputDataForDialogCheck(racunController));
+        this.dialogService.getWarningAlert(this.getInputDataForDialogCheck(racunController));
         return null;
     }
 

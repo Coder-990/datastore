@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.FirmeControllerService;
 import hr.datastock.entities.FirmeEntity;
 import javafx.fxml.FXML;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class FirmeController {
     private final FirmeControllerService firmeControllerService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
 
     @Getter
     @FXML
@@ -100,7 +100,7 @@ public class FirmeController {
             this.firmeControllerService.deleteFirma(this);
             log.info("Record deleted successful");
         } catch (RuntimeException ex) {
-            this.utilService.isEntityUnableToRemove();
+            this.dialogService.isEntityUnableToRemove();
             log.error(ex.getMessage());
         }
     }

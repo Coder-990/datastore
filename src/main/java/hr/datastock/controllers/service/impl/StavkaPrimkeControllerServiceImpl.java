@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.StavkaPrimkeController;
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.StavkaPrimkeControllerService;
 import hr.datastock.entities.PrimkaEntity;
 import hr.datastock.entities.RobaEntity;
@@ -34,7 +34,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
 
     private final RobaService robaService;
 
-    private final UtilService utilService;
+    private final DialogService dialogService;
 
     private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
     private ObservableList<StavkaPrimkeEntity> filteredStavkaPrimkeObservableListOfStorno;
@@ -67,19 +67,19 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
             this.init(spc);
             return stavkaPrimke;
         }
-        this.utilService.getWarningAlert(this.getInputDataForDialogCheck(spc));
+        this.dialogService.getWarningAlert(this.getInputDataForDialogCheck(spc));
         return null;
     }
 
     @Override
     public Optional<StavkaPrimkeEntity> stornoStavkaPrimke(StavkaPrimkeController spc) {
         final StavkaPrimkeEntity selectedStavka = this.getSelectedDataFromTableViewStavkaIzdatnice(spc);
-        if (selectedStavka != null && this.utilService.isEntityRemoved()) {
+        if (selectedStavka != null && this.dialogService.isEntityRemoved()) {
             final Optional<StavkaPrimkeEntity> stornoStavkePrimke = this.stavkaPrimkeService.createStornoStavkePrimke(selectedStavka);
             this.init(spc);
             return stornoStavkePrimke;
         } else if (selectedStavka == null) {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         }
         return Optional.empty();
     }

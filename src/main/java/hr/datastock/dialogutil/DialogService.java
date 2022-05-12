@@ -2,7 +2,7 @@ package hr.datastock.dialogutil;
 
 import hr.datastock.entities.RacunEntity;
 
-public interface UtilService {
+public interface DialogService {
 
     void getWarningAlert(String alert);
 

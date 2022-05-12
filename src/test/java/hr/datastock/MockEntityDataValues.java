@@ -77,7 +77,7 @@ public class MockEntityDataValues {
     public static List<RacunEntity> givenRacunDataRecords() {
         return Arrays.asList(
                 new RacunEntity("user","user"),
-                new RacunEntity("admin","admin"),
+                new RacunEntity("test","test"),
                 new RacunEntity("editor","editor")
         );
     }

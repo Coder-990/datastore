@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.RobaController;
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.RobaControllerService;
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.services.RobaService;
@@ -24,7 +24,7 @@ import static hr.datastock.controllers.service.impl.Const.FX_ALIGNMENT_CENTER;
 public class RobaControllerServiceImpl implements RobaControllerService {
 
     private final RobaService robaService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
     private ObservableList<RobaEntity> robaObservableList;
 
     @Override
@@ -45,7 +45,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
             robaController.getTextAreaOpis().setText(this.getSelectedDataFromTableViewRobe(robaController).getOpis());
             robaController.getTextFieldJedinicaMjere().setText(this.getSelectedDataFromTableViewRobe(robaController).getJmj());
         } else if (this.getSelectedDataFromTableViewRobe(robaController) == null) {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         }
     }
 
@@ -68,7 +68,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
             this.init(robaController);
             return artikl;
         }
-        this.utilService.getWarningAlert(this.getInputDataForDialogCheck(robaController));
+        this.dialogService.getWarningAlert(this.getInputDataForDialogCheck(robaController));
         return null;
     }
 
@@ -80,17 +80,17 @@ public class RobaControllerServiceImpl implements RobaControllerService {
             this.init(robaController);
             return artikl;
         }
-        this.utilService.getWarningAlert(this.getInputDataForDialogCheck(robaController));
+        this.dialogService.getWarningAlert(this.getInputDataForDialogCheck(robaController));
         return null;
     }
 
     @Override
     public void deleteArtikl(RobaController robaController) {
-        if (this.getSelectedDataFromTableViewRobe(robaController) != null && this.utilService.isEntityRemoved()) {
+        if (this.getSelectedDataFromTableViewRobe(robaController) != null && this.dialogService.isEntityRemoved()) {
             this.robaService.deleteRoba(this.getSelectedDataFromTableViewRobe(robaController).getIdRobe());
             this.init(robaController);
         } else if (this.getSelectedDataFromTableViewRobe(robaController) == null) {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         }
     }
 

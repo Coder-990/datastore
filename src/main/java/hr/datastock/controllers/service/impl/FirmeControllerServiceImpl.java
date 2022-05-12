@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.FirmeController;
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.FirmeControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.services.FirmeService;
@@ -24,7 +24,7 @@ import static hr.datastock.controllers.service.impl.Const.FX_ALIGNMENT_CENTER;
 public class FirmeControllerServiceImpl implements FirmeControllerService {
 
     private final FirmeService firmeService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
 
     private ObservableList<FirmeEntity> firmeObservableList;
 
@@ -43,7 +43,7 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
             firmeController.getTextFieldOIB().setText(selectedFirma.getOibFirme());
             firmeController.getTextFieldNaziv().setText(selectedFirma.getNazivFirme());
         } else {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         }
     }
 
@@ -63,7 +63,7 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
             this.init(firmeController);
             return firma;
         }
-        this.utilService.getWarningAlert(dataCheck);
+        this.dialogService.getWarningAlert(dataCheck);
         return null;
     }
 
@@ -76,18 +76,18 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
             this.init(firmeController);
             return firma;
         }
-        this.utilService.getWarningAlert(checkData);
+        this.dialogService.getWarningAlert(checkData);
         return null;
     }
 
     @Override
     public void deleteFirma(FirmeController firmeController) {
         FirmeEntity selectedFirma = this.getSelectedDataFromTableViewFirma(firmeController);
-        if (selectedFirma != null && this.utilService.isEntityRemoved()) {
+        if (selectedFirma != null && this.dialogService.isEntityRemoved()) {
             this.firmeService.deleteFirma(selectedFirma.getIdFirme());
             this.init(firmeController);
         } else if (selectedFirma == null) {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         }
     }
 

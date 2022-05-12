@@ -1,8 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.dialogutil.UtilService;
 import hr.datastock.controllers.service.RacunControllerService;
-import hr.datastock.entities.RacunEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

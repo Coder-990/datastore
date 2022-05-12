@@ -1,6 +1,6 @@
 package hr.datastock.dialogutil.impl;
 
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.entities.RacunEntity;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
-public class UtilDialogsServiceImpl implements UtilService {
+public class DialogServiceImpl implements DialogService {
 
     @Override
     public void getWarningAlert(final String alert) {
@@ -55,7 +55,7 @@ public class UtilDialogsServiceImpl implements UtilService {
         final Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
         alertWindow.setTitle("Delete item");
         alertWindow.setHeaderText("Are you sure to continue?");
-        alertWindow.setContentText("You are about to remove this item from table, Continue?");
+        alertWindow.setContentText("You are about to remove this item from table, continue?");
         final AtomicBoolean isRemoved = new AtomicBoolean(false);
         alertWindow.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK)

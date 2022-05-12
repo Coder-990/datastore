@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.LoginControllerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @Controller
 public class LoginController {
     private final LoginControllerService loginControllerService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
     @Getter
     @FXML
     private TextField textFieldUserId;
@@ -58,10 +58,10 @@ public class LoginController {
                 this.loginControllerService.userLogin(this);
                 log.info("Login and redirection to main menu screen successful");
             } else {
-                this.utilService.getWarningAlert(dialogCheck);
+                this.dialogService.getWarningAlert(dialogCheck);
             }
         } catch (RuntimeException ex) {
-            this.utilService.isCredentialsValid();
+            this.dialogService.isCredentialsValid();
             log.error(ex.getMessage());
         }
     }

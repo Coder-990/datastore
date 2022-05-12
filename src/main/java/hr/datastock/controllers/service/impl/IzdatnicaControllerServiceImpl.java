@@ -1,7 +1,7 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.IzdatnicaController;
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.IzdatnicaControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.IzdatnicaEntity;
@@ -30,7 +30,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
 
     private final IzdatnicaService izdatnicaService;
     private final FirmeService firmeService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
 
     private ObservableList<IzdatnicaEntity> izdatnicaObservableList;
 
@@ -60,19 +60,19 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
             this.init(izdatnicaController);
             return izdatnica;
         }
-        this.utilService.getWarningAlert(this.getTextFieldAndDateDataForDialogCheck(izdatnicaController));
+        this.dialogService.getWarningAlert(this.getTextFieldAndDateDataForDialogCheck(izdatnicaController));
         return null;
     }
 
     @Override
     public void deleteIzdatnica(IzdatnicaController izdatnicaController) {
-        if (this.getTableViewIzdatnica(izdatnicaController) != null && this.utilService.isEntityRemoved()) {
+        if (this.getTableViewIzdatnica(izdatnicaController) != null && this.dialogService.isEntityRemoved()) {
             this.izdatnicaService.deleteIzdatnica(this.getTableViewIzdatnica(izdatnicaController).getIdIzdatnice());
             this.init(izdatnicaController);
         } else if (this.getTableViewIzdatnica(izdatnicaController) == null) {
-            this.utilService.isDataPickedFromTableViewAlert();
+            this.dialogService.isDataPickedFromTableViewAlert();
         } else {
-            this.utilService.isEntityUnableToRemove();
+            this.dialogService.isEntityUnableToRemove();
         }
     }
 

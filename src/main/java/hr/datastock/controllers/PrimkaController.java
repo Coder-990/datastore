@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.PrimkaControllerService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.entities.PrimkaEntity;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Controller
 public class PrimkaController {
     private final PrimkaControllerService primkaControllerService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
     @Getter
     @FXML
     private ComboBox<FirmeEntity> comboBoxCreate;
@@ -81,7 +81,7 @@ public class PrimkaController {
             this.primkaControllerService.deletePrimka(this);
             log.info("Primka record deleted successful");
         } catch (RuntimeException ex) {
-            this.utilService.isEntityUnableToRemove();
+            this.dialogService.isEntityUnableToRemove();
             log.error(ex.getMessage());
         }
     }

@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.dialogutil.UtilService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.RobaControllerService;
 import hr.datastock.entities.RobaEntity;
 import javafx.fxml.FXML;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class RobaController {
 
     private final RobaControllerService robaControllerService;
-    private final UtilService utilService;
+    private final DialogService dialogService;
     @Getter
     @FXML
     private TextField textFieldNaziv;
@@ -114,7 +114,7 @@ public class RobaController {
             this.robaControllerService.deleteArtikl(this);
             log.info("Roba record deleted successful");
         } catch (RuntimeException ex) {
-            this.utilService.isEntityUnableToRemove();
+            this.dialogService.isEntityUnableToRemove();
             log.error(ex.getMessage());
         }
     }
