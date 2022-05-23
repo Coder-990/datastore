@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface RobaRepository extends JpaRepository<RobaEntity, Long> {
 
-    @Query("SELECT re FROM RobaEntity re WHERE re.nazivArtikla = :#{#current.nazivArtikla} AND  re.idRobe <> :#{#current.idRobe}")
+    @Query("SELECT re" +
+            " FROM RobaEntity re " +
+            "WHERE re.nazivArtikla = :#{#current.nazivArtikla} " +
+            "AND  re.idRobe <> :#{#current.idRobe}")
     List<RobaEntity> checkIfExistingArticleNameIsInTableRoba(@Param("current") RobaEntity current);
 }

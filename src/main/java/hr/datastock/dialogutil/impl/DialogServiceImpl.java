@@ -25,7 +25,7 @@ public class DialogServiceImpl implements DialogService {
         final Alert alertWindow = new Alert(Alert.AlertType.ERROR);
         alertWindow.setTitle("User credentials error");
         alertWindow.setHeaderText("Unable to login user");
-        alertWindow.setContentText("You are unable to login with this credentials, enter valid credentials");
+        alertWindow.setContentText("You are unable to login with these credentials, enter valid credentials");
         final AtomicBoolean isUserIdValid = new AtomicBoolean(false);
         alertWindow.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK)
