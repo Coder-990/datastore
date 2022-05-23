@@ -2,6 +2,7 @@ package hr.datastock.services.impl;
 
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.exceptions.FirmeEntityExistsRuntimeException;
+import hr.datastock.exceptions.FirmeEntityNotFoundRuntimeException;
 import hr.datastock.repositories.FirmeRepository;
 import hr.datastock.services.FirmeService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,8 +24,8 @@ public class FirmeServiceImpl implements FirmeService {
     }
 
     @Override
-    public Optional<FirmeEntity> getOneById(final Long id) {
-        return this.firmeRepository.findById(id);
+    public FirmeEntity getOneById(final Long id) {
+        return this.firmeRepository.findById(id).orElseThrow(() -> new FirmeEntityNotFoundRuntimeException(id));
     }
 
     @Override
@@ -33,7 +35,7 @@ public class FirmeServiceImpl implements FirmeService {
 
     @Override
     public FirmeEntity updateExistingFirma(final FirmeEntity newFirmaValue, final Long id) {
-        return this.getOneById(id)
+        return Optional.of(this.getOneById(id))
                 .map(existingFirma -> {
                     existingFirma.setOibFirme(newFirmaValue.getOibFirme());
                     existingFirma.setNazivFirme(newFirmaValue.getNazivFirme());
@@ -46,10 +48,13 @@ public class FirmeServiceImpl implements FirmeService {
         this.firmeRepository.deleteById(id);
     }
 
-    private FirmeEntity saveFirma(FirmeEntity firmeEntity){
-        if (firmeEntity.getIdFirme() != null){
-            List<FirmeEntity> firmeOibOverlap = firmeRepository.checkIfExistingOibIsInTableFirme(firmeEntity);
-            if (!firmeOibOverlap.isEmpty()){
+    private FirmeEntity saveFirma(FirmeEntity firmeEntity) {
+        if (firmeEntity.getIdFirme() == null) {
+            throw new FirmeEntityNotFoundRuntimeException(firmeEntity.getIdFirme());
+        } else if (firmeEntity.getIdFirme() != null || firmeEntity.getOibFirme().equals(
+                getAll().stream().map(FirmeEntity::getOibFirme).collect(Collectors.joining()))) {
+            List<FirmeEntity> firmeOibOverlap = this.firmeRepository.checkIfExistingOibIsInTableFirme(firmeEntity);
+            if (!firmeOibOverlap.isEmpty()) {
                 throw new FirmeEntityExistsRuntimeException(firmeOibOverlap.get(0));
             }
         }

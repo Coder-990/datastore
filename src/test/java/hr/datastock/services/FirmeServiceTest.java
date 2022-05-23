@@ -71,12 +71,12 @@ class FirmeServiceTest {
         @Test
         @DisplayName("GIVEN firma record exists in database, WHEN a single firma record is fetched, THEN the firma with requested ID is returned.")
         void testGetOneById() {
-            final Optional<FirmeEntity> expectedFirma = MockEntityDataValues.givenFirmeDataRecords().stream().findFirst();
+            final FirmeEntity expectedFirma = MockEntityDataValues.givenFirmeDataRecords().get(0);
 
             when(firmeRepository.findById(1L))
                     .thenReturn(MockEntityDataValues.givenFirmeDataRecords()
                             .stream().filter(firmeEntity -> firmeEntity.getIdFirme() == 1L).findFirst());
-            final Optional<FirmeEntity> actualFirma = firmeService.getOneById(1L);
+            final FirmeEntity actualFirma = firmeService.getOneById(1L);
 
             assertAll(
                     () -> assertNotNull(actualFirma),

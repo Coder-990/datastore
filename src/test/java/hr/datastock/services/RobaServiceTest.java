@@ -72,12 +72,13 @@ public class RobaServiceTest {
         @Test
         @DisplayName("GIVEN roba record exists in database, WHEN a single roba record is fetched, THEN the roba with requested ID is returned.")
         void testGetOneById() {
-            final Optional<RobaEntity> expectedRoba = MockEntityDataValues.givenRobaDataRecords().stream().findFirst();
+            final RobaEntity expectedRoba = MockEntityDataValues.givenRobaDataRecords().get(0);
 
             when(robaRepository.findById(1L))
                     .thenReturn(MockEntityDataValues.givenRobaDataRecords()
                             .stream().filter(robaEntity -> robaEntity.getIdRobe() == 1L).findFirst());
-            final Optional<RobaEntity> actualRoba = robaService.getOneById(1L);
+
+            final RobaEntity actualRoba = robaService.getOneById(1L);
 
             assertAll(
                     () -> assertNotNull(actualRoba),

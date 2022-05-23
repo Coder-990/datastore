@@ -2,6 +2,7 @@ package hr.datastock.services.impl;
 
 import hr.datastock.entities.RobaEntity;
 import hr.datastock.exceptions.RobaEntityExistsRuntimeException;
+import hr.datastock.exceptions.RobaEntityNotFoundRuntimeException;
 import hr.datastock.repositories.RobaRepository;
 import hr.datastock.services.RobaService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,8 +22,8 @@ public class RobaServiceImpl implements RobaService {
         return this.robaRepository.findAll();
     }
     @Override
-    public Optional<RobaEntity> getOneById(final Long id) {
-        return this.robaRepository.findById(id);
+    public RobaEntity getOneById(final Long id) {
+        return this.robaRepository.findById(id).orElseThrow(()-> new RobaEntityNotFoundRuntimeException(id));
     }
     @Override
     public RobaEntity createArticle(final RobaEntity roba) {
@@ -29,7 +31,7 @@ public class RobaServiceImpl implements RobaService {
     }
     @Override
     public RobaEntity updateExistingArticle(final RobaEntity newArticleValue, final Long id) {
-        return this.getOneById(id)
+        return Optional.of(this.getOneById(id))
                 .map(existingRoba -> {
                     existingRoba.setNazivArtikla(newArticleValue.getNazivArtikla());
                     existingRoba.setKolicina(newArticleValue.getKolicina());
@@ -45,7 +47,7 @@ public class RobaServiceImpl implements RobaService {
     }
 
     private RobaEntity saveArticle(RobaEntity robaEntity){
-        if (robaEntity.getIdRobe() != null){
+            if (robaEntity.getIdRobe() != null || robaEntity.getNazivArtikla().equals(getAll().stream().map(RobaEntity::getNazivArtikla).collect(Collectors.joining()))){
             List<RobaEntity> nazivArtiklaOverlap = robaRepository.checkIfExistingArticleNameIsInTableRoba(robaEntity);
             if (!nazivArtiklaOverlap.isEmpty()){
                 throw new RobaEntityExistsRuntimeException(nazivArtiklaOverlap.get(0));
