@@ -28,7 +28,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     private ObservableList<RobaEntity> robaObservableList;
 
     @Override
-    public void init(RobaController robaController) {
+    public void init(final RobaController robaController) {
         this.robaObservableList = FXCollections.observableList(this.robaService.getAll());
         this.setValuesToTableColumns(robaController);
         this.clearRecords(robaController);
@@ -37,32 +37,31 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     }
 
     @Override
-    public void pluckSelectedDataFromTableViewRoba(RobaController robaController) {
-        if (this.getSelectedDataFromTableViewRobe(robaController) != null) {
-            robaController.getTextFieldNaziv().setText(this.getSelectedDataFromTableViewRobe(robaController).getNazivArtikla());
-            robaController.getTextFieldKolicina().setText(this.getSelectedDataFromTableViewRobe(robaController).getKolicina().toString());
-            robaController.getTextFieldCijena().setText(this.getSelectedDataFromTableViewRobe(robaController).getCijena().toEngineeringString());
-            robaController.getTextAreaOpis().setText(this.getSelectedDataFromTableViewRobe(robaController).getOpis());
-            robaController.getTextFieldJedinicaMjere().setText(this.getSelectedDataFromTableViewRobe(robaController).getJmj());
-        } else if (this.getSelectedDataFromTableViewRobe(robaController) == null) {
+    public void pluckSelectedDataFromTableViewRoba(final RobaController robaController) {
+        final RobaEntity selectedData = this.getSelectedDataFromTableViewRobe(robaController);
+        if (selectedData != null) {
+            robaController.getTextFieldNaziv().setText(selectedData.getNazivArtikla());
+            robaController.getTextFieldKolicina().setText(selectedData.getKolicina().toString());
+            robaController.getTextFieldCijena().setText(selectedData.getCijena().toEngineeringString());
+            robaController.getTextAreaOpis().setText(selectedData.getOpis());
+            robaController.getTextFieldJedinicaMjere().setText(selectedData.getJmj());
+        } else {
             this.dialogService.isDataPickedFromTableViewAlert();
         }
     }
 
     @Override
-    public void searchData(RobaController robaController) {
+    public void searchData(final RobaController robaController) {
         final FilteredList<RobaEntity> filteredList = this.robaObservableList
-                .filtered(roba -> roba.getNazivArtikla().toLowerCase().contains(robaController.getTextFieldNaziv().getText()))
-                .filtered(roba -> robaController.getTextFieldCijena().getText() == null || robaController.getTextFieldCijena().getText().equals(StringUtils.EMPTY)
-                        || roba.getCijena().equals(new BigDecimal(robaController.getTextFieldCijena().getText())))
-                .filtered(roba -> robaController.getTextFieldKolicina().getText() == null || robaController.getTextFieldKolicina().getText().equals(StringUtils.EMPTY)
-                        || roba.getKolicina().equals(Integer.parseInt(robaController.getTextFieldKolicina().getText())))
-                .filtered(roba -> roba.getOpis().toLowerCase().contains(robaController.getTextAreaOpis().getText()));
+                .filtered(roba -> isTextFieldNazivContainingSomeData(robaController, roba))
+                .filtered(roba -> isTextFieldCijenaContainingSomeData(robaController, roba))
+                .filtered(roba -> isTextFieldKolicinaKontainingSomeData(robaController, roba))
+                .filtered(roba -> isTextAreaOpisContainingSomeData(robaController, roba));
         robaController.getTableView().setItems(FXCollections.observableList(filteredList));
     }
 
     @Override
-    public RobaEntity saveArtikl(RobaController robaController) {
+    public RobaEntity saveArtikl(final RobaController robaController) {
         if (this.getInputDataForDialogCheck(robaController).isEmpty()) {
             final RobaEntity artikl = this.robaService.createArticle(this.save(robaController));
             this.init(robaController);
@@ -73,9 +72,9 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     }
 
     @Override
-    public RobaEntity updateArtikl(RobaController robaController) {
+    public RobaEntity updateArtikl(final RobaController robaController) {
         if (this.getInputDataForDialogCheck(robaController).isEmpty()) {
-            RobaEntity updateEntity = this.update(robaController);
+            final RobaEntity updateEntity = this.update(robaController);
             final RobaEntity artikl = this.robaService.updateExistingArticle(updateEntity, updateEntity.getIdRobe());
             this.init(robaController);
             return artikl;
@@ -85,7 +84,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     }
 
     @Override
-    public void deleteArtikl(RobaController robaController) {
+    public void deleteArtikl(final RobaController robaController) {
         if (this.getSelectedDataFromTableViewRobe(robaController) != null && this.dialogService.isEntityRemoved()) {
             this.robaService.deleteRoba(this.getSelectedDataFromTableViewRobe(robaController).getIdRobe());
             this.init(robaController);
@@ -95,7 +94,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
     }
 
     @Override
-    public void clearRecords(RobaController robaController) {
+    public void clearRecords(final RobaController robaController) {
         robaController.getTableView().getSelectionModel().clearSelection();
         robaController.getTextFieldNaziv().clear();
         robaController.getTextFieldCijena().clear();
@@ -104,7 +103,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
         robaController.getTextAreaOpis().clear();
     }
 
-    private RobaEntity save(RobaController robaController) {
+    private RobaEntity save(final RobaController robaController) {
         return RobaEntity.builder()
                 .idRobe(this.nextId())
                 .nazivArtikla(robaController.getTextFieldNaziv().getText())
@@ -115,7 +114,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
                 .build();
     }
 
-    private RobaEntity update(RobaController robaController) {
+    private RobaEntity update(final RobaController robaController) {
         return RobaEntity.builder()
                 .idRobe(this.getSelectedDataFromTableViewRobe(robaController).getIdRobe())
                 .nazivArtikla(robaController.getTextFieldNaziv().getText())
@@ -126,12 +125,12 @@ public class RobaControllerServiceImpl implements RobaControllerService {
                 .build();
     }
 
-    private void setValuesToTableColumns(RobaController robaController) {
+    private void setValuesToTableColumns(final RobaController robaController) {
         this.setProperties(robaController);
         this.setStyle(robaController);
     }
 
-    private void setProperties(RobaController robaController) {
+    private void setProperties(final RobaController robaController) {
         robaController.getTableColumnId().setCellValueFactory(new PropertyValueFactory<>("idRobe"));
         robaController.getTableColumnNaziv().setCellValueFactory(new PropertyValueFactory<>("nazivArtikla"));
         robaController.getTableColumnCijena().setCellValueFactory(new PropertyValueFactory<>("cijena"));
@@ -139,7 +138,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
         robaController.getTableColumnJedinicnaMjera().setCellValueFactory(new PropertyValueFactory<>("jmj"));
     }
 
-    private void setStyle(RobaController robaController) {
+    private void setStyle(final RobaController robaController) {
         robaController.getTableColumnId().setStyle(FX_ALIGNMENT_CENTER);
         robaController.getTableColumnNaziv().setStyle(FX_ALIGNMENT_CENTER);
         robaController.getTableColumnCijena().setStyle(FX_ALIGNMENT_CENTER);
@@ -152,7 +151,7 @@ public class RobaControllerServiceImpl implements RobaControllerService {
                 this.robaObservableList.stream().mapToLong(RobaEntity::getIdRobe).max().getAsLong() + 1 : 1;
     }
 
-    private String getInputDataForDialogCheck(RobaController robaController) {
+    private String getInputDataForDialogCheck(final RobaController robaController) {
         final List<String> checkList = new ArrayList<>();
         if (robaController.getTextFieldNaziv().getText().trim().isEmpty()) checkList.add("Article name!");
         if (robaController.getTextFieldKolicina().getText().trim().isEmpty()) checkList.add("Amount");
@@ -162,7 +161,27 @@ public class RobaControllerServiceImpl implements RobaControllerService {
         return String.join("\n", checkList);
     }
 
-    private RobaEntity getSelectedDataFromTableViewRobe(RobaController robaController) {
+    private boolean isTextAreaOpisContainingSomeData(final RobaController robaController, final RobaEntity roba) {
+        return roba.getOpis().toLowerCase().contains(robaController.getTextAreaOpis().getText());
+    }
+
+    private boolean isTextFieldNazivContainingSomeData(final RobaController robaController, final RobaEntity roba) {
+        return roba.getNazivArtikla().toLowerCase().contains(robaController.getTextFieldNaziv().getText());
+    }
+
+    private boolean isTextFieldKolicinaKontainingSomeData(RobaController robaController, RobaEntity roba) {
+        final String valueFromTextField = robaController.getTextFieldKolicina().getText();
+        return valueFromTextField == null || valueFromTextField.equals(StringUtils.EMPTY)
+                || roba.getKolicina().equals(Integer.parseInt(valueFromTextField));
+    }
+
+    private boolean isTextFieldCijenaContainingSomeData(final RobaController robaController, final RobaEntity roba) {
+        final String valueFromTextField = robaController.getTextFieldCijena().getText();
+        return valueFromTextField == null || valueFromTextField.equals(StringUtils.EMPTY)
+                || roba.getCijena().equals(new BigDecimal(valueFromTextField));
+    }
+
+    private RobaEntity getSelectedDataFromTableViewRobe(final RobaController robaController) {
         return robaController.getTableColumnId().getTableView().getSelectionModel().getSelectedItem();
     }
 

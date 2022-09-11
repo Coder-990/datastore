@@ -46,10 +46,8 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
     @Override
     public void searchData(final PrimkaController primkaController) {
         final FilteredList<PrimkaEntity> filteredList = this.primkeObservableList
-                .filtered(primka -> this.getComboBoxFirmaOibOnSearch(primkaController) == null || primka.getPrimkaFirme()
-                        .getOibFirme().equals(this.getComboBoxFirmaOibOnSearch(primkaController)))
-                .filtered(primka -> this.getDateFromDatePicker(primkaController) == null ||
-                        primka.getDatum().equals(this.getDateFromDatePicker(primkaController)));
+                .filtered(primka -> isComboBoxFirmaContainingSomeData(primkaController, primka))
+                .filtered(primka -> isDatePickerContainingSomeData(primkaController, primka));
         primkaController.getTableView().setItems(FXCollections.observableList(filteredList));
 
     }
@@ -112,6 +110,7 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
         primkaController.getTableColumnDatum().setStyle(FX_ALIGNMENT_CENTER);
     }
 
+
     private void setCellValueProperties(final PrimkaController primkaController) {
         primkaController.getTableColumnFirmeEntity().setCellFactory(column -> new TableCell<>() {
             @Override
@@ -137,6 +136,7 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
         });
     }
 
+
     private Long nextId() {
         return !this.primkeObservableList.isEmpty() ?
                 this.primkeObservableList.stream().mapToLong(PrimkaEntity::getIdPrimke).max().getAsLong() + 1 : 1;
@@ -154,7 +154,16 @@ public class PrimkaControllerServiceImpl implements PrimkaControllerService {
                 .map(PrimkaEntity::getPrimkaFirme).collect(Collectors.toSet());
         primkaController.getComboBoxSearch().setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
         primkaController.getComboBoxSearch().getSelectionModel().selectFirst();
+    }
 
+    private boolean isDatePickerContainingSomeData(final PrimkaController primkaController, final PrimkaEntity primka) {
+        return this.getDateFromDatePicker(primkaController) == null ||
+                primka.getDatum().equals(this.getDateFromDatePicker(primkaController));
+    }
+
+    private boolean isComboBoxFirmaContainingSomeData(final PrimkaController primkaController, final PrimkaEntity primka) {
+        return this.getComboBoxFirmaOibOnSearch(primkaController) == null || primka.getPrimkaFirme()
+                .getOibFirme().equals(this.getComboBoxFirmaOibOnSearch(primkaController));
     }
 
     private void setComboBoxFirmaOibOnSearchFirmaEntity(final PrimkaController primkaController) {

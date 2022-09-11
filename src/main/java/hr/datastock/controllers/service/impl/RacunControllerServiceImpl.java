@@ -1,9 +1,10 @@
 package hr.datastock.controllers.service.impl;
 
-import hr.datastock.DatastockJavaFXAplication;
+
+import hr.datastock.DatastoreJavaFXApplication;
 import hr.datastock.controllers.RacunController;
-import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.RacunControllerService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.entities.RacunEntity;
 import hr.datastock.security.PasswordEncryptionService;
 import hr.datastock.services.RacunService;
@@ -37,18 +38,18 @@ public class RacunControllerServiceImpl implements RacunControllerService {
     }
 
     @Override
-    public void clearRecords(RacunController racunController) {
+    public void clearRecords(final RacunController racunController) {
         racunController.getTextFieldUserID().clear();
         racunController.getTextFieldPassword().clear();
     }
 
     @Override
-    public void backToLogin(RacunController racunController) {
-        this.stageInitializerService.getLoginScreen(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));
+    public void backToLogin(final RacunController racunController) {
+        this.stageInitializerService.getLoginScreen(new DatastoreJavaFXApplication.StageReadyEvent(new Stage()));
         racunController.getButtonLogin().getScene().getWindow().hide();
     }
 
-    private RacunEntity registerNewUser(RacunController racunController) {
+    private RacunEntity registerNewUser(final RacunController racunController) {
         return RacunEntity.builder()
                 .userId(racunController.getTextFieldUserID().getText())
                 .password(passwordEncryptionService.createMD5(racunController.getTextFieldPassword().getText()))
@@ -56,7 +57,7 @@ public class RacunControllerServiceImpl implements RacunControllerService {
     }
 
     @Override
-    public String getInputDataForDialogCheck(RacunController racunController) {
+    public String getInputDataForDialogCheck(final RacunController racunController) {
         final List<String> checkList = new ArrayList<>();
         if (racunController.getTextFieldUserID().getText().trim().isEmpty()) checkList.add("UserId!");
         if (racunController.getTextFieldPassword().getText().trim().isEmpty()) checkList.add("Password!");

@@ -1,6 +1,6 @@
 package hr.datastock.services;
 
-import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
+import hr.datastock.DatastoreJavaFXApplication.StageReadyEvent;
 import java.io.IOException;
 
 public interface StageInitializerService {

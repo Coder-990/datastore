@@ -1,6 +1,6 @@
 package hr.datastock.controllers;
 
-import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
+import hr.datastock.DatastoreJavaFXApplication.StageReadyEvent;
 import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;

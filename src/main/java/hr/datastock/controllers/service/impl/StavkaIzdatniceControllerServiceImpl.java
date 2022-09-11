@@ -40,7 +40,7 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     private ObservableList<StavkaIzdatniceEntity> filteredStavkaIzdatniceObservableListOfStorno;
 
     @Override
-    public void init(StavkaIzdatniceController sic) {
+    public void init(final StavkaIzdatniceController sic) {
         this.stavkaIzdatniceObservableList = FXCollections.observableList(this.stavkaIzdatniceService.getAll());
         this.filteredStavkaIzdatniceObservableListOfStorno = FXCollections.observableList(
                 this.stavkaIzdatniceObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
@@ -53,7 +53,7 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     }
 
     @Override
-    public void searchData(StavkaIzdatniceController sic) {
+    public void searchData(final StavkaIzdatniceController sic) {
         final FilteredList<StavkaIzdatniceEntity> filteredList = this.filteredStavkaIzdatniceObservableListOfStorno
                 .filtered(stavkaIzdatnice -> isTextFieldFirmaContainingSomeData(sic, stavkaIzdatnice))
                 .filtered(stavkaIzdatnice -> isTextFieldArticleContainingSomeData(sic, stavkaIzdatnice))
@@ -62,7 +62,7 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     }
 
     @Override
-    public StavkaIzdatniceEntity saveStavkaIzdatnice(StavkaIzdatniceController sic) {
+    public StavkaIzdatniceEntity saveStavkaIzdatnice(final StavkaIzdatniceController sic) {
         if (this.getInputDataForDialogCheck(sic).isEmpty()) {
             final StavkaIzdatniceEntity stavkaIzdatnice = this.stavkaIzdatniceService.createStavkaIzdatnice(this.save(sic));
             this.init(sic);
@@ -73,10 +73,11 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     }
 
     @Override
-    public Optional<StavkaIzdatniceEntity> stornoStavkaIzdatnice(StavkaIzdatniceController sic) {
+    public Optional<StavkaIzdatniceEntity> stornoStavkaIzdatnice(final StavkaIzdatniceController sic) {
         final StavkaIzdatniceEntity selectedStavka = this.getSelectedDataFromTableViewStavkaIzdatnice(sic);
         if (selectedStavka != null && this.dialogService.isEntityRemoved()) {
-            Optional<StavkaIzdatniceEntity> stornoStavkeIzdatnice = this.stavkaIzdatniceService.createStornoStavkeIzdatnice(selectedStavka);
+            final Optional<StavkaIzdatniceEntity> stornoStavkeIzdatnice =
+                    this.stavkaIzdatniceService.createStornoStavkeIzdatnice(selectedStavka);
             this.init(sic);
             return stornoStavkeIzdatnice;
         } else if (selectedStavka == null) {
@@ -86,7 +87,7 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
     }
 
     @Override
-    public void clearRecords(StavkaIzdatniceController sic) {
+    public void clearRecords(final StavkaIzdatniceController sic) {
         sic.getTextFieldKolicina().clear();
         sic.getTextFieldFirma().clear();
         sic.getTextFieldArticle().clear();
@@ -95,7 +96,7 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
         sic.getTableView().getSelectionModel().clearSelection();
     }
 
-    private StavkaIzdatniceEntity save(StavkaIzdatniceController sic) {
+    private StavkaIzdatniceEntity save(final StavkaIzdatniceController sic) {
         return StavkaIzdatniceEntity.builder()
                 .idStavkaIzdatnice(this.nextId())
                 .stavkaIzdatniceIzdatnica(this.getComboBoxIzdatnicaOnCreate(sic))
@@ -106,27 +107,27 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
                 .build();
     }
 
-    private void setValuesToTableColumns(StavkaIzdatniceController sic) {
+    private void setValuesToTableColumns(final StavkaIzdatniceController sic) {
         this.setProperty(sic);
         this.setStyle(sic);
         this.setCellValueProperties(sic);
     }
 
-    private void setProperty(StavkaIzdatniceController sic) {
+    private void setProperty(final StavkaIzdatniceController sic) {
         sic.getTableColumnId().setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
         sic.getTableColumnIdIzdatnice().setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceIzdatnica"));
         sic.getTableColumnArticle().setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
         sic.getTableColumnKolicina().setCellValueFactory(new PropertyValueFactory<>("kolicina"));
     }
 
-    private void setStyle(StavkaIzdatniceController sic) {
+    private void setStyle(final StavkaIzdatniceController sic) {
         sic.getTableColumnId().setStyle(FX_ALIGNMENT_CENTER);
         sic.getTableColumnIdIzdatnice().setStyle(FX_ALIGNMENT_CENTER);
         sic.getTableColumnArticle().setStyle(FX_ALIGNMENT_CENTER);
         sic.getTableColumnKolicina().setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    private void setCellValueProperties(StavkaIzdatniceController sic) {
+    private void setCellValueProperties(final StavkaIzdatniceController sic) {
         sic.getTableColumnIdIzdatnice().setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(final IzdatnicaEntity item, boolean empty) {
@@ -161,7 +162,7 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
                 this.stavkaIzdatniceObservableList.stream().mapToLong(StavkaIzdatniceEntity::getIdStavkaIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String getInputDataForDialogCheck(StavkaIzdatniceController sic) {
+    private String getInputDataForDialogCheck(final StavkaIzdatniceController sic) {
         final List<String> checkList = new ArrayList<>();
         if (this.getComboBoxIzdatnicaOnCheck(sic) == null) checkList.add("Company!");
         if (this.getComboBoxRobaOnCheck(sic) == null) checkList.add("Article!");
@@ -169,56 +170,56 @@ public class StavkaIzdatniceControllerServiceImpl implements StavkaIzdatniceCont
         return String.join("\n", checkList);
     }
 
-    private boolean isTextFieldAmountContainingSomeData(StavkaIzdatniceController sic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        String textFieldAmount = sic.getTextFieldKolicina().getText();
+    private boolean isTextFieldAmountContainingSomeData(final StavkaIzdatniceController sic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final String textFieldAmount = sic.getTextFieldKolicina().getText();
         return StringUtils.equals(textFieldAmount, StringUtils.EMPTY) || textFieldAmount == null || stavkaIzdatnice
                 .getKolicina().toString().equals(textFieldAmount);
     }
 
-    private boolean isTextFieldArticleContainingSomeData(StavkaIzdatniceController sic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        String textFieldArticle = sic.getTextFieldArticle().getText();
+    private boolean isTextFieldArticleContainingSomeData(final StavkaIzdatniceController sic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final String textFieldArticle = sic.getTextFieldArticle().getText();
         return StringUtils.equals(textFieldArticle, StringUtils.EMPTY) || textFieldArticle == null || stavkaIzdatnice
                 .getStavkaIzdatniceRobe().toString().toLowerCase().contains(textFieldArticle);
     }
 
-    private boolean isTextFieldFirmaContainingSomeData(StavkaIzdatniceController sic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        String textFieldFirma = sic.getTextFieldFirma().getText();
+    private boolean isTextFieldFirmaContainingSomeData(final StavkaIzdatniceController sic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final String textFieldFirma = sic.getTextFieldFirma().getText();
         return StringUtils.equals(textFieldFirma, StringUtils.EMPTY) || textFieldFirma == null || stavkaIzdatnice
                 .getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().toString()
                 .toLowerCase().trim().contains(textFieldFirma);
     }
 
-    private void setComboBoxIzdatnicaEntity(StavkaIzdatniceController sic) {
+    private void setComboBoxIzdatnicaEntity(final StavkaIzdatniceController sic) {
         sic.getComboBoxIzdatnica().setItems(FXCollections.observableList(this.izdatnicaService.getAll()));
         sic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem();
     }
 
-    private void setComboBoxRobaEntity(StavkaIzdatniceController sic) {
+    private void setComboBoxRobaEntity(final StavkaIzdatniceController sic) {
         sic.getComboBoxRoba().setItems(FXCollections.observableList(this.robaService.getAll()));
         sic.getComboBoxRoba().getSelectionModel().getSelectedItem();
     }
 
-    private String getComboBoxIzdatnicaOnCheck(StavkaIzdatniceController sic) {
+    private String getComboBoxIzdatnicaOnCheck(final StavkaIzdatniceController sic) {
         return sic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem() == null ? null :
                 sic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem().getIzdatnicaFirme().getNazivFirme();
     }
 
-    private String getComboBoxRobaOnCheck(StavkaIzdatniceController sic) {
+    private String getComboBoxRobaOnCheck(final StavkaIzdatniceController sic) {
         return sic.getComboBoxRoba().getSelectionModel().getSelectedItem() == null ? null :
                 sic.getComboBoxRoba().getSelectionModel().getSelectedItem().getNazivArtikla();
     }
 
-    private IzdatnicaEntity getComboBoxIzdatnicaOnCreate(StavkaIzdatniceController sic) {
+    private IzdatnicaEntity getComboBoxIzdatnicaOnCreate(final StavkaIzdatniceController sic) {
         return sic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem() == null ? null :
                 sic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem();
     }
 
-    private RobaEntity getComboBoxRobaOnCreate(StavkaIzdatniceController sic) {
+    private RobaEntity getComboBoxRobaOnCreate(final StavkaIzdatniceController sic) {
         return sic.getComboBoxRoba().getSelectionModel().getSelectedItem() == null ? null :
                 sic.getComboBoxRoba().getSelectionModel().getSelectedItem();
     }
 
-    private StavkaIzdatniceEntity getSelectedDataFromTableViewStavkaIzdatnice(StavkaIzdatniceController sic) {
+    private StavkaIzdatniceEntity getSelectedDataFromTableViewStavkaIzdatnice(final StavkaIzdatniceController sic) {
         return sic.getTableColumnId().getTableView().getSelectionModel().getSelectedItem();
     }
 }

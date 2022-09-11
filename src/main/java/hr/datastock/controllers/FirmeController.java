@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
-@RequiredArgsConstructor
 @Controller
+@RequiredArgsConstructor
 public class FirmeController {
     private final FirmeControllerService firmeControllerService;
     private final DialogService dialogService;
@@ -81,7 +81,8 @@ public class FirmeController {
 
     public void setButtonSave() {
         try {
-            if (this.firmeControllerService.saveFirma(this) != null) log.info("Record saved successful");
+            if (this.firmeControllerService.saveFirma(this) != null)
+                log.info("Record saved successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }
@@ -89,7 +90,8 @@ public class FirmeController {
 
     public void setButtonUpdate() {
         try {
-            if (this.firmeControllerService.updateFirma(this) != null) log.info("Record update successful");
+            if (this.firmeControllerService.updateFirma(this) != null)
+                log.info("Record update successful");
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex.fillInStackTrace());
         }

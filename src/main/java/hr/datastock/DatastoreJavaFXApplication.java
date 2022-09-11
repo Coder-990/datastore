@@ -8,24 +8,24 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class DatastockJavaFXAplication extends Application {
+public class DatastoreJavaFXApplication extends Application {
 
-    private ConfigurableApplicationContext applcationContext;
+    private ConfigurableApplicationContext applicationContext;
 
     @Override
     public void init() {
-        this.applcationContext = new SpringApplicationBuilder(DatastockApplication.class).run();
+        this.applicationContext = new SpringApplicationBuilder(DatastoreApplication.class).run();
     }
 
     @Override
     public void stop() {
-        this.applcationContext.close();
+        this.applicationContext.close();
         Platform.exit();
     }
 
     @Override
     public void start(final Stage stage) {
-        this.applcationContext.publishEvent(new StageReadyEvent(stage));
+        this.applicationContext.publishEvent(new StageReadyEvent(stage));
     }
 
     public static class StageReadyEvent extends ApplicationEvent {

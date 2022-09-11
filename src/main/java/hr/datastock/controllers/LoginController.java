@@ -1,7 +1,7 @@
 package hr.datastock.controllers;
 
-import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.LoginControllerService;
+import hr.datastock.dialogutil.DialogService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -17,6 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Controller
 public class LoginController {
+
     private final LoginControllerService loginControllerService;
     private final DialogService dialogService;
     @Getter
@@ -53,7 +54,8 @@ public class LoginController {
 
     public void setButtonLogin() {
         try {
-            String dialogCheck = this.loginControllerService.getInputDataForDialogCheck(this);
+            String dialogCheck = this.loginControllerService
+                    .getInputDataForDialogCheck(this);
             if (dialogCheck.isEmpty()) {
                 this.loginControllerService.userLogin(this);
                 log.info("Login and redirection to main menu screen successful");

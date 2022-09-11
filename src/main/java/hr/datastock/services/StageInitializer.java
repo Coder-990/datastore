@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import static hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
+import static hr.datastock.DatastoreJavaFXApplication.StageReadyEvent;
 
 @RequiredArgsConstructor
 @Component

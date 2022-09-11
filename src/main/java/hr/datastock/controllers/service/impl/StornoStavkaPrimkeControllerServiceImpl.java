@@ -30,7 +30,7 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
     private ObservableList<StavkaPrimkeEntity> stavkaPrimkeObservableList;
 
     @Override
-    public void init(StornoStavkaPrimkeController sspc) {
+    public void init(final StornoStavkaPrimkeController sspc) {
         this.stavkaPrimkeObservableList = FXCollections.observableList(this.stavkaPrimkeService.getAll()
                 .stream().filter(StavkaPrimkeEntity::getStorno).toList());
         this.setComboBoxIzdatnicaEntity(sspc);
@@ -41,7 +41,7 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
     }
 
     @Override
-    public void searchData(StornoStavkaPrimkeController sspc) {
+    public void searchData(final StornoStavkaPrimkeController sspc) {
         final FilteredList<StavkaPrimkeEntity> filteredList = this.stavkaPrimkeObservableList
                 .filtered(stavkaPrimke -> isTextFieldFirmaContainingSomeData(sspc, stavkaPrimke))
                 .filtered(stavkaPrimke -> isTextFieldArticleContainingSomeData(sspc, stavkaPrimke))
@@ -52,7 +52,7 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
     }
 
     @Override
-    public void clearRecords(StornoStavkaPrimkeController sspc) {
+    public void clearRecords(final StornoStavkaPrimkeController sspc) {
         sspc.getDatePickerDatumStorno().setValue(null);
         sspc.getDatePickerDatumStorno().getEditor().clear();
         sspc.getTextFieldFirma().clear();
@@ -62,7 +62,7 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
         sspc.getTableView().getSelectionModel().clearSelection();
     }
 
-    private void setComboBoxIzdatnicaEntity(StornoStavkaPrimkeController sspc) {
+    private void setComboBoxIzdatnicaEntity(final StornoStavkaPrimkeController sspc) {
         final Set<FirmeEntity> listOfFirme = this.stavkaPrimkeObservableList.stream()
                 .map(stornoStavkaIzdatnice -> stornoStavkaIzdatnice.getStavkaPrimkePrimka().getPrimkaFirme())
                 .collect(Collectors.toSet());
@@ -70,38 +70,38 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
         sspc.getComboBoxPrimka().getSelectionModel().getSelectedItem();
     }
 
-    private boolean isDatumContainingSelectedValue(StornoStavkaPrimkeController sspc, StavkaPrimkeEntity stavkaPrimke) {
-        LocalDate selectedDate = sspc.getDatePickerDatumStorno().getValue();
+    private boolean isDatumContainingSelectedValue(final StornoStavkaPrimkeController sspc, final StavkaPrimkeEntity stavkaPrimke) {
+        final LocalDate selectedDate = sspc.getDatePickerDatumStorno().getValue();
         return selectedDate == null || stavkaPrimke.getDatumStorno().equals(selectedDate);
     }
 
-    private boolean isRobaContainingSelectedValue(StornoStavkaPrimkeController sspc, StavkaPrimkeEntity stavkaPrimke) {
-        RobaEntity selectedRoba = sspc.getComboBoxRoba().getSelectionModel().getSelectedItem();
+    private boolean isRobaContainingSelectedValue(final StornoStavkaPrimkeController sspc, final StavkaPrimkeEntity stavkaPrimke) {
+        final RobaEntity selectedRoba = sspc.getComboBoxRoba().getSelectionModel().getSelectedItem();
         return selectedRoba == null ||
                 stavkaPrimke.getStavkaPrimkeRobe().equals(selectedRoba);
     }
 
-    private boolean isIzdatnicaOfFirmaEntityContainingSelectedValue(StornoStavkaPrimkeController sspc, StavkaPrimkeEntity stavkaPrimke) {
-        FirmeEntity selectedFirma = sspc.getComboBoxPrimka().getSelectionModel().getSelectedItem();
+    private boolean isIzdatnicaOfFirmaEntityContainingSelectedValue(final StornoStavkaPrimkeController sspc, final StavkaPrimkeEntity stavkaPrimke) {
+        final FirmeEntity selectedFirma = sspc.getComboBoxPrimka().getSelectionModel().getSelectedItem();
         return selectedFirma == null ||
                 stavkaPrimke.getStavkaPrimkePrimka().getPrimkaFirme().equals(
                         selectedFirma);
     }
 
-    private boolean isTextFieldArticleContainingSomeData(StornoStavkaPrimkeController sspc, StavkaPrimkeEntity stavkaPrimke) {
-        String articleText = sspc.getTextFieldArticle().getText();
+    private boolean isTextFieldArticleContainingSomeData(final StornoStavkaPrimkeController sspc, final StavkaPrimkeEntity stavkaPrimke) {
+        final String articleText = sspc.getTextFieldArticle().getText();
         return StringUtils.equals(articleText, StringUtils.EMPTY) || articleText == null || stavkaPrimke
                 .getStavkaPrimkeRobe().toString().toLowerCase().contains(articleText);
     }
 
-    private boolean isTextFieldFirmaContainingSomeData(StornoStavkaPrimkeController sspc, StavkaPrimkeEntity stavkaPrimke) {
-        String firmaText = sspc.getTextFieldFirma().getText();
+    private boolean isTextFieldFirmaContainingSomeData(final StornoStavkaPrimkeController sspc, final StavkaPrimkeEntity stavkaPrimke) {
+        final String firmaText = sspc.getTextFieldFirma().getText();
         return StringUtils.equals(firmaText, StringUtils.EMPTY) || firmaText == null || stavkaPrimke
                 .getStavkaPrimkePrimka().getPrimkaFirme().toString()
                 .toLowerCase().trim().contains(firmaText);
     }
 
-    private void setComboBoxRobaEntity(StornoStavkaPrimkeController sspc) {
+    private void setComboBoxRobaEntity(final StornoStavkaPrimkeController sspc) {
         final Set<RobaEntity> listOfArticles = this.stavkaPrimkeObservableList.stream()
                 .map(StavkaPrimkeEntity::getStavkaPrimkeRobe)
                 .collect(Collectors.toSet());
@@ -109,13 +109,13 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
         sspc.getComboBoxRoba().getSelectionModel().getSelectedItem();
     }
 
-    private void setTableColumnProperties(StornoStavkaPrimkeController sspc) {
+    private void setTableColumnProperties(final StornoStavkaPrimkeController sspc) {
         this.setProperty(sspc);
         this.setStyle(sspc);
         this.setCellValueFactory(sspc);
     }
 
-    private void setProperty(StornoStavkaPrimkeController sspc) {
+    private void setProperty(final StornoStavkaPrimkeController sspc) {
         sspc.getTableColumnId().setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
         sspc.getTableColumnIdPrimke().setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
         sspc.getTableColumnArticle().setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
@@ -123,7 +123,7 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
         sspc.getTableColumnDatum().setCellValueFactory(new PropertyValueFactory<>("datumStorno"));
     }
 
-    private void setStyle(StornoStavkaPrimkeController sspc) {
+    private void setStyle(final StornoStavkaPrimkeController sspc) {
         sspc.getTableColumnId().setStyle(FX_ALIGNMENT_CENTER);
         sspc.getTableColumnIdPrimke().setStyle(FX_ALIGNMENT_CENTER);
         sspc.getTableColumnArticle().setStyle(FX_ALIGNMENT_CENTER);
@@ -131,7 +131,7 @@ public class StornoStavkaPrimkeControllerServiceImpl implements StornoStavkaPrim
         sspc.getTableColumnDatum().setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    private void setCellValueFactory(StornoStavkaPrimkeController sspc) {
+    private void setCellValueFactory(final StornoStavkaPrimkeController sspc) {
         sspc.getTableColumnIdPrimke().setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(final PrimkaEntity item, boolean empty) {

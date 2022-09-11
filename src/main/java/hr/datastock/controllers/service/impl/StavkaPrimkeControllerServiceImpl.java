@@ -40,7 +40,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
     private ObservableList<StavkaPrimkeEntity> filteredStavkaPrimkeObservableListOfStorno;
 
     @Override
-    public void init(StavkaPrimkeController spc) {
+    public void init(final StavkaPrimkeController spc) {
         this.stavkaPrimkeObservableList = FXCollections.observableList(this.stavkaPrimkeService.getAll());
         this.filteredStavkaPrimkeObservableListOfStorno = FXCollections.observableList(
                 this.stavkaPrimkeObservableList.stream().filter(isStorno -> !isStorno.getStorno()).toList());
@@ -52,7 +52,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
     }
 
     @Override
-    public void searchData(StavkaPrimkeController spc) {
+    public void searchData(final StavkaPrimkeController spc) {
         final FilteredList<StavkaPrimkeEntity> filteredList = this.filteredStavkaPrimkeObservableListOfStorno
                 .filtered(stavkaIzdatnice -> isTextFieldFirmaContainingSomeData(spc, stavkaIzdatnice))
                 .filtered(stavkaIzdatnice -> isTextFieldArticleContainingSomeData(spc, stavkaIzdatnice))
@@ -61,7 +61,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
     }
 
     @Override
-    public StavkaPrimkeEntity saveStavkaPrimke(StavkaPrimkeController spc) {
+    public StavkaPrimkeEntity saveStavkaPrimke(final StavkaPrimkeController spc) {
         if (this.getInputDataForDialogCheck(spc).isEmpty()) {
             final StavkaPrimkeEntity stavkaPrimke = this.stavkaPrimkeService.createStavkaPrimke(this.save(spc));
             this.init(spc);
@@ -72,7 +72,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
     }
 
     @Override
-    public Optional<StavkaPrimkeEntity> stornoStavkaPrimke(StavkaPrimkeController spc) {
+    public Optional<StavkaPrimkeEntity> stornoStavkaPrimke(final StavkaPrimkeController spc) {
         final StavkaPrimkeEntity selectedStavka = this.getSelectedDataFromTableViewStavkaIzdatnice(spc);
         if (selectedStavka != null && this.dialogService.isEntityRemoved()) {
             final Optional<StavkaPrimkeEntity> stornoStavkePrimke = this.stavkaPrimkeService.createStornoStavkePrimke(selectedStavka);
@@ -85,7 +85,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
     }
 
     @Override
-    public void clearRecords(StavkaPrimkeController spc) {
+    public void clearRecords(final StavkaPrimkeController spc) {
         spc.getTextFieldKolicina().clear();
         spc.getTextFieldFirma().clear();
         spc.getTextFieldArticle().clear();
@@ -94,7 +94,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
         spc.getTableView().getSelectionModel().clearSelection();
     }
 
-    private StavkaPrimkeEntity save(StavkaPrimkeController spc) {
+    private StavkaPrimkeEntity save(final StavkaPrimkeController spc) {
         return StavkaPrimkeEntity.builder()
                 .idStavkaPrimke(this.nextId())
                 .stavkaPrimkePrimka(this.getComboBoxPrimkaOnCreate(spc))
@@ -105,27 +105,27 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
                 .build();
     }
 
-    private void setValuesToTableColumns(StavkaPrimkeController spc) {
+    private void setValuesToTableColumns(final StavkaPrimkeController spc) {
         this.setProperty(spc);
         this.setStyle(spc);
         this.setCellValueProperties(spc);
     }
 
-    private void setProperty(StavkaPrimkeController spc) {
+    private void setProperty(final StavkaPrimkeController spc) {
         spc.getTableColumnId().setCellValueFactory(new PropertyValueFactory<>("idStavkaPrimke"));
         spc.getTableColumnIdPrimke().setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkePrimka"));
         spc.getTableColumnArticle().setCellValueFactory(new PropertyValueFactory<>("stavkaPrimkeRobe"));
         spc.getTableColumnKolicina().setCellValueFactory(new PropertyValueFactory<>("kolicina"));
     }
 
-    private void setStyle(StavkaPrimkeController spc) {
+    private void setStyle(final StavkaPrimkeController spc) {
         spc.getTableColumnId().setStyle(FX_ALIGNMENT_CENTER);
         spc.getTableColumnIdPrimke().setStyle(FX_ALIGNMENT_CENTER);
         spc.getTableColumnArticle().setStyle(FX_ALIGNMENT_CENTER);
         spc.getTableColumnKolicina().setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    private void setCellValueProperties(StavkaPrimkeController spc) {
+    private void setCellValueProperties(final StavkaPrimkeController spc) {
         spc.getTableColumnIdPrimke().setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(final PrimkaEntity item, boolean empty) {
@@ -160,7 +160,7 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
                 this.stavkaPrimkeObservableList.stream().mapToLong(StavkaPrimkeEntity::getIdStavkaPrimke).max().getAsLong() + 1 : 1;
     }
 
-    private String getInputDataForDialogCheck(StavkaPrimkeController spc) {
+    private String getInputDataForDialogCheck(final StavkaPrimkeController spc) {
         final List<String> checkList = new ArrayList<>();
         if (this.getComboBoxPrimkaOnCheck(spc) == null) checkList.add("Company!");
         if (this.getComboBoxRobaOnCheck(spc) == null) checkList.add("Article!");
@@ -168,56 +168,56 @@ public class StavkaPrimkeControllerServiceImpl implements StavkaPrimkeController
         return String.join("\n", checkList);
     }
 
-    private boolean isTextFieldAmountContainingSomeData(StavkaPrimkeController spc, StavkaPrimkeEntity stavkaPrimke) {
-        String textFieldAmount = spc.getTextFieldKolicina().getText();
+    private boolean isTextFieldAmountContainingSomeData(final StavkaPrimkeController spc, final StavkaPrimkeEntity stavkaPrimke) {
+        final String textFieldAmount = spc.getTextFieldKolicina().getText();
         return StringUtils.equals(textFieldAmount, StringUtils.EMPTY) || textFieldAmount == null || stavkaPrimke
                 .getKolicina().toString().equals(textFieldAmount);
     }
 
-    private boolean isTextFieldArticleContainingSomeData(StavkaPrimkeController spc, StavkaPrimkeEntity stavkaPrimke) {
-        String textArticle = spc.getTextFieldArticle().getText();
+    private boolean isTextFieldArticleContainingSomeData(final StavkaPrimkeController spc, final StavkaPrimkeEntity stavkaPrimke) {
+        final String textArticle = spc.getTextFieldArticle().getText();
         return StringUtils.equals(textArticle, StringUtils.EMPTY) || textArticle == null || stavkaPrimke
                 .getStavkaPrimkeRobe().toString().toLowerCase().contains(textArticle);
     }
 
-    private boolean isTextFieldFirmaContainingSomeData(StavkaPrimkeController spc, StavkaPrimkeEntity stavkaPrimke) {
-        String textFirme = spc.getTextFieldFirma().getText();
+    private boolean isTextFieldFirmaContainingSomeData(final StavkaPrimkeController spc, final StavkaPrimkeEntity stavkaPrimke) {
+        final String textFirme = spc.getTextFieldFirma().getText();
         return StringUtils.equals(textFirme, StringUtils.EMPTY) || textFirme == null || stavkaPrimke
                 .getStavkaPrimkePrimka().getPrimkaFirme().toString()
                 .toLowerCase().trim().contains(textFirme);
     }
 
-    private void setComboBoxPrimkaEntity(StavkaPrimkeController spc) {
+    private void setComboBoxPrimkaEntity(final StavkaPrimkeController spc) {
         spc.getComboBoxPrimka().setItems(FXCollections.observableList(this.primkaService.getAll()));
         spc.getComboBoxPrimka().getSelectionModel().getSelectedItem();
     }
 
-    private void setComboBoxRobaEntity(StavkaPrimkeController spc) {
+    private void setComboBoxRobaEntity(final StavkaPrimkeController spc) {
         spc.getComboBoxRoba().setItems(FXCollections.observableList(this.robaService.getAll()));
         spc.getComboBoxRoba().getSelectionModel().getSelectedItem();
     }
 
-    private String getComboBoxPrimkaOnCheck(StavkaPrimkeController spc) {
+    private String getComboBoxPrimkaOnCheck(final StavkaPrimkeController spc) {
         return spc.getComboBoxPrimka().getSelectionModel().getSelectedItem() == null ? null :
                 spc.getComboBoxPrimka().getSelectionModel().getSelectedItem().getPrimkaFirme().getNazivFirme();
     }
 
-    private String getComboBoxRobaOnCheck(StavkaPrimkeController spc) {
+    private String getComboBoxRobaOnCheck(final StavkaPrimkeController spc) {
         return spc.getComboBoxRoba().getSelectionModel().getSelectedItem() == null ? null :
                 spc.getComboBoxRoba().getSelectionModel().getSelectedItem().getNazivArtikla();
     }
 
-    private PrimkaEntity getComboBoxPrimkaOnCreate(StavkaPrimkeController spc) {
+    private PrimkaEntity getComboBoxPrimkaOnCreate(final StavkaPrimkeController spc) {
         return spc.getComboBoxPrimka().getSelectionModel().getSelectedItem() == null ? null :
                 spc.getComboBoxPrimka().getSelectionModel().getSelectedItem();
     }
 
-    private RobaEntity getComboBoxRobaOnCreate(StavkaPrimkeController spc) {
+    private RobaEntity getComboBoxRobaOnCreate(final StavkaPrimkeController spc) {
         return spc.getComboBoxRoba().getSelectionModel().getSelectedItem() == null ? null :
                 spc.getComboBoxRoba().getSelectionModel().getSelectedItem();
     }
 
-    private StavkaPrimkeEntity getSelectedDataFromTableViewStavkaIzdatnice(StavkaPrimkeController spc) {
+    private StavkaPrimkeEntity getSelectedDataFromTableViewStavkaIzdatnice(final StavkaPrimkeController spc) {
         return spc.getTableColumnId().getTableView().getSelectionModel().getSelectedItem();
     }
 

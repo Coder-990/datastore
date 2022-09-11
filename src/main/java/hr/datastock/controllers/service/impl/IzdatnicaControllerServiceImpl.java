@@ -35,7 +35,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
     private ObservableList<IzdatnicaEntity> izdatnicaObservableList;
 
     @Override
-    public void init(IzdatnicaController izdatnicaController) {
+    public void init(final IzdatnicaController izdatnicaController) {
         this.izdatnicaObservableList = FXCollections.observableList(this.izdatnicaService.getAll());
         this.setComboBoxFirmeOnCreateIzdatnicaEntity(izdatnicaController);
         this.setComboBoxFirmaOibOnSearchFirmaEntity(izdatnicaController);
@@ -45,7 +45,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
     }
 
     @Override
-    public void searchData(IzdatnicaController izdatnicaController) {
+    public void searchData(final IzdatnicaController izdatnicaController) {
         final FilteredList<IzdatnicaEntity> filteredList = this.izdatnicaObservableList
                 .filtered(izdatnica -> isComboBoxFirmaSearchContainingSomeData(izdatnicaController, izdatnica))
                 .filtered(izdatnica -> isDatePickerContainingSomeData(izdatnicaController, izdatnica));
@@ -54,7 +54,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
 
 
     @Override
-    public IzdatnicaEntity saveIzdatnica(IzdatnicaController izdatnicaController) {
+    public IzdatnicaEntity saveIzdatnica(final IzdatnicaController izdatnicaController) {
         if (this.getTextFieldAndDateDataForDialogCheck(izdatnicaController).isEmpty()) {
             final IzdatnicaEntity izdatnica = this.izdatnicaService.createIzdatnica(this.save(izdatnicaController));
             this.init(izdatnicaController);
@@ -65,7 +65,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
     }
 
     @Override
-    public void deleteIzdatnica(IzdatnicaController izdatnicaController) {
+    public void deleteIzdatnica(final IzdatnicaController izdatnicaController) {
         if (this.getTableViewIzdatnica(izdatnicaController) != null && this.dialogService.isEntityRemoved()) {
             this.izdatnicaService.deleteIzdatnica(this.getTableViewIzdatnica(izdatnicaController).getIdIzdatnice());
             this.init(izdatnicaController);
@@ -77,7 +77,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
     }
 
     @Override
-    public void clearRecords(IzdatnicaController izdatnicaController) {
+    public void clearRecords(final IzdatnicaController izdatnicaController) {
         izdatnicaController.getDatePickerDatum().setValue(null);
         izdatnicaController.getDatePickerDatum().getEditor().clear();
         izdatnicaController.getComboBoxCreate().getSelectionModel().clearSelection();
@@ -85,7 +85,7 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
         izdatnicaController.getTableView().getSelectionModel().clearSelection();
     }
 
-    private IzdatnicaEntity save(IzdatnicaController izdatnicaController) {
+    private IzdatnicaEntity save(final IzdatnicaController izdatnicaController) {
         return IzdatnicaEntity.builder()
                 .idIzdatnice(this.nextId())
                 .datum(izdatnicaController.getDatePickerDatum().getValue())
@@ -93,25 +93,25 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
                 .build();
     }
 
-    private void setValuesToTableColumns(IzdatnicaController izdatnicaController) {
+    private void setValuesToTableColumns(final IzdatnicaController izdatnicaController) {
         this.setProperty(izdatnicaController);
         this.setStyle(izdatnicaController);
         this.setCellValueProperties(izdatnicaController);
     }
 
-    private void setProperty(IzdatnicaController izdatnicaController) {
+    private void setProperty(final IzdatnicaController izdatnicaController) {
         izdatnicaController.getTableColumnId().setCellValueFactory(new PropertyValueFactory<>("idIzdatnice"));
         izdatnicaController.getTableColumnDatum().setCellValueFactory(new PropertyValueFactory<>("datum"));
         izdatnicaController.getTableColumnFirmeEntity().setCellValueFactory(new PropertyValueFactory<>("izdatnicaFirme"));
     }
 
-    private void setStyle(IzdatnicaController izdatnicaController) {
+    private void setStyle(final IzdatnicaController izdatnicaController) {
         izdatnicaController.getTableColumnId().setStyle(FX_ALIGNMENT_CENTER);
         izdatnicaController.getTableColumnDatum().setStyle(FX_ALIGNMENT_CENTER);
         izdatnicaController.getTableColumnFirmeEntity().setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    private void setCellValueProperties(IzdatnicaController izdatnicaController) {
+    private void setCellValueProperties(final IzdatnicaController izdatnicaController) {
         izdatnicaController.getTableColumnFirmeEntity().setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(final FirmeEntity item, boolean empty) {
@@ -142,14 +142,14 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
                 this.izdatnicaObservableList.stream().mapToLong(IzdatnicaEntity::getIdIzdatnice).max().getAsLong() + 1 : 1;
     }
 
-    private String getTextFieldAndDateDataForDialogCheck(IzdatnicaController izdatnicaController) {
+    private String getTextFieldAndDateDataForDialogCheck(final IzdatnicaController izdatnicaController) {
         final List<String> checkList = new ArrayList<>();
         if (getComboBoxFirmeOnCreate(izdatnicaController) == null) checkList.add("Company identity number!");
         if (getDateFromDatePicker(izdatnicaController) == null) checkList.add("Date!");
         return String.join("\n", checkList);
     }
 
-    private void setComboBoxFirmeOnCreateIzdatnicaEntity(IzdatnicaController izdatnicaController) {
+    private void setComboBoxFirmeOnCreateIzdatnicaEntity(final IzdatnicaController izdatnicaController) {
         final Set<FirmeEntity> oibFirmeFilterList = this.izdatnicaObservableList.stream()
                 .map(IzdatnicaEntity::getIzdatnicaFirme).collect(Collectors.toSet());
         izdatnicaController.getComboBoxSearch().setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
@@ -157,39 +157,39 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
 
     }
 
-    private void setComboBoxFirmaOibOnSearchFirmaEntity(IzdatnicaController izdatnicaController) {
+    private void setComboBoxFirmaOibOnSearchFirmaEntity(final IzdatnicaController izdatnicaController) {
         izdatnicaController.getComboBoxCreate().setItems(FXCollections.observableList(this.firmeService.getAll()));
         izdatnicaController.getComboBoxCreate().getSelectionModel().selectFirst();
     }
 
-    private boolean isDatePickerContainingSomeData(IzdatnicaController izdatnicaController, IzdatnicaEntity izdatnica) {
-        LocalDate selectedDateValueFromDatePicker = this.getDateFromDatePicker(izdatnicaController);
+    private boolean isDatePickerContainingSomeData(final IzdatnicaController izdatnicaController, final IzdatnicaEntity izdatnica) {
+        final LocalDate selectedDateValueFromDatePicker = this.getDateFromDatePicker(izdatnicaController);
         return selectedDateValueFromDatePicker == null ||
                 izdatnica.getDatum().equals(selectedDateValueFromDatePicker);
     }
 
-    private boolean isComboBoxFirmaSearchContainingSomeData(IzdatnicaController izdatnicaController, IzdatnicaEntity izdatnica) {
-        String selectedValueFromComboBox = this.getComboBoxFirmaOibOnSearch(izdatnicaController);
+    private boolean isComboBoxFirmaSearchContainingSomeData(final IzdatnicaController izdatnicaController, final IzdatnicaEntity izdatnica) {
+        final String selectedValueFromComboBox = this.getComboBoxFirmaOibOnSearch(izdatnicaController);
         return selectedValueFromComboBox == null || izdatnica.getIzdatnicaFirme()
                 .getOibFirme().equals(selectedValueFromComboBox);
     }
 
-    private LocalDate getDateFromDatePicker(IzdatnicaController izdatnicaController) {
+    private LocalDate getDateFromDatePicker(final IzdatnicaController izdatnicaController) {
         return izdatnicaController.getDatePickerDatum().getValue() == null ? null :
                 izdatnicaController.getDatePickerDatum().getValue();
     }
 
-    private FirmeEntity getComboBoxFirmeOnCreate(IzdatnicaController izdatnicaController) {
+    private FirmeEntity getComboBoxFirmeOnCreate(final IzdatnicaController izdatnicaController) {
         return izdatnicaController.getComboBoxCreate().getSelectionModel().getSelectedItem() == null ? null :
                 izdatnicaController.getComboBoxCreate().getSelectionModel().getSelectedItem();
     }
 
-    private String getComboBoxFirmaOibOnSearch(IzdatnicaController izdatnicaController) {
+    private String getComboBoxFirmaOibOnSearch(final IzdatnicaController izdatnicaController) {
         return izdatnicaController.getComboBoxSearch().getSelectionModel().getSelectedItem() == null ? null :
                 izdatnicaController.getComboBoxSearch().getSelectionModel().getSelectedItem().getOibFirme();
     }
 
-    private IzdatnicaEntity getTableViewIzdatnica(IzdatnicaController izdatnicaController) {
+    private IzdatnicaEntity getTableViewIzdatnica(final IzdatnicaController izdatnicaController) {
         return izdatnicaController.getTableColumnId().getTableView().getSelectionModel().getSelectedItem();
     }
 }

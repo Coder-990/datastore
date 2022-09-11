@@ -1,13 +1,12 @@
 package hr.datastock.services.impl;
 
-import hr.datastock.DatastockJavaFXAplication.StageReadyEvent;
+import hr.datastock.DatastoreJavaFXApplication.StageReadyEvent;
 import hr.datastock.exceptions.StageInitializerRuntimeException;
 import hr.datastock.services.StageInitializerService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;

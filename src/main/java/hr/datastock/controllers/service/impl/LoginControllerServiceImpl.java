@@ -1,6 +1,6 @@
 package hr.datastock.controllers.service.impl;
 
-import hr.datastock.DatastockJavaFXAplication;
+import hr.datastock.DatastoreJavaFXApplication;
 import hr.datastock.controllers.LoginController;
 import hr.datastock.controllers.service.LoginControllerService;
 import hr.datastock.security.PasswordEncryptionService;
@@ -23,26 +23,26 @@ public class LoginControllerServiceImpl implements LoginControllerService {
     private final RacunService racunService;
 
     @Override
-    public void close(LoginController loginController) {
+    public void close(final LoginController loginController) {
         loginController.getButtonClose().getScene().getWindow().hide();
     }
 
     @Override
-    public void register(LoginController loginController) throws IOException {
+    public void register(final LoginController loginController) throws IOException {
         this.stageInitializerService.getRacunScreen();
         this.close(loginController);
     }
 
     @Override
-    public void userLogin(LoginController loginController) {
+    public void userLogin(final LoginController loginController) {
         this.racunService.login(loginController.getTextFieldUserId().getText(),
                 this.passwordEncryptionService.createMD5(loginController.getTextFieldPassword().getText()));
-        this.stageInitializerService.getMainMenuScreen(new DatastockJavaFXAplication.StageReadyEvent(new Stage()));
+        this.stageInitializerService.getMainMenuScreen(new DatastoreJavaFXApplication.StageReadyEvent(new Stage()));
         this.close(loginController);
     }
 
     @Override
-    public String getInputDataForDialogCheck(LoginController loginController) {
+    public String getInputDataForDialogCheck(final LoginController loginController) {
         final List<String> checkList = new ArrayList<>();
         if (loginController.getTextFieldUserId().getText().trim().isEmpty()) checkList.add("UserId!");
         if (loginController.getTextFieldPassword().getText().trim().isEmpty()) checkList.add("Password!");

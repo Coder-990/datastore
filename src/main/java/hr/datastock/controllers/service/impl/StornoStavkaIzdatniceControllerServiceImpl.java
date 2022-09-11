@@ -31,7 +31,7 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
     private ObservableList<StavkaIzdatniceEntity> stavkaIzdatniceObservableList;
 
     @Override
-    public void init(StornoStavkaIzdatniceController ssic) {
+    public void init(final StornoStavkaIzdatniceController ssic) {
         this.stavkaIzdatniceObservableList = FXCollections.observableList(this.stavkaIzdatniceService.getAll()
                 .stream().filter(StavkaIzdatniceEntity::getStorno).toList());
         this.setComboBoxIzdatnicaEntity(ssic);
@@ -42,18 +42,18 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
     }
 
     @Override
-    public void searchData(StornoStavkaIzdatniceController ssic) {
+    public void searchData(final StornoStavkaIzdatniceController ssic) {
         final FilteredList<StavkaIzdatniceEntity> filteredList = this.stavkaIzdatniceObservableList
                 .filtered(stavkaIzdatnice -> isTextFieldFirmaContainingSomeData(ssic, stavkaIzdatnice))
                 .filtered(stavkaIzdatnice -> isTextFieldArticleContainingSomeData(ssic, stavkaIzdatnice))
-                .filtered(stavkaIzdatnice -> isIzdatnicaOfFirmaEntityContainingSelectedValue(ssic, stavkaIzdatnice))
+                .filtered(stavkaIzdatnice -> isIzdatnicaFirmaEntityContainingSelectedValue(ssic, stavkaIzdatnice))
                 .filtered(stavkaIzdatnice -> isRobaContainingSelectedValue(ssic, stavkaIzdatnice))
                 .filtered(stavkaIzdatnice -> isDatumContainingSelectedValue(ssic, stavkaIzdatnice));
         ssic.getTableView().setItems(FXCollections.observableList(filteredList));
     }
 
     @Override
-    public void clearRecords(StornoStavkaIzdatniceController ssic) {
+    public void clearRecords(final StornoStavkaIzdatniceController ssic) {
         ssic.getDatePickerDatumStorno().setValue(null);
         ssic.getDatePickerDatumStorno().getEditor().clear();
         ssic.getTextFieldFirma().clear();
@@ -63,7 +63,7 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
         ssic.getTableView().getSelectionModel().clearSelection();
     }
 
-    private void setComboBoxIzdatnicaEntity(StornoStavkaIzdatniceController ssic) {
+    private void setComboBoxIzdatnicaEntity(final StornoStavkaIzdatniceController ssic) {
         final Set<FirmeEntity> listOfFirme = this.stavkaIzdatniceObservableList.stream()
                 .map(stornoStavkaIzdatnice -> stornoStavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme())
                 .collect(Collectors.toSet());
@@ -71,38 +71,38 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
         ssic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem();
     }
 
-    private boolean isDatumContainingSelectedValue(StornoStavkaIzdatniceController ssic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        LocalDate selectedDate = ssic.getDatePickerDatumStorno().getValue();
+    private boolean isDatumContainingSelectedValue(final StornoStavkaIzdatniceController ssic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final LocalDate selectedDate = ssic.getDatePickerDatumStorno().getValue();
         return selectedDate == null || stavkaIzdatnice.getDatumStorno().equals(selectedDate);
     }
 
-    private boolean isRobaContainingSelectedValue(StornoStavkaIzdatniceController ssic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        RobaEntity selectedRoba = ssic.getComboBoxRoba().getSelectionModel().getSelectedItem();
+    private boolean isRobaContainingSelectedValue(final StornoStavkaIzdatniceController ssic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final RobaEntity selectedRoba = ssic.getComboBoxRoba().getSelectionModel().getSelectedItem();
         return selectedRoba == null ||
                 stavkaIzdatnice.getStavkaIzdatniceRobe().equals(selectedRoba);
     }
 
-    private boolean isIzdatnicaOfFirmaEntityContainingSelectedValue(StornoStavkaIzdatniceController ssic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        FirmeEntity selectedFirma = ssic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem();
+    private boolean isIzdatnicaFirmaEntityContainingSelectedValue(final StornoStavkaIzdatniceController ssic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final FirmeEntity selectedFirma = ssic.getComboBoxIzdatnica().getSelectionModel().getSelectedItem();
         return selectedFirma == null ||
                 stavkaIzdatnice.getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().equals(
                         selectedFirma);
     }
 
-    private boolean isTextFieldArticleContainingSomeData(StornoStavkaIzdatniceController ssic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        String articleText = ssic.getTextFieldArticle().getText();
+    private boolean isTextFieldArticleContainingSomeData(final StornoStavkaIzdatniceController ssic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final String articleText = ssic.getTextFieldArticle().getText();
         return StringUtils.equals(articleText, StringUtils.EMPTY) || articleText == null || stavkaIzdatnice
                 .getStavkaIzdatniceRobe().toString().toLowerCase().contains(articleText);
     }
 
-    private boolean isTextFieldFirmaContainingSomeData(StornoStavkaIzdatniceController ssic, StavkaIzdatniceEntity stavkaIzdatnice) {
-        String firmaText = ssic.getTextFieldFirma().getText();
+    private boolean isTextFieldFirmaContainingSomeData(final StornoStavkaIzdatniceController ssic, final StavkaIzdatniceEntity stavkaIzdatnice) {
+        final String firmaText = ssic.getTextFieldFirma().getText();
         return StringUtils.equals(firmaText, StringUtils.EMPTY) || firmaText == null || stavkaIzdatnice
                 .getStavkaIzdatniceIzdatnica().getIzdatnicaFirme().toString()
                 .toLowerCase().trim().contains(firmaText);
     }
 
-    private void setComboBoxRobaEntity(StornoStavkaIzdatniceController ssic) {
+    private void setComboBoxRobaEntity(final StornoStavkaIzdatniceController ssic) {
         final Set<RobaEntity> listOfArticles = this.stavkaIzdatniceObservableList.stream()
                 .map(StavkaIzdatniceEntity::getStavkaIzdatniceRobe)
                 .collect(Collectors.toSet());
@@ -110,13 +110,13 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
         ssic.getComboBoxRoba().getSelectionModel().getSelectedItem();
     }
 
-    private void setTableColumnProperties(StornoStavkaIzdatniceController ssic) {
+    private void setTableColumnProperties(final StornoStavkaIzdatniceController ssic) {
         this.setProperty(ssic);
         this.setStyle(ssic);
         this.setCellValueFactory(ssic);
     }
 
-    private void setProperty(StornoStavkaIzdatniceController ssic) {
+    private void setProperty(final StornoStavkaIzdatniceController ssic) {
         ssic.getTableColumnId().setCellValueFactory(new PropertyValueFactory<>("idStavkaIzdatnice"));
         ssic.getTableColumnIdIzdatnice().setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceIzdatnica"));
         ssic.getTableColumnArticle().setCellValueFactory(new PropertyValueFactory<>("stavkaIzdatniceRobe"));
@@ -124,7 +124,7 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
         ssic.getTableColumnDatum().setCellValueFactory(new PropertyValueFactory<>("datumStorno"));
     }
 
-    private void setStyle(StornoStavkaIzdatniceController ssic) {
+    private void setStyle(final StornoStavkaIzdatniceController ssic) {
         ssic.getTableColumnId().setStyle(FX_ALIGNMENT_CENTER);
         ssic.getTableColumnIdIzdatnice().setStyle(FX_ALIGNMENT_CENTER);
         ssic.getTableColumnArticle().setStyle(FX_ALIGNMENT_CENTER);
@@ -132,7 +132,7 @@ public class StornoStavkaIzdatniceControllerServiceImpl implements StornoStavkaI
         ssic.getTableColumnDatum().setStyle(FX_ALIGNMENT_CENTER);
     }
 
-    private void setCellValueFactory(StornoStavkaIzdatniceController ssic) {
+    private void setCellValueFactory(final StornoStavkaIzdatniceController ssic) {
         ssic.getTableColumnIdIzdatnice().setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(final IzdatnicaEntity item, boolean empty) {

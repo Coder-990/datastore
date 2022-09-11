@@ -4,10 +4,10 @@ import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DatastockApplication {
+public class DatastoreApplication {
 
     public static void main(final String[] args) {
-        Application.launch(DatastockJavaFXAplication.class, args);
+        Application.launch(DatastoreJavaFXApplication.class, args);
     }
 
 }
