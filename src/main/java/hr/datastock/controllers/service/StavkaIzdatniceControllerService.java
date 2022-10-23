@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface StavkaIzdatniceControllerService {
 
-    void init(StavkaIzdatniceController sic);
+    void init(final StavkaIzdatniceController sic);
 
-    void searchData(StavkaIzdatniceController sic);
+    void searchData(final StavkaIzdatniceController sic);
 
-    StavkaIzdatniceEntity saveStavkaIzdatnice(StavkaIzdatniceController sic);
+    StavkaIzdatniceEntity saveStavkaIzdatnice(final StavkaIzdatniceController sic);
 
-    Optional<StavkaIzdatniceEntity> stornoStavkaIzdatnice(StavkaIzdatniceController sic);
+    Optional<StavkaIzdatniceEntity> stornoStavkaIzdatnice(final StavkaIzdatniceController sic);
 
-    void clearRecords(StavkaIzdatniceController sic);
+    void clearRecords(final StavkaIzdatniceController sic);
 }

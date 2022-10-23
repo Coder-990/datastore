@@ -4,7 +4,7 @@ import hr.datastock.entities.RacunEntity;
 
 public interface DialogService {
 
-    void getWarningAlert(String alert);
+    void getWarningAlert(final String alert);
 
     boolean isCredentialsValid();
 
@@ -12,7 +12,9 @@ public interface DialogService {
 
     boolean isEntityRemoved();
 
+    boolean isEntityCanceled();
+
     boolean isDataPickedFromTableViewAlert();
 
-    boolean isUserRegistered(RacunEntity racun);
+    boolean isUserRegistered(final RacunEntity racun);
 }

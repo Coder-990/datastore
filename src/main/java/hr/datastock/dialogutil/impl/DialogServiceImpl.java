@@ -66,6 +66,21 @@ public class DialogServiceImpl implements DialogService {
     }
 
     @Override
+    public boolean isEntityCanceled() {
+        final Alert alertWindow = new Alert(Alert.AlertType.CONFIRMATION);
+        alertWindow.setTitle("Cancel item");
+        alertWindow.setHeaderText("Are you sure to continue?");
+        alertWindow.setContentText("You are about to cancel this item, continue?");
+        final AtomicBoolean isRemoved = new AtomicBoolean(false);
+        alertWindow.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK)
+                isRemoved.set(true);
+        });
+        alertWindow.getAlertType();
+        return isRemoved.get();
+    }
+
+    @Override
     public boolean isDataPickedFromTableViewAlert() {
         final Alert alertWindow = new Alert(Alert.AlertType.INFORMATION);
         alertWindow.setTitle("Info");
