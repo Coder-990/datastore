@@ -15,7 +15,7 @@ public class DialogServiceImpl implements DialogService {
     public void getWarningAlert(final String alert) {
         final Alert alertWindow = new Alert(Alert.AlertType.WARNING);
         alertWindow.setTitle("Warning");
-        alertWindow.setHeaderText("Some data is mising: ");
+        alertWindow.setHeaderText("Some data is missing: ");
         alertWindow.setContentText(alert);
         alertWindow.showAndWait();
     }

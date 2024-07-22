@@ -1,8 +1,8 @@
 package hr.datastock.controllers.service.impl;
 
 import hr.datastock.controllers.FirmeController;
-import hr.datastock.dialogutil.DialogService;
 import hr.datastock.controllers.service.FirmeControllerService;
+import hr.datastock.dialogutil.DialogService;
 import hr.datastock.entities.FirmeEntity;
 import hr.datastock.services.FirmeService;
 import javafx.collections.FXCollections;
@@ -152,7 +152,10 @@ public class FirmeControllerServiceImpl implements FirmeControllerService {
 
     private Long nextId() {
         return !this.firmeObservableList.isEmpty() ?
-                this.firmeObservableList.stream().mapToLong(FirmeEntity::getIdFirme).max().getAsLong() + 1 : 1;
+                this.firmeObservableList.stream()
+                        .mapToLong(FirmeEntity::getIdFirme)
+                        .max()
+                        .getAsLong() + 1 : 1;
     }
 
     private FirmeEntity getSelectedDataFromTableViewFirma(final FirmeController firmeController) {

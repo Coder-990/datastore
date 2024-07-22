@@ -11,6 +11,9 @@ import static java.time.LocalDate.of;
 
 public class MockEntityDataValues {
 
+    private MockEntityDataValues(){
+
+    }
     private static final FirmeEntity FIRMA_PRIME_SOFTWARE = new FirmeEntity(1L, "45485474525", "Prime Software");
     private static final FirmeEntity FIRMA_TECH_FOOT = new FirmeEntity(11L, "586510002144", "TechFoot");
     private static final FirmeEntity FIRMA_KILOBYTE = new FirmeEntity(13L, "02013025652", "KiloByte");
@@ -18,11 +21,12 @@ public class MockEntityDataValues {
     private static final FirmeEntity FIRMA_LUMINUM = new FirmeEntity(24L, "54526589110", "Luminum");
     private static final FirmeEntity FIRMA_KILOBYTE_TEST = new FirmeEntity(95L, "02013025652", "KiloBytetest");
 
-    private static final RobaEntity CPU_AMD_1 = new RobaEntity(1L, "CPU_AMDx2A4_4020", 10, new BigDecimal("215.00"), "Procesor AMD", "kom");
-    public static final RobaEntity CPU_AMD_2 = new RobaEntity(2L, "CPU_AMDA6_9500", 10, new BigDecimal("393.00"), "Procesor AMD", "kom");
-    public static final RobaEntity CPU_AMD_3 = new RobaEntity(3L, "CPU_AMDx4FX_4300", 10, new BigDecimal("425.00"), "Procesor AMD", "kom");
-    private static final RobaEntity CPU_AMD_4 = new RobaEntity(8L, "CPU_AMDRayzen5_1600X_BOX", 10, new BigDecimal("1580.00"), "Procesor AMD", "kom");
-    private static final RobaEntity CPU_AMD_5 = new RobaEntity(9L, "CPU_AMD_Rayzen7_1800X_BOX", 10, new BigDecimal("2589.99"), "Procesor AMD", "kom");
+    public static final String CPU_AMD = "CPU_AMD";
+    private static final RobaEntity CPU_AMD_1 = new RobaEntity(1L, CPU_AMD + "x2A4_4020", 10, new BigDecimal("215.00"), "Procesor AMD", "kom");
+    public static final RobaEntity CPU_AMD_2 = new RobaEntity(2L, CPU_AMD + "A6_9500", 10, new BigDecimal("393.00"), "Procesor AMD", "kom");
+    public static final RobaEntity CPU_AMD_3 = new RobaEntity(3L, CPU_AMD + "x4FX_4300", 10, new BigDecimal("425.00"), "Procesor AMD", "kom");
+    private static final RobaEntity CPU_AMD_4 = new RobaEntity(8L, CPU_AMD + "Rayzen5_1600X_BOX", 10, new BigDecimal("1580.00"), "Procesor AMD", "kom");
+    private static final RobaEntity CPU_AMD_5 = new RobaEntity(9L, CPU_AMD + "_Rayzen7_1800X_BOX", 10, new BigDecimal("2589.99"), "Procesor AMD", "kom");
     private static final RobaEntity MBO_ASUS_1 = new RobaEntity(10L, "MBO_ASUSa68HM_K", 10, new BigDecimal("290.00"), "MaticnaPloca ASUS", "kom");
     private static final RobaEntity MBO_ASUS_2 = new RobaEntity(25L, "MBO_ASUS_M5A97_R2.0", 10, new BigDecimal("675.00"), "MaticnaPloca ASUS", "kom");
     private static final RobaEntity MBO_ASUS_3 = new RobaEntity(26L, "MBO_ASUS_M5A97_LE_R2.0", 10, new BigDecimal("475.00"), "MaticnaPloca ASUS", "kom");

@@ -1,12 +1,11 @@
 package hr.datastock.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "izdatnica", schema = "datastock")
 @Builder
 @Data
 @AllArgsConstructor
@@ -16,11 +15,7 @@ public class IzdatnicaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "IDIzdatnice")
     private Long idIzdatnice;
-
-    @Basic
-    @Column(name = "Datum")
     private LocalDate datum;
 
     @ManyToOne
