@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="hr.datastock.controllers.FirmeController">
+            fx:controller="hr.datastore.controllers.FirmeController">
     <TableView fx:id="tableView" layoutX="338.0" layoutY="87.0" prefHeight="194.0" prefWidth="405.0">
         <columns>
             <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID"/>

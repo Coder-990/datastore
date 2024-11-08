@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="hr.datastock.controllers.IzdatnicaController">
+            fx:controller="hr.datastore.controllers.IzdatnicaController">
     <VBox layoutX="318.0" layoutY="312.0" prefHeight="17.0" prefWidth="324.0">
         <ComboBox fx:id="comboBoxSearch" prefHeight="25.0" prefWidth="337.0"/>
     </VBox>

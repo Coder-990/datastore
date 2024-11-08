@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="577.0" prefWidth="1052.0" xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="hr.datastock.controllers.StornoStavkaIzdatniceController">
+            fx:controller="hr.datastore.controllers.StornoStavkaIzdatniceController">
     <TableView fx:id="tableView" layoutX="145.0" layoutY="144.0" prefHeight="265.0" prefWidth="656.0">
         <columns>
             <TableColumn fx:id="tableColumnId" prefWidth="36.0" text="ID"/>

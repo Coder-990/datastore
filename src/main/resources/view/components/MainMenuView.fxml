@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.SVGPath?>
 
 <AnchorPane prefHeight="566.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="hr.datastock.controllers.MainController">
+            fx:controller="hr.datastore.controllers.MainController">
     <BorderPane layoutX="-2.0" layoutY="-2.0" prefHeight="568.0" prefWidth="699.0">
         <left>
             <HBox fx:id="vBoxSideBar" prefHeight="100.0" prefWidth="200.0" styleClass="main-view"
@@ -60,7 +60,7 @@
                           layoutY="10.0" onMouseClicked="#setScreenStornoStavkaIzdatnice" styleClass="side-bar-menu">
                         <SVGPath
                                 content="M24 20v-4h-10v-4h10v-4l6 6zM22 18v8h-10v6l-12-6v-26h22v10h-2v-8h-16l8 4v18h8v-6zM24 20v-4h-10v-4h10v-4l6 6zM22 18v8h-10v6l-12-6v-26h22v10h-2v-8h-16l8 4v18h8v-6z"/>
-                        <Label text="Storno stavka izdatnica"/>
+                        <Label text="Storno stavka IzdatnicaEntity"/>
                     </VBox>
                 </VBox>
             </HBox>

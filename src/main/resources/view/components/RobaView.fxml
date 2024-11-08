@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="444.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="hr.datastock.controllers.RobaController">
+            fx:controller="hr.datastore.controllers.RobaController">
     <VBox layoutX="326.0" layoutY="293.0" prefHeight="137.0" prefWidth="322.0">
         <TextField fx:id="textFieldNaziv" prefHeight="25.0" prefWidth="314.0"/>
         <TextField fx:id="textFieldCijena" layoutX="10.0" layoutY="10.0"/>
