@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class StageInitializerServiceImpl implements StageInitializerService {
 
-    @Value("${spring.application.name}")
     private final String applicationTitle;
     private final ApplicationContext applicationContext;
     private final FXMLResourceLoaderService fxmlResourceLoaderService;

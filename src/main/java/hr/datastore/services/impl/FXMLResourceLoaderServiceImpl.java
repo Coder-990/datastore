@@ -4,9 +4,9 @@ import hr.datastore.services.FXMLResourceLoaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class FXMLResourceLoaderServiceImpl implements FXMLResourceLoaderService {
 

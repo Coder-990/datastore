@@ -151,7 +151,8 @@ public class IzdatnicaControllerServiceImpl implements IzdatnicaControllerServic
 
     private void setComboBoxFirmeOnCreateIzdatnicaEntity(final IzdatnicaController izdatnicaController) {
         final Set<FirmeEntity> oibFirmeFilterList = this.izdatnicaObservableList.stream()
-                .map(IzdatnicaEntity::getIzdatnicaFirme).collect(Collectors.toSet());
+                .map(IzdatnicaEntity::getIzdatnicaFirme)
+                .collect(Collectors.toSet());
         izdatnicaController.getComboBoxSearch().setItems(FXCollections.observableList(new ArrayList<>(oibFirmeFilterList)));
         izdatnicaController.getComboBoxSearch().getSelectionModel().selectFirst();
 

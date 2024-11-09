@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class JavaFXConfig {
+public class Config {
 
     @Value("${datastore.view-path}")
     private String viewPath;
@@ -13,5 +13,13 @@ public class JavaFXConfig {
     @Bean
     public String viewPath() {
         return viewPath;
+    }
+
+    @Value("${spring.application.name}")
+    private String applicationTitle;
+
+    @Bean
+    public String applicationTitle() {
+        return applicationTitle;
     }
 }

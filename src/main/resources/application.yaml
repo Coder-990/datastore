@@ -15,6 +15,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
+        default_schema: ${MYSQL_DB_SCHEMA}
   jooq:
     sql-dialect: org.hibernate.dialect.MySQLDialect
   flyway:
