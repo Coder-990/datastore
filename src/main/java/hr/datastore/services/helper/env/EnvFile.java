@@ -20,6 +20,7 @@ public class EnvFile {
 
         if (!envFile.exists()) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(envFile))) {
+                writer.write("MYSQL_ROOT_PASSWORD=root\n");
                 writer.write("MYSQL_USER=root\n");
                 writer.write("MYSQL_PASSWORD=root\n");
                 writer.write("MYSQL_DB_NAME=datastore\n");

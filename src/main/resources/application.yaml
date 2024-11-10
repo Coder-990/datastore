@@ -21,5 +21,15 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    placeholders:
+      schema: ${MYSQL_DB_SCHEMA}
+      default-schema: ${MYSQL_DB_SCHEMA}
+      sql-migration-prefix: V
+      sql-migration-separator: __
+      sql-migration-suffixes: .sql
+      datasource:
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB_SCHEMA}?createDatabaseIfNotExist=true
+        username: ${MYSQL_USER}
+        password: ${MYSQL_PASSWORD}
 datastore:
   view-path: /view/components/
